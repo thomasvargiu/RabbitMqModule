@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<phpunit
+    bootstrap="./tests/unit/bootstrap.php"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    stopOnFailure="false"
+    processIsolation="false"
+    backupGlobals="false"
+    backupStaticAttributes="false"
+    syntaxCheck="true"
+>
+    <testsuite name="ProxyManagerModule tests">
+        <directory suffix="Test.php">./tests/unit</directory>
+    </testsuite>
+
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+        </whitelist>
+    </filter>
+</phpunit>

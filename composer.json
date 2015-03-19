@@ -1,0 +1,43 @@
+{
+  "name": "thomasvargiu/rabbitmq-module",
+  "description": "PHP implementation of AMQP protocol",
+  "type": "library",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "homepage": "https://github.com/thomasvargiu/RabbitMqModule",
+  "keywords": [
+    "zf2",
+    "zend framework",
+    "rabbitmq",
+    "amqp"
+  ],
+  "authors": [
+    {
+      "name": "Thomas Vargiu",
+      "email": "tommy@ttech.it"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0",
+    "videlalvaro/php-amqplib": "~2.5",
+    "zendframework/zend-stdlib": "~2.3",
+    "zendframework/zend-servicemanager": "~2.3",
+    "zendframework/zend-modulemanager": "~2.3"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "@stable",
+    "squizlabs/php_codesniffer": "@stable",
+    "phpmd/phpmd" : "@stable",
+    "fabpot/php-cs-fixer": "@stable"
+  },
+  "autoload": {
+    "psr-4": {
+      "RabbitMqModule\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "RabbitMqModuleTest\\": "tests/"
+    }
+  }
+}
