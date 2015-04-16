@@ -28,7 +28,8 @@
     "phpunit/phpunit": "@stable",
     "squizlabs/php_codesniffer": "@stable",
     "phpmd/phpmd" : "@stable",
-    "fabpot/php-cs-fixer": "@stable"
+    "fabpot/php-cs-fixer": "@stable",
+    "mockery/mockery": "@stable"
   },
   "autoload": {
     "psr-4": {

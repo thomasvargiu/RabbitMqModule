@@ -11,7 +11,7 @@
     backupStaticAttributes="false"
     syntaxCheck="true"
 >
-    <testsuite name="ProxyManagerModule tests">
+    <testsuite name="RabbitMqModule tests">
         <directory suffix="Test.php">./tests/unit</directory>
     </testsuite>
 
@@ -20,4 +20,8 @@
             <directory suffix=".php">./src</directory>
         </whitelist>
     </filter>
+
+    <listeners>
+        <listener class="\Mockery\Adapter\Phpunit\TestListener"></listener>
+    </listeners>
 </phpunit>

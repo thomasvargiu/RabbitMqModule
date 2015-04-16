@@ -16,6 +16,9 @@
  * and is licensed under the MIT license.
  */
 
+/**
+ * @codeCoverageIgnore
+ */
 namespace RabbitMqModule;
 
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
