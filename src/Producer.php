@@ -3,13 +3,10 @@
 namespace RabbitMqModule;
 
 use PhpAmqpLib\Message\AMQPMessage;
-use RabbitMqModule\Options\ExchangeOptionsAwareInterface;
 use RabbitMqModule\Options\Producer as ProducerOptions;
-use RabbitMqModule\Options\QueueOptionsAwareInterface;
 use RabbitMqModule\Service\RabbitMqServiceAwareInterface;
 use RabbitMqModule\Service\RabbitMqServiceAwareTrait;
 use RabbitMqModule\Service\SetupFabricAwareInterface;
-use Traversable;
 
 class Producer extends BaseAmqp implements
     SetupFabricAwareInterface,

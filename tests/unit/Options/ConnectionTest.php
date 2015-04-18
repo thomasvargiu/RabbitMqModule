@@ -1,8 +1,10 @@
 <?php
 
-namespace RabbitMqModuleTest\Options\Connection;
+namespace RabbitMqModuleTest\Options;
 
-class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
+use RabbitMqModule\Options\Connection as Options;
+
+class ConnectionTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetterAndSetter()
     {
@@ -17,12 +19,16 @@ class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
             'login_method' => 'test-login_method',
             'locale' => 'test-locale',
             'read_write_timeout' => 12,
-            'keep_alive' => true
+            'keep_alive' => true,
+            'heartbeat' => 234,
+            'connection_timeout' => 432,
+            'ssl_options' => [
+                'opt1' => 'value1',
+                'opt2' => 'value2'
+            ]
         ];
 
-        $options = $this->getMockBuilder('RabbitMqModule\\Options\\Connection\\AbstractConnection')
-            ->getMockForAbstractClass();
-        /** @var \RabbitMqModule\Options\Connection\AbstractConnection $options */
+        $options = new Options();
         $options->setFromArray($configuration);
 
         static::assertEquals($configuration['type'], $options->getType());
@@ -36,5 +42,8 @@ class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
         static::assertEquals($configuration['locale'], $options->getLocale());
         static::assertEquals($configuration['read_write_timeout'], $options->getReadWriteTimeout());
         static::assertEquals($configuration['keep_alive'], $options->isKeepAlive());
+        static::assertEquals($configuration['heartbeat'], $options->getHeartbeat());
+        static::assertEquals($configuration['connection_timeout'], $options->getConnectionTimeout());
+        static::assertEquals($configuration['ssl_options'], $options->getSslOptions());
     }
 }

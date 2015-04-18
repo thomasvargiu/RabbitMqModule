@@ -1,10 +1,10 @@
 <?php
 
-namespace RabbitMqModule\Options\Connection;
+namespace RabbitMqModule\Options;
 
 use Zend\Stdlib\AbstractOptions;
 
-abstract class AbstractConnection extends AbstractOptions implements ConnectionInterface
+class Connection extends AbstractOptions
 {
     /**
      * @var string
@@ -50,6 +50,18 @@ abstract class AbstractConnection extends AbstractOptions implements ConnectionI
      * @var boolean
      */
     protected $keepAlive = false;
+    /**
+     * @var int
+     */
+    protected $connectionTimeout = 3;
+    /**
+     * @var int
+     */
+    protected $heartbeat = 0;
+    /**
+     * @var array
+     */
+    protected $sslOptions;
 
     /**
      * @return string
@@ -246,6 +258,60 @@ abstract class AbstractConnection extends AbstractOptions implements ConnectionI
     public function setKeepAlive($keepAlive)
     {
         $this->keepAlive = $keepAlive;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getConnectionTimeout()
+    {
+        return $this->connectionTimeout;
+    }
+
+    /**
+     * @param int $connectionTimeout
+     * @return $this
+     */
+    public function setConnectionTimeout($connectionTimeout)
+    {
+        $this->connectionTimeout = $connectionTimeout;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHeartbeat()
+    {
+        return $this->heartbeat;
+    }
+
+    /**
+     * @param int $heartbeat
+     * @return $this
+     */
+    public function setHeartbeat($heartbeat)
+    {
+        $this->heartbeat = $heartbeat;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSslOptions()
+    {
+        return $this->sslOptions;
+    }
+
+    /**
+     * @param array $sslOptions
+     * @return $this
+     */
+    public function setSslOptions(array $sslOptions)
+    {
+        $this->sslOptions = $sslOptions;
         return $this;
     }
 }

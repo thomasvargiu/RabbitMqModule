@@ -29,7 +29,8 @@
     "squizlabs/php_codesniffer": "@stable",
     "phpmd/phpmd" : "@stable",
     "fabpot/php-cs-fixer": "@stable",
-    "mockery/mockery": "@stable"
+    "mockery/mockery": "@stable",
+    "zendframework/zend-mvc": "~2.3"
   },
   "autoload": {
     "psr-4": {

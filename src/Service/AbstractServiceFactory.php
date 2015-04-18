@@ -36,7 +36,7 @@ class AbstractServiceFactory implements AbstractFactoryInterface
             return false;
         }
 
-        $config = $serviceLocator->get('Config');
+        $config = $serviceLocator->get('Configuration');
         $serviceType = $matches['serviceType'];
         $serviceName = $matches['serviceName'];
 

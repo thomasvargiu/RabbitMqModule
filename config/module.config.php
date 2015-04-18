@@ -4,9 +4,13 @@ return [
     'service_manager' => [
         'invokables' => [
             'RabbitMqModule\\Service\\RabbitMqService' => 'RabbitMqModule\\Service\\RabbitMqService',
-            'RabbitMqModule\\Options\\Connection\\ConnectionOptionsFactory' => 'RabbitMqModule\\Options\\Connection\\ConnectionOptionsFactory',
-            'RabbitMqModule\\Service\\Connection\\ConnectionFactory' =>
-                'RabbitMqModule\\Service\\Connection\\ConnectionFactory'
+
+            'RabbitMqModule\\Service\\Connection\\StreamConnectionFactory' =>
+                'RabbitMqModule\\Service\\Connection\\StreamConnectionFactory',
+            'RabbitMqModule\\Service\\Connection\\SslConnectionFactory' =>
+                'RabbitMqModule\\Service\\Connection\\SslConnectionFactory',
+            'RabbitMqModule\\Service\\Connection\\SocketConnectionFactory' =>
+                'RabbitMqModule\\Service\\Connection\\SocketConnectionFactory'
         ],
         'factories' => [
 
@@ -16,13 +20,15 @@ return [
         ]
     ],
     'rabbitmq' => [
-        'connection' => [],
+        'connection' => [
+            'default' => []
+        ],
         'exchange' => [],
         'producer' => [],
         'consumer' => []
     ],
     'rabbitmq_factories' => [
         'connection' => 'RabbitMqModule\\Service\\ConnectionFactory',
-        'producer' => 'RabbitMqModule\\Service\\ProducerFactory',
+        'producer' => 'RabbitMqModule\\Service\\ProducerFactory'
     ]
 ];

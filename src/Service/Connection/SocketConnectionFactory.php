@@ -2,7 +2,7 @@
 
 namespace RabbitMqModule\Service\Connection;
 
-use RabbitMqModule\Options\Connection\SocketConnection as Options;
+use RabbitMqModule\Options\Connection as ConnectionOptions;
 use PhpAmqpLib\Connection\AMQPSocketConnection;
 
 /**
@@ -10,15 +10,15 @@ use PhpAmqpLib\Connection\AMQPSocketConnection;
  *
  * @package RabbitMqModule\Service\Connection
  */
-class SocketConnectionFactory
+class SocketConnectionFactory implements ConnectionFactoryInterface
 {
     /**
      * @codeCoverageIgnore
      *
-     * @param Options $options
+     * @param ConnectionOptions $options
      * @return AMQPSocketConnection
      */
-    public static function createConnection(Options $options)
+    public function createConnection(ConnectionOptions $options)
     {
         return new AMQPSocketConnection(
             $options->getHost(),
