@@ -46,6 +46,9 @@ class ConsumerFactory extends AbstractFactory
     protected function createConsumer(ServiceLocatorInterface $serviceLocator, Options $options)
     {
         $callback = $options->getCallback();
+        if (is_string($callback)) {
+            $callback = $serviceLocator->get($callback);
+        }
         if ($callback instanceof ConsumerInterface) {
             $callback = [$callback, 'execute'];
         }
