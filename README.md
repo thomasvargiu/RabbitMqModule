@@ -6,10 +6,14 @@
 [![Dependency Status](https://www.versioneye.com/user/projects/55300c0a10e7141211000b7d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55300c0a10e7141211000b7d)
 
 Integrates php-amqplib with Zend Framework 2 and RabbitMq.
+
 Inspired from [RabbitMqBundle](https://github.com/videlalvaro/RabbitMqBundle/) for Symfony 2
 
+
 **Status: development**
+
 Not ready for production environment yet (see below).
+
 
 ## Usage ##
 
@@ -148,7 +152,9 @@ The ```callback``` key must contain one of the following:
 - A string service name in service locator (can be anything ```callable``` or an instance of ```RabbitMqModule\\ConsumerInterface```.
 
 Take a look on ```RabbitMqModule\\ConsumerInterface``` class constants for available return values.
+
 If your callback return ```false``` than the message will be rejected and requeued.
+
 If your callback return anything else different from ```false``` and ```ConsumerInterface```constants, the default response is like ```MSG_ACK```constant.
 
 #### Retrieve the service ####
@@ -169,6 +175,7 @@ $consumer->consume();
 # Development status #
 
 This module is not ready for production environment yet.
+
 Why? It's not fully tested in AMQP environment and all things in my mind are not implemented yet.
 
 ## Missing things ##
