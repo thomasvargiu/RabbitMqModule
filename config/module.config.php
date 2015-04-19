@@ -1,6 +1,19 @@
 <?php
 
+namespace RabbitMqModule;
+
 return [
+    'routes' => [
+        'rabbitmq_module-setup-fabric' => [
+            'options' => [
+                'route'    => 'rabbitmq setup-fabric',
+                'defaults' => [
+                    'controller' => __NAMESPACE__ . '\\Controller\\SetupFabric',
+                    'action' => 'index'
+                ]
+            ]
+        ]
+    ],
     'service_manager' => [
         'invokables' => [
             'RabbitMqModule\\Service\\RabbitMqService' => 'RabbitMqModule\\Service\\RabbitMqService',

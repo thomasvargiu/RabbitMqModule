@@ -22,15 +22,17 @@
  */
 namespace RabbitMqModule;
 
+use Zend\Console\Adapter\AdapterInterface;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface;
 
 /**
  * Class Module.
  *
  * @codeCoverageIgnore
  */
-class Module implements AutoloaderProviderInterface, ConfigProviderInterface
+class Module implements AutoloaderProviderInterface, ConfigProviderInterface, ConsoleUsageProviderInterface
 {
     /**
      * Returns configuration to merge with application configuration.
@@ -52,9 +54,20 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
         return [
             'Zend\Loader\StandardAutoloader' => [
                 'namespaces' => [
-                    __NAMESPACE__ => __DIR__,
-                ],
-            ],
+                    __NAMESPACE__ => __DIR__
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @param AdapterInterface $console
+     * @return array|string|null
+     */
+    public function getConsoleUsage(AdapterInterface $console)
+    {
+        return [
+            'rabbitmq setup-fabric' => 'Sets up the Rabbit MQ fabric'
         ];
     }
 }

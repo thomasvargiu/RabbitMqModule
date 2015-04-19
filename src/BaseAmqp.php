@@ -6,8 +6,9 @@ use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AbstractConnection;
 use RabbitMqModule\Options\Exchange as ExchangeOptions;
 use RabbitMqModule\Options\Queue as QueueOptions;
+use RabbitMqModule\Service\SetupFabricAwareInterface;
 
-abstract class BaseAmqp
+abstract class BaseAmqp implements SetupFabricAwareInterface
 {
     /**
      * @var AbstractConnection
