@@ -3,6 +3,19 @@
 namespace RabbitMqModule;
 
 return [
+    'rabbitmq' => [
+        'connection' => [
+            'default' => []
+        ],
+        'exchange' => [],
+        'producer' => [],
+        'consumer' => []
+    ],
+    'rabbitmq_factories' => [
+        'connection' => 'RabbitMqModule\\Service\\ConnectionFactory',
+        'producer' => 'RabbitMqModule\\Service\\ProducerFactory',
+        'consumer' => 'RabbitMqModule\\Service\\ConsumerFactory'
+    ],
     'routes' => [
         'rabbitmq_module-setup-fabric' => [
             'options' => [
@@ -31,18 +44,5 @@ return [
         'abstract_factories' => [
             'RabbitMqModule\\Service\\AbstractServiceFactory' => 'RabbitMqModule\\Service\\AbstractServiceFactory'
         ]
-    ],
-    'rabbitmq' => [
-        'connection' => [
-            'default' => []
-        ],
-        'exchange' => [],
-        'producer' => [],
-        'consumer' => []
-    ],
-    'rabbitmq_factories' => [
-        'connection' => 'RabbitMqModule\\Service\\ConnectionFactory',
-        'producer' => 'RabbitMqModule\\Service\\ProducerFactory',
-        'consumer' => 'RabbitMqModule\\Service\\ConsumerFactory'
     ]
 ];

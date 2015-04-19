@@ -9,11 +9,11 @@ class Connection extends AbstractOptions
     /**
      * @var string
      */
-    protected $type;
+    protected $type = 'stream';
     /**
      * @var string
      */
-    protected $host;
+    protected $host = 'localhost';
     /**
      * @var string
      */

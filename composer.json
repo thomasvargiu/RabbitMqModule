@@ -1,6 +1,6 @@
 {
   "name": "thomasvargiu/rabbitmq-module",
-  "description": "PHP implementation of AMQP protocol",
+  "description": "Integrates php-amqplib with Zend Framework 2 and RabbitMq",
   "type": "library",
   "minimum-stability": "stable",
   "license": "MIT",
