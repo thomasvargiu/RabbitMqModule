@@ -2,6 +2,7 @@
 
 namespace RabbitMqModule\Service;
 
+use RabbitMqModule\Consumer;
 use RabbitMqModule\ConsumerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use RabbitMqModule\Options\Consumer as Options;
@@ -42,5 +43,17 @@ class ConsumerFactory extends AbstractFactory
     protected function createConsumer(ServiceLocatorInterface $serviceLocator, Options $options)
     {
         $callback = $options->getCallback();
+        if ($callback instanceof ConsumerInterface) {
+            $callback = [$callback, 'execute'];
+        }
+        if (!is_callable($callback)) {
+            throw new \RuntimeException('Invalid callback provided');
+        }
+
+        /** @var \PhpAmqpLib\Connection\AbstractConnection $connection */
+        $connection = $serviceLocator->get(sprintf('rabbitmq.connection.%s', $options->getConnection()));
+        $consumer = new Consumer($connection);
+        $consumer->setCallback($callback);
+        return $consumer;
     }
 }

@@ -18,6 +18,18 @@ abstract class BaseAmqp
      */
     protected $channel;
     /**
+     * @var QueueOptions
+     */
+    protected $queueOptions;
+    /**
+     * @var ExchangeOptions
+     */
+    protected $exchangeOptions;
+    /**
+     * @var boolean
+     */
+    protected $autoSetupFabricEnabled = true;
+    /**
      * @var bool
      */
     protected $exchangeDeclared = false;
@@ -66,11 +78,70 @@ abstract class BaseAmqp
     }
 
     /**
-     * @param ExchangeOptions $options
+     * @return QueueOptions
+     */
+    public function getQueueOptions()
+    {
+        return $this->queueOptions;
+    }
+
+    /**
+     * @param QueueOptions $queueOptions
      * @return $this
      */
-    protected function declareExchange(ExchangeOptions $options)
+    public function setQueueOptions(QueueOptions $queueOptions)
     {
+        $this->queueOptions = $queueOptions;
+        return $this;
+    }
+
+    /**
+     * @return ExchangeOptions
+     */
+    public function getExchangeOptions()
+    {
+        return $this->exchangeOptions;
+    }
+
+    /**
+     * @param ExchangeOptions $exchangeOptions
+     * @return $this
+     */
+    public function setExchangeOptions(ExchangeOptions $exchangeOptions)
+    {
+        $this->exchangeOptions = $exchangeOptions;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isAutoSetupFabricEnabled()
+    {
+        return $this->autoSetupFabricEnabled;
+    }
+
+    /**
+     * @param boolean $autoSetupFabricEnabled
+     * @return $this
+     */
+    public function setAutoSetupFabricEnabled($autoSetupFabricEnabled)
+    {
+        $this->autoSetupFabricEnabled = $autoSetupFabricEnabled;
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    protected function declareExchange()
+    {
+        $options = $this->getExchangeOptions();
+
+        if (!$options->isDeclare()) {
+            return $this;
+        }
+
         $this->getChannel()->exchange_declare(
             $options->getName(),
             $options->getType(),
@@ -83,16 +154,24 @@ abstract class BaseAmqp
             $options->getTicket()
         );
 
+        $this->exchangeDeclared = true;
+
         return $this;
     }
 
     /**
-     * @param ExchangeOptions $exchangeOptions
-     * @param QueueOptions    $queueOptions
      * @return $this
      */
-    protected function declareQueue(ExchangeOptions $exchangeOptions, QueueOptions $queueOptions)
+    protected function declareQueue()
     {
+        $queueOptions = $this->getQueueOptions();
+
+        if (!$queueOptions || null === $queueOptions->getName()) {
+            return $this;
+        }
+
+        $exchangeOptions = $this->getExchangeOptions();
+
         list ($queueName, ,) = $this->getChannel()->queue_declare(
             $queueOptions->getName(),
             $queueOptions->isPassive(),
@@ -105,20 +184,35 @@ abstract class BaseAmqp
         );
 
         $routingKeys = $queueOptions->getRoutingKeys();
-        if (count($routingKeys)) {
-            foreach ($routingKeys as $routingKey) {
-                $this->getChannel()->queue_bind(
-                    $queueName,
-                    $exchangeOptions->getName(),
-                    $routingKey
-                );
-            }
-        } else {
+        if (!count($routingKeys)) {
+            $routingKeys = [''];
+        }
+        foreach ($routingKeys as $routingKey) {
             $this->getChannel()->queue_bind(
                 $queueName,
                 $exchangeOptions->getName(),
-                ''
+                $routingKey
             );
+        }
+
+        $this->queueDeclared = true;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setupFabric()
+    {
+        if (!$this->exchangeDeclared) {
+            $this->declareExchange();
+        }
+
+        $queueOptions = $this->getQueueOptions();
+
+        if (!$this->queueDeclared && $queueOptions) {
+            $this->declareQueue();
         }
 
         return $this;
@@ -134,19 +228,6 @@ abstract class BaseAmqp
         }
         $this->channel = null;
         $this->getConnection()->reconnect();
-
-        return $this;
-    }
-
-    /**
-     * @param ExchangeOptions $exchangeOptions
-     * @param QueueOptions    $queueOptions
-     * @return $this
-     */
-    protected function explicitSetupFabric(ExchangeOptions $exchangeOptions, QueueOptions $queueOptions = null)
-    {
-        $this->declareExchange($exchangeOptions);
-        $this->declareQueue($exchangeOptions, $queueOptions);
 
         return $this;
     }

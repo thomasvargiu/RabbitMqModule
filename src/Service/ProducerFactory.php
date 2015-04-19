@@ -45,10 +45,11 @@ class ProducerFactory extends AbstractFactory
         /** @var AbstractConnection $connection */
         $connection = $serviceLocator->get(sprintf('rabbitmq.connection.%s', $options->getConnection()));
         $producer = new Producer($connection);
-        $producer->setOptions($options);
-        /** @var \RabbitMqModule\Service\RabbitMqService $rabbitMqService */
-        $rabbitMqService = $serviceLocator->get('RabbitMqModule\\Service\\RabbitMqService');
-        $producer->setRabbitMqService($rabbitMqService);
+        $producer->setExchangeOptions($options->getExchange());
+        if ($options->getQueue()) {
+            $producer->setQueueOptions($options->getQueue());
+        }
+        $producer->setAutoSetupFabricEnabled($options->isAutoSetupFabricEnabled());
 
         return $producer;
     }

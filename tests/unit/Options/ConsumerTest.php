@@ -23,7 +23,8 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
 
             ],
             'auto_setup_fabric_enabled' => false,
-            'consumer_tag' => 'test-tag'
+            'consumer_tag' => 'test-tag',
+            'signals_enabled' => true
         ];
         $options = new Consumer();
         $options->setFromArray($configuration);
@@ -35,7 +36,8 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         static::assertEquals($configuration['idle_timeout'], $options->getIdleTimeout());
         static::assertInstanceOf('RabbitMqModule\\Options\\Qos', $options->getQos());
         static::assertEquals(6, $options->getIdleTimeout());
-        static::assertFalse($options->isAutoSetupFabricEnabled());
-        static::assertSame('test-tag', $options->getConsumerTag());
+        static::assertEquals($configuration['auto_setup_fabric_enabled'], $options->isAutoSetupFabricEnabled());
+        static::assertEquals('test-tag', $options->getConsumerTag());
+        static::assertEquals($configuration['signals_enabled'], $options->isSignalsEnabled());
     }
 }

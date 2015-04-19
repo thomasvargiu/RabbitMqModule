@@ -19,7 +19,7 @@ class Consumer extends AbstractOptions
      */
     protected $queue;
     /**
-     * @var string
+     * @var string|callable
      */
     protected $callback;
     /**
@@ -38,6 +38,10 @@ class Consumer extends AbstractOptions
      * @var boolean
      */
     protected $autoSetupFabricEnabled = true;
+    /**
+     * @var bool
+     */
+    protected $signalsEnabled = true;
 
     /**
      * @return string
@@ -106,7 +110,7 @@ class Consumer extends AbstractOptions
     }
 
     /**
-     * @return string
+     * @return string|callable
      */
     public function getCallback()
     {
@@ -114,7 +118,7 @@ class Consumer extends AbstractOptions
     }
 
     /**
-     * @param string $callback
+     * @param string|callable $callback
      * @return $this
      */
     public function setCallback($callback)
@@ -198,6 +202,24 @@ class Consumer extends AbstractOptions
     public function setAutoSetupFabricEnabled($autoSetupFabricEnabled)
     {
         $this->autoSetupFabricEnabled = $autoSetupFabricEnabled;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isSignalsEnabled()
+    {
+        return $this->signalsEnabled;
+    }
+
+    /**
+     * @param boolean $signalsEnabled
+     * @return $this
+     */
+    public function setSignalsEnabled($signalsEnabled)
+    {
+        $this->signalsEnabled = $signalsEnabled;
         return $this;
     }
 }
