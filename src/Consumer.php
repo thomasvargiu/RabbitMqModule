@@ -18,6 +18,21 @@ class Consumer extends BaseConsumer
         return $this;
     }
 
+    /**
+     * Consume the message
+     */
+    public function consume()
+    {
+        $this->setupConsumer();
+        while (count($this->getChannel()->callbacks)) {
+            $this->maybeStopConsumer();
+            $this->getChannel()->wait(null, false, $this->getIdleTimeout());
+        }
+    }
+
+    /**
+     * @param AMQPMessage $msg
+     */
     public function processMessage(AMQPMessage $msg)
     {
         $processFlag = call_user_func($this->getCallback(), $msg);

@@ -25,7 +25,7 @@ class ConsumerFactory extends AbstractFactory
      *
      * @param ServiceLocatorInterface $serviceLocator
      *
-     * @return mixed
+     * @return Consumer
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
@@ -58,9 +58,10 @@ class ConsumerFactory extends AbstractFactory
         $consumer = new Consumer($connection);
         $consumer->setQueueOptions($options->getQueue());
         $consumer->setExchangeOptions($options->getExchange());
-        $consumer->setConsumerTag($options->getConsumerTag());
+        $consumer->setConsumerTag($options->getConsumerTag() ?: sprintf('PHPPROCESS_%s_%s', gethostname(), getmypid()));
         $consumer->setAutoSetupFabricEnabled($options->isAutoSetupFabricEnabled());
         $consumer->setCallback($callback);
+        $consumer->setIdleTimeout($options->getIdleTimeout());
 
         if ($options->getQos()) {
             $consumer->setQosOptions(

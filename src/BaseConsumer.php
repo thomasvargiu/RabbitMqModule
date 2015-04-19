@@ -23,6 +23,10 @@ abstract class BaseConsumer extends BaseAmqp implements
      * @var bool
      */
     protected $forceStop = false;
+    /**
+     * @var int
+     */
+    protected $idleTimeout = 0;
 
     /**
      * @return string
@@ -68,6 +72,24 @@ abstract class BaseConsumer extends BaseAmqp implements
         }
         $this->callback = $callback;
 
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getIdleTimeout()
+    {
+        return $this->idleTimeout;
+    }
+
+    /**
+     * @param int $idleTimeout
+     * @return $this
+     */
+    public function setIdleTimeout($idleTimeout)
+    {
+        $this->idleTimeout = $idleTimeout;
         return $this;
     }
 
@@ -123,6 +145,15 @@ abstract class BaseConsumer extends BaseAmqp implements
         if ($this->forceStop) {
             $this->stopConsuming();
         }
+
+        return $this;
+    }
+
+    public function forceStopConsumer()
+    {
+        $this->forceStop = true;
+
+        return $this;
     }
 
     /**
