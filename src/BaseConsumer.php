@@ -3,7 +3,6 @@
 namespace RabbitMqModule;
 
 use PhpAmqpLib\Message\AMQPMessage;
-use RabbitMqModule\Options\Consumer as ConsumerOptions;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerAwareTrait;
 
@@ -12,10 +11,6 @@ abstract class BaseConsumer extends BaseAmqp implements
 {
     use EventManagerAwareTrait;
 
-    /**
-     * @var ConsumerOptions
-     */
-    protected $options;
     /**
      * @var string
      */
@@ -28,26 +23,6 @@ abstract class BaseConsumer extends BaseAmqp implements
      * @var bool
      */
     protected $forceStop = false;
-
-    /**
-     * @return ConsumerOptions
-     */
-    public function getOptions()
-    {
-        return $this->options;
-    }
-
-    /**
-     * @param ConsumerOptions $options
-     *
-     * @return $this
-     */
-    public function setOptions(ConsumerOptions $options)
-    {
-        $this->options = $options;
-
-        return $this;
-    }
 
     /**
      * @return string

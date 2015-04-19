@@ -6,7 +6,7 @@ use RabbitMqModule\Consumer;
 use RabbitMqModule\ConsumerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use RabbitMqModule\Options\Consumer as Options;
-use InvalidArgumentException;
+use RuntimeException;
 
 class ConsumerFactory extends AbstractFactory
 {
@@ -39,7 +39,9 @@ class ConsumerFactory extends AbstractFactory
      * @param ServiceLocatorInterface $serviceLocator
      * @param Options                 $options
      *
-     * @throws InvalidArgumentException
+     * @throws RuntimeException
+     *
+     * @return Consumer
      */
     protected function createConsumer(ServiceLocatorInterface $serviceLocator, Options $options)
     {
@@ -48,13 +50,24 @@ class ConsumerFactory extends AbstractFactory
             $callback = [$callback, 'execute'];
         }
         if (!is_callable($callback)) {
-            throw new \RuntimeException('Invalid callback provided');
+            throw new RuntimeException('Invalid callback provided');
         }
 
         /** @var \PhpAmqpLib\Connection\AbstractConnection $connection */
         $connection = $serviceLocator->get(sprintf('rabbitmq.connection.%s', $options->getConnection()));
         $consumer = new Consumer($connection);
+        $consumer->setQueueOptions($options->getQueue());
+        $consumer->setExchangeOptions($options->getExchange());
+        $consumer->setConsumerTag($options->getConsumerTag());
+        $consumer->setAutoSetupFabricEnabled($options->isAutoSetupFabricEnabled());
         $consumer->setCallback($callback);
+
+        if ($options->getQos()) {
+            $consumer->setQosOptions(
+                $options->getQos()->getPrefetchSize(),
+                $options->getQos()->getPrefetchCount()
+            );
+        }
 
         return $consumer;
     }

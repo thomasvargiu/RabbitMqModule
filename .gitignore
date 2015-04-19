@@ -3,4 +3,4 @@ composer.lock
 composer.phar
 vendor/
 build/
-test.php
+*.test.php

@@ -13,14 +13,14 @@ class Consumer extends BaseConsumer
      */
     public function purgeQueue()
     {
-        $this->getChannel()->queue_purge($this->getOptions()->getQueue()->getName(), true);
+        $this->getChannel()->queue_purge($this->getQueueOptions()->getName(), true);
 
         return $this;
     }
 
     public function processMessage(AMQPMessage $msg)
     {
-        $processFlag = call_user_func($this->getOptions()->getCallback(), $msg);
+        $processFlag = call_user_func($this->getCallback(), $msg);
         $this->handleProcessMessage($msg, $processFlag);
     }
 

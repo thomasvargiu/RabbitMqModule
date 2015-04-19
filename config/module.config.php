@@ -29,6 +29,7 @@ return [
     ],
     'rabbitmq_factories' => [
         'connection' => 'RabbitMqModule\\Service\\ConnectionFactory',
-        'producer' => 'RabbitMqModule\\Service\\ProducerFactory'
+        'producer' => 'RabbitMqModule\\Service\\ProducerFactory',
+        'consumer' => 'RabbitMqModule\\Service\\ConsumerFactory'
     ]
 ];
