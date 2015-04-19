@@ -7,10 +7,6 @@ use Zend\Mvc\Controller\AbstractConsoleController;
 
 class SetupFabricController extends AbstractConsoleController
 {
-    /**
-     * @var array
-     */
-    protected $config;
 
     public function indexAction()
     {
@@ -29,18 +25,7 @@ class SetupFabricController extends AbstractConsoleController
     /**
      * @return array
      */
-    public function getConfig()
-    {
-        if (!$this->config) {
-            $this->config = $this->getServiceLocator()->get('Configuration');
-        }
-        return $this->config;
-    }
-
-    /**
-     * @return array
-     */
-    public function getServiceParts()
+    protected function getServiceParts()
     {
         $serviceKeys = [
             'consumer',
@@ -56,9 +41,10 @@ class SetupFabricController extends AbstractConsoleController
         return $parts;
     }
 
-    public function getServiceKeys($service)
+    protected function getServiceKeys($service)
     {
-        $config = $this->getConfig();
+        /** @var array $config */
+        $config = $this->getServiceLocator()->get('Configuration');
         if (!isset($config['rabbitmq'][$service])) {
             throw new \RuntimeException(sprintf('No service "rabbitmq.%s" found in configuration', $service));
         }
