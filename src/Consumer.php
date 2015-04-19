@@ -27,18 +27,21 @@ class Consumer extends BaseConsumer
 
     protected function handleProcessMessage(AMQPMessage $msg, $processFlag)
     {
+        $channel = $msg->delivery_info['channel'];
+        /** @var string $deliveryTag */
+        $deliveryTag = $msg->delivery_info['delivery_tag'];
         if ($processFlag === ConsumerInterface::MSG_REJECT_REQUEUE || false === $processFlag) {
             // Reject and requeue message to RabbitMQ
-            $msg->delivery_info['channel']->basic_reject($msg->delivery_info['delivery_tag'], true);
+            $channel->basic_reject($deliveryTag, true);
         } elseif ($processFlag === ConsumerInterface::MSG_SINGLE_NACK_REQUEUE) {
             // NACK and requeue message to RabbitMQ
-            $msg->delivery_info['channel']->basic_nack($msg->delivery_info['delivery_tag'], false, true);
+            $channel->basic_nack($deliveryTag, false, true);
         } elseif ($processFlag === ConsumerInterface::MSG_REJECT) {
             // Reject and drop
-            $msg->delivery_info['channel']->basic_reject($msg->delivery_info['delivery_tag'], false);
+            $channel->basic_reject($deliveryTag, false);
         } else {
             // Remove message from queue only if callback return not false
-            $msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
+            $channel->basic_ack($deliveryTag);
         }
         $this->maybeStopConsumer();
     }
