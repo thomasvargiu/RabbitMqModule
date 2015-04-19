@@ -31,7 +31,7 @@ class Connection extends AbstractOptions
      */
     protected $vhost = '/';
     /**
-     * @var boolean
+     * @var bool
      */
     protected $insist = false;
     /**
@@ -47,7 +47,7 @@ class Connection extends AbstractOptions
      */
     protected $readWriteTimeout = 3;
     /**
-     * @var boolean
+     * @var bool
      */
     protected $keepAlive = false;
     /**
@@ -73,11 +73,13 @@ class Connection extends AbstractOptions
 
     /**
      * @param string $type
+     *
      * @return $this
      */
     public function setType($type)
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -91,11 +93,13 @@ class Connection extends AbstractOptions
 
     /**
      * @param string $host
+     *
      * @return $this
      */
     public function setHost($host)
     {
         $this->host = $host;
+
         return $this;
     }
 
@@ -109,11 +113,13 @@ class Connection extends AbstractOptions
 
     /**
      * @param string $port
+     *
      * @return $this
      */
     public function setPort($port)
     {
         $this->port = $port;
+
         return $this;
     }
 
@@ -127,11 +133,13 @@ class Connection extends AbstractOptions
 
     /**
      * @param string $username
+     *
      * @return $this
      */
     public function setUsername($username)
     {
         $this->username = $username;
+
         return $this;
     }
 
@@ -145,11 +153,13 @@ class Connection extends AbstractOptions
 
     /**
      * @param string $password
+     *
      * @return $this
      */
     public function setPassword($password)
     {
         $this->password = $password;
+
         return $this;
     }
 
@@ -163,16 +173,18 @@ class Connection extends AbstractOptions
 
     /**
      * @param string $vhost
+     *
      * @return $this
      */
     public function setVhost($vhost)
     {
         $this->vhost = $vhost;
+
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isInsist()
     {
@@ -180,12 +192,14 @@ class Connection extends AbstractOptions
     }
 
     /**
-     * @param boolean $insist
+     * @param bool $insist
+     *
      * @return $this
      */
     public function setInsist($insist)
     {
         $this->insist = $insist;
+
         return $this;
     }
 
@@ -199,11 +213,13 @@ class Connection extends AbstractOptions
 
     /**
      * @param string $loginMethod
+     *
      * @return $this
      */
     public function setLoginMethod($loginMethod)
     {
         $this->loginMethod = $loginMethod;
+
         return $this;
     }
 
@@ -217,11 +233,13 @@ class Connection extends AbstractOptions
 
     /**
      * @param string $locale
+     *
      * @return $this
      */
     public function setLocale($locale)
     {
         $this->locale = $locale;
+
         return $this;
     }
 
@@ -235,16 +253,18 @@ class Connection extends AbstractOptions
 
     /**
      * @param int $readWriteTimeout
+     *
      * @return $this
      */
     public function setReadWriteTimeout($readWriteTimeout)
     {
         $this->readWriteTimeout = $readWriteTimeout;
+
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isKeepAlive()
     {
@@ -252,12 +272,14 @@ class Connection extends AbstractOptions
     }
 
     /**
-     * @param boolean $keepAlive
+     * @param bool $keepAlive
+     *
      * @return $this
      */
     public function setKeepAlive($keepAlive)
     {
         $this->keepAlive = $keepAlive;
+
         return $this;
     }
 
@@ -271,11 +293,13 @@ class Connection extends AbstractOptions
 
     /**
      * @param int $connectionTimeout
+     *
      * @return $this
      */
     public function setConnectionTimeout($connectionTimeout)
     {
         $this->connectionTimeout = $connectionTimeout;
+
         return $this;
     }
 
@@ -289,11 +313,13 @@ class Connection extends AbstractOptions
 
     /**
      * @param int $heartbeat
+     *
      * @return $this
      */
     public function setHeartbeat($heartbeat)
     {
         $this->heartbeat = $heartbeat;
+
         return $this;
     }
 
@@ -307,11 +333,13 @@ class Connection extends AbstractOptions
 
     /**
      * @param array $sslOptions
+     *
      * @return $this
      */
     public function setSslOptions(array $sslOptions)
     {
         $this->sslOptions = $sslOptions;
+
         return $this;
     }
 }

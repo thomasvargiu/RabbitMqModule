@@ -35,7 +35,7 @@ class Consumer extends AbstractOptions
      */
     protected $qos;
     /**
-     * @var boolean
+     * @var bool
      */
     protected $autoSetupFabricEnabled = true;
     /**
@@ -53,11 +53,13 @@ class Consumer extends AbstractOptions
 
     /**
      * @param string $connection
+     *
      * @return $this
      */
     public function setConnection($connection)
     {
         $this->connection = $connection;
+
         return $this;
     }
 
@@ -71,6 +73,7 @@ class Consumer extends AbstractOptions
 
     /**
      * @param array|Exchange $exchange
+     *
      * @return $this
      */
     public function setExchange($exchange)
@@ -82,6 +85,7 @@ class Consumer extends AbstractOptions
             throw new \InvalidArgumentException('Parameter "exchange" should be array or an instance of Exchange options');
         }
         $this->exchange = $exchange;
+
         return $this;
     }
 
@@ -95,6 +99,7 @@ class Consumer extends AbstractOptions
 
     /**
      * @param array|Queue $queue
+     *
      * @return $this
      */
     public function setQueue($queue)
@@ -106,6 +111,7 @@ class Consumer extends AbstractOptions
             throw new \InvalidArgumentException('Parameter "queue" should be array or an instance of Queue options');
         }
         $this->queue = $queue;
+
         return $this;
     }
 
@@ -119,11 +125,13 @@ class Consumer extends AbstractOptions
 
     /**
      * @param string|callable $callback
+     *
      * @return $this
      */
     public function setCallback($callback)
     {
         $this->callback = $callback;
+
         return $this;
     }
 
@@ -137,11 +145,13 @@ class Consumer extends AbstractOptions
 
     /**
      * @param int $idleTimeout
+     *
      * @return $this
      */
     public function setIdleTimeout($idleTimeout)
     {
         $this->idleTimeout = $idleTimeout;
+
         return $this;
     }
 
@@ -155,11 +165,13 @@ class Consumer extends AbstractOptions
 
     /**
      * @param string $consumerTag
+     *
      * @return $this
      */
     public function setConsumerTag($consumerTag)
     {
         $this->consumerTag = $consumerTag;
+
         return $this;
     }
 
@@ -173,6 +185,7 @@ class Consumer extends AbstractOptions
 
     /**
      * @param array|Qos $qos
+     *
      * @return $this
      */
     public function setQos($qos)
@@ -184,11 +197,12 @@ class Consumer extends AbstractOptions
             throw new \InvalidArgumentException('Parameter "qos" should be array or an instance of Qos options');
         }
         $this->qos = $qos;
+
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isAutoSetupFabricEnabled()
     {
@@ -196,17 +210,19 @@ class Consumer extends AbstractOptions
     }
 
     /**
-     * @param boolean $autoSetupFabricEnabled
+     * @param bool $autoSetupFabricEnabled
+     *
      * @return $this
      */
     public function setAutoSetupFabricEnabled($autoSetupFabricEnabled)
     {
         $this->autoSetupFabricEnabled = $autoSetupFabricEnabled;
+
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isSignalsEnabled()
     {
@@ -214,12 +230,14 @@ class Consumer extends AbstractOptions
     }
 
     /**
-     * @param boolean $signalsEnabled
+     * @param bool $signalsEnabled
+     *
      * @return $this
      */
     public function setSignalsEnabled($signalsEnabled)
     {
         $this->signalsEnabled = $signalsEnabled;
+
         return $this;
     }
 }

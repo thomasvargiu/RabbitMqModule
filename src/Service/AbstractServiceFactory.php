@@ -8,13 +8,13 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class AbstractServiceFactory implements AbstractFactoryInterface
 {
-
     /**
-     * Determine if we can create a service with name
+     * Determine if we can create a service with name.
      *
      * @param ServiceLocatorInterface $serviceLocator
      * @param                         $name
      * @param                         $requestedName
+     *
      * @return bool
      */
     public function canCreateServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
@@ -47,16 +47,17 @@ class AbstractServiceFactory implements AbstractFactoryInterface
         return [
             'serviceType' => $serviceType,
             'serviceName' => $serviceName,
-            'factoryClass' => $config['rabbitmq_factories'][$serviceType]
+            'factoryClass' => $config['rabbitmq_factories'][$serviceType],
         ];
     }
 
     /**
-     * Create service with name
+     * Create service with name.
      *
      * @param ServiceLocatorInterface $serviceLocator
      * @param                         $name
      * @param                         $requestedName
+     *
      * @return mixed
      */
     public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)

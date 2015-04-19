@@ -15,27 +15,27 @@ class Exchange extends AbstractOptions
      */
     protected $type;
     /**
-     * @var boolean
+     * @var bool
      */
     protected $passive = false;
     /**
-     * @var boolean
+     * @var bool
      */
     protected $durable = false;
     /**
-     * @var boolean
+     * @var bool
      */
     protected $autoDelete = true;
     /**
-     * @var boolean
+     * @var bool
      */
     protected $internal = false;
     /**
-     * @var boolean
+     * @var bool
      */
     protected $noWait = false;
     /**
-     * @var boolean
+     * @var bool
      */
     protected $declare = true;
     /**
@@ -57,11 +57,13 @@ class Exchange extends AbstractOptions
 
     /**
      * @param string $name
+     *
      * @return $this
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -75,16 +77,18 @@ class Exchange extends AbstractOptions
 
     /**
      * @param string $type
+     *
      * @return $this
      */
     public function setType($type)
     {
         $this->type = $type;
+
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isPassive()
     {
@@ -92,17 +96,19 @@ class Exchange extends AbstractOptions
     }
 
     /**
-     * @param boolean $passive
+     * @param bool $passive
+     *
      * @return $this
      */
     public function setPassive($passive)
     {
         $this->passive = $passive;
+
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isDurable()
     {
@@ -110,17 +116,19 @@ class Exchange extends AbstractOptions
     }
 
     /**
-     * @param boolean $durable
+     * @param bool $durable
+     *
      * @return $this
      */
     public function setDurable($durable)
     {
         $this->durable = $durable;
+
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isAutoDelete()
     {
@@ -128,17 +136,19 @@ class Exchange extends AbstractOptions
     }
 
     /**
-     * @param boolean $autoDelete
+     * @param bool $autoDelete
+     *
      * @return $this
      */
     public function setAutoDelete($autoDelete)
     {
         $this->autoDelete = $autoDelete;
+
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isInternal()
     {
@@ -146,17 +156,19 @@ class Exchange extends AbstractOptions
     }
 
     /**
-     * @param boolean $internal
+     * @param bool $internal
+     *
      * @return $this
      */
     public function setInternal($internal)
     {
         $this->internal = $internal;
+
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isNoWait()
     {
@@ -164,17 +176,19 @@ class Exchange extends AbstractOptions
     }
 
     /**
-     * @param boolean $noWait
+     * @param bool $noWait
+     *
      * @return $this
      */
     public function setNoWait($noWait)
     {
         $this->noWait = $noWait;
+
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isDeclare()
     {
@@ -182,12 +196,14 @@ class Exchange extends AbstractOptions
     }
 
     /**
-     * @param boolean $declare
+     * @param bool $declare
+     *
      * @return $this
      */
     public function setDeclare($declare)
     {
         $this->declare = $declare;
+
         return $this;
     }
 
@@ -201,11 +217,13 @@ class Exchange extends AbstractOptions
 
     /**
      * @param array $arguments
+     *
      * @return $this
      */
     public function setArguments(array $arguments)
     {
         $this->arguments = $arguments;
+
         return $this;
     }
 
@@ -219,11 +237,13 @@ class Exchange extends AbstractOptions
 
     /**
      * @param int $ticket
+     *
      * @return $this
      */
     public function setTicket($ticket)
     {
         $this->ticket = $ticket;
+
         return $this;
     }
 }

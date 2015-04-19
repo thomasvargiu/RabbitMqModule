@@ -23,7 +23,7 @@ class Producer extends AbstractOptions
      */
     protected $class = 'RabbitMqModule\\Producer';
     /**
-     * @var boolean
+     * @var bool
      */
     protected $autoSetupFabricEnabled = true;
 
@@ -37,11 +37,13 @@ class Producer extends AbstractOptions
 
     /**
      * @param string $connection
+     *
      * @return $this
      */
     public function setConnection($connection)
     {
         $this->connection = $connection;
+
         return $this;
     }
 
@@ -55,6 +57,7 @@ class Producer extends AbstractOptions
 
     /**
      * @param array|Exchange $exchange
+     *
      * @return $this
      */
     public function setExchange($exchange)
@@ -66,6 +69,7 @@ class Producer extends AbstractOptions
             throw new \InvalidArgumentException('Parameter "exchange" should be array or an instance of Exchange options');
         }
         $this->exchange = $exchange;
+
         return $this;
     }
 
@@ -79,6 +83,7 @@ class Producer extends AbstractOptions
 
     /**
      * @param array|Queue $queue
+     *
      * @return $this
      */
     public function setQueue($queue)
@@ -90,6 +95,7 @@ class Producer extends AbstractOptions
             throw new \InvalidArgumentException('Parameter "queue" should be array or an instance of Queue options');
         }
         $this->queue = $queue;
+
         return $this;
     }
 
@@ -103,16 +109,18 @@ class Producer extends AbstractOptions
 
     /**
      * @param string $class
+     *
      * @return $this
      */
     public function setClass($class)
     {
         $this->class = $class;
+
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isAutoSetupFabricEnabled()
     {
@@ -120,12 +128,14 @@ class Producer extends AbstractOptions
     }
 
     /**
-     * @param boolean $autoSetupFabricEnabled
+     * @param bool $autoSetupFabricEnabled
+     *
      * @return $this
      */
     public function setAutoSetupFabricEnabled($autoSetupFabricEnabled)
     {
         $this->autoSetupFabricEnabled = $autoSetupFabricEnabled;
+
         return $this;
     }
 }

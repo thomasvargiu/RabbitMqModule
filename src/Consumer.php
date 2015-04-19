@@ -6,9 +6,8 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class Consumer extends BaseConsumer
 {
-
     /**
-     * Purge the queue
+     * Purge the queue.
      *
      * @return $this
      */
@@ -45,5 +44,4 @@ class Consumer extends BaseConsumer
         }
         $this->maybeStopConsumer();
     }
-
 }

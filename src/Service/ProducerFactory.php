@@ -10,7 +10,6 @@ use InvalidArgumentException;
 
 class ProducerFactory extends AbstractFactory
 {
-
     /**
      * Get the class name of the options associated with this factory.
      *
@@ -22,23 +21,25 @@ class ProducerFactory extends AbstractFactory
     }
 
     /**
-     * Create service
+     * Create service.
      *
      * @param ServiceLocatorInterface $serviceLocator
+     *
      * @return mixed
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         /* @var $options Options */
         $options = $this->getOptions($serviceLocator, 'producer');
+
         return $this->createProducer($serviceLocator, $options);
     }
 
     /**
      * @param ServiceLocatorInterface $serviceLocator
-     * @param  Options $options
+     * @param Options                 $options
+     *
      * @throws InvalidArgumentException
-     * @return null
      */
     protected function createProducer(ServiceLocatorInterface $serviceLocator, Options $options)
     {

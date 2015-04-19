@@ -26,7 +26,7 @@ abstract class BaseAmqp
      */
     protected $exchangeOptions;
     /**
-     * @var boolean
+     * @var bool
      */
     protected $autoSetupFabricEnabled = true;
     /**
@@ -64,16 +64,19 @@ abstract class BaseAmqp
         if (!$this->channel) {
             $this->channel = $this->getConnection()->channel();
         }
+
         return $this->channel;
     }
 
     /**
      * @param AMQPChannel $channel
+     *
      * @return $this
      */
     public function setChannel(AMQPChannel $channel)
     {
         $this->channel = $channel;
+
         return $this;
     }
 
@@ -87,11 +90,13 @@ abstract class BaseAmqp
 
     /**
      * @param QueueOptions $queueOptions
+     *
      * @return $this
      */
     public function setQueueOptions(QueueOptions $queueOptions)
     {
         $this->queueOptions = $queueOptions;
+
         return $this;
     }
 
@@ -105,16 +110,18 @@ abstract class BaseAmqp
 
     /**
      * @param ExchangeOptions $exchangeOptions
+     *
      * @return $this
      */
     public function setExchangeOptions(ExchangeOptions $exchangeOptions)
     {
         $this->exchangeOptions = $exchangeOptions;
+
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isAutoSetupFabricEnabled()
     {
@@ -122,12 +129,14 @@ abstract class BaseAmqp
     }
 
     /**
-     * @param boolean $autoSetupFabricEnabled
+     * @param bool $autoSetupFabricEnabled
+     *
      * @return $this
      */
     public function setAutoSetupFabricEnabled($autoSetupFabricEnabled)
     {
         $this->autoSetupFabricEnabled = $autoSetupFabricEnabled;
+
         return $this;
     }
 
@@ -172,7 +181,7 @@ abstract class BaseAmqp
 
         $exchangeOptions = $this->getExchangeOptions();
 
-        list ($queueName, ,) = $this->getChannel()->queue_declare(
+        list($queueName) = $this->getChannel()->queue_declare(
             $queueOptions->getName(),
             $queueOptions->isPassive(),
             $queueOptions->isDurable(),

@@ -6,9 +6,7 @@ use RabbitMqModule\Options\Connection as ConnectionOptions;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 /**
- * Class SSLConnectionFactory
- *
- * @package RabbitMqModule\Service\Connection
+ * Class SSLConnectionFactory.
  */
 class SSLConnectionFactory implements ConnectionFactoryInterface
 {
@@ -16,6 +14,7 @@ class SSLConnectionFactory implements ConnectionFactoryInterface
      * @codeCoverageIgnore
      *
      * @param ConnectionOptions $options
+     *
      * @return AMQPStreamConnection
      */
     public function createConnection(ConnectionOptions $options)

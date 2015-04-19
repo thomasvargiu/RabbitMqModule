@@ -29,11 +29,13 @@ class Qos extends AbstractOptions
 
     /**
      * @param int $prefetchSize
+     *
      * @return $this
      */
     public function setPrefetchSize($prefetchSize)
     {
         $this->prefetchSize = $prefetchSize;
+
         return $this;
     }
 
@@ -47,16 +49,18 @@ class Qos extends AbstractOptions
 
     /**
      * @param int $prefetchCount
+     *
      * @return $this
      */
     public function setPrefetchCount($prefetchCount)
     {
         $this->prefetchCount = $prefetchCount;
+
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isGlobal()
     {
@@ -64,12 +68,14 @@ class Qos extends AbstractOptions
     }
 
     /**
-     * @param boolean $global
+     * @param bool $global
+     *
      * @return $this
      */
     public function setGlobal($global)
     {
         $this->global = $global;
+
         return $this;
     }
 }

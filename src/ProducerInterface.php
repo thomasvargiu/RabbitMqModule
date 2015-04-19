@@ -7,7 +7,7 @@ interface ProducerInterface
     /**
      * @param string $body
      * @param string $routingKey
-     * @param array $properties
+     * @param array  $properties
      *
      * @return $this
      */

@@ -6,9 +6,7 @@ use RabbitMqModule\Options\Connection as ConnectionOptions;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 /**
- * Class StreamConnectionFactory
- *
- * @package RabbitMqModule\Service\Connection
+ * Class StreamConnectionFactory.
  */
 class StreamConnectionFactory implements ConnectionFactoryInterface
 {
@@ -16,6 +14,7 @@ class StreamConnectionFactory implements ConnectionFactoryInterface
      * @codeCoverageIgnore
      *
      * @param ConnectionOptions $options
+     *
      * @return AMQPStreamConnection
      */
     public function createConnection(ConnectionOptions $options)

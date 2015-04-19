@@ -8,7 +8,6 @@ use RabbitMqModule\Service\SetupFabricAwareInterface;
 class Producer extends BaseAmqp implements
     SetupFabricAwareInterface
 {
-
     /**
      * @var string
      */
@@ -28,11 +27,13 @@ class Producer extends BaseAmqp implements
 
     /**
      * @param string $contentType
+     *
      * @return $this
      */
     public function setContentType($contentType)
     {
         $this->contentType = $contentType;
+
         return $this;
     }
 
@@ -46,18 +47,20 @@ class Producer extends BaseAmqp implements
 
     /**
      * @param int $deliveryMode
+     *
      * @return $this
      */
     public function setDeliveryMode($deliveryMode)
     {
         $this->deliveryMode = $deliveryMode;
+
         return $this;
     }
 
     /**
      * @param string $body
      * @param string $routingKey
-     * @param array $properties
+     * @param array  $properties
      *
      * @return $this
      */
@@ -70,11 +73,11 @@ class Producer extends BaseAmqp implements
             ['content_type' => $this->getContentType(), 'delivery_mode' => $this->getDeliveryMode()],
             $properties
         );
-        $message = new AMQPMessage((string)$body, $properties);
+        $message = new AMQPMessage((string) $body, $properties);
         $this->getChannel()->basic_publish(
             $message,
             $this->getExchangeOptions()->getName(),
-            (string)$routingKey
+            (string) $routingKey
         );
 
         return $this;

@@ -10,7 +10,6 @@ use Zend\EventManager\EventManagerAwareTrait;
 abstract class BaseConsumer extends BaseAmqp implements
     EventManagerAwareInterface
 {
-
     use EventManagerAwareTrait;
 
     /**
@@ -40,11 +39,13 @@ abstract class BaseConsumer extends BaseAmqp implements
 
     /**
      * @param ConsumerOptions $options
+     *
      * @return $this
      */
     public function setOptions(ConsumerOptions $options)
     {
         $this->options = $options;
+
         return $this;
     }
 
@@ -56,16 +57,19 @@ abstract class BaseConsumer extends BaseAmqp implements
         if (!$this->consumerTag) {
             $this->consumerTag = sprintf('PHPPROCESS_%s_%s', gethostname(), getmypid());
         }
+
         return $this->consumerTag;
     }
 
     /**
      * @param string $consumerTag
+     *
      * @return $this
      */
     public function setConsumerTag($consumerTag)
     {
         $this->consumerTag = $consumerTag;
+
         return $this;
     }
 
@@ -79,6 +83,7 @@ abstract class BaseConsumer extends BaseAmqp implements
 
     /**
      * @param callable $callback
+     *
      * @return $this
      */
     public function setCallback($callback)
@@ -92,7 +97,7 @@ abstract class BaseConsumer extends BaseAmqp implements
     }
 
     /**
-     * Start consumer
+     * Start consumer.
      */
     public function start()
     {
@@ -115,7 +120,7 @@ abstract class BaseConsumer extends BaseAmqp implements
             false,
             false,
             false,
-            function($message) {
+            function ($message) {
                 $this->internalProcessMessage($message);
             }
         );
@@ -123,11 +128,12 @@ abstract class BaseConsumer extends BaseAmqp implements
 
     /**
      * Sets the qos settings for the current channel
-     * Consider that prefetchSize and global do not work with rabbitMQ version <= 8.0
+     * Consider that prefetchSize and global do not work with rabbitMQ version <= 8.0.
      *
      * @param int  $prefetchSize
      * @param int  $prefetchCount
      * @param bool $global
+     *
      * @return $this
      */
     public function setQosOptions($prefetchSize = 0, $prefetchCount = 0, $global = false)
@@ -159,15 +165,16 @@ abstract class BaseConsumer extends BaseAmqp implements
      */
     protected function internalProcessMessage(AMQPMessage $message)
     {
-        $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, compact('message'));
+        $this->getEventManager()->trigger(__FUNCTION__.'.pre', $this, compact('message'));
 
         $this->processMessage($message);
 
-        $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, compact('message'));
+        $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, compact('message'));
     }
 
     /**
      * @param AMQPMessage $message
+     *
      * @return int
      */
     abstract public function processMessage(AMQPMessage $message);

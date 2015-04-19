@@ -10,7 +10,6 @@ use InvalidArgumentException;
 
 class ConsumerFactory extends AbstractFactory
 {
-
     /**
      * Get the class name of the options associated with this factory.
      *
@@ -22,23 +21,25 @@ class ConsumerFactory extends AbstractFactory
     }
 
     /**
-     * Create service
+     * Create service.
      *
      * @param ServiceLocatorInterface $serviceLocator
+     *
      * @return mixed
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         /* @var $options Options */
         $options = $this->getOptions($serviceLocator, 'consumer');
+
         return $this->createConsumer($serviceLocator, $options);
     }
 
     /**
      * @param ServiceLocatorInterface $serviceLocator
-     * @param  Options $options
+     * @param Options                 $options
+     *
      * @throws InvalidArgumentException
-     * @return null
      */
     protected function createConsumer(ServiceLocatorInterface $serviceLocator, Options $options)
     {
@@ -54,6 +55,7 @@ class ConsumerFactory extends AbstractFactory
         $connection = $serviceLocator->get(sprintf('rabbitmq.connection.%s', $options->getConnection()));
         $consumer = new Consumer($connection);
         $consumer->setCallback($callback);
+
         return $consumer;
     }
 }
