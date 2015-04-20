@@ -38,7 +38,7 @@ return [
 ]
 ```
 
-#### Options classes ####
+#### Option classes ####
 
 You can find all available options here:
 
@@ -83,7 +83,7 @@ return [
 ]
 ```
 
-#### Options classes ####
+#### Option classes ####
 
 You can find all available options here:
 
@@ -100,6 +100,9 @@ You can retrieve the connection from service locator:
 /** @var \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator **/
 /** @var \RabbitMqModule\ProducerInterface $producer **/
 $producer = $serviceLocator->get('rabbitmq.producer.producer-name');
+
+// Sending a message
+$producer->publish(json_encode(['foo' => 'bar']));
 ```
 
 
@@ -134,7 +137,7 @@ return [
 ]
 ```
 
-#### Options classes ####
+#### Option classes ####
 
 You can find all available options here:
 
@@ -155,7 +158,7 @@ Take a look on ```RabbitMqModule\\ConsumerInterface``` class constants for avail
 
 If your callback return ```false``` than the message will be rejected and requeued.
 
-If your callback return anything else different from ```false``` and ```ConsumerInterface```constants, the default response is like ```MSG_ACK```constant.
+If your callback return anything else different from ```false``` and one of ```ConsumerInterface```constants, the default response is like ```MSG_ACK```constant.
 
 #### Retrieve the service ####
 
