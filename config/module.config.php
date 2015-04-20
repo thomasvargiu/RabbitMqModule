@@ -16,15 +16,24 @@ return [
         'producer' => 'RabbitMqModule\\Service\\ProducerFactory',
         'consumer' => 'RabbitMqModule\\Service\\ConsumerFactory'
     ],
-    'routes' => [
-        'rabbitmq_module-setup-fabric' => [
-            'options' => [
-                'route'    => 'rabbitmq setup-fabric',
-                'defaults' => [
-                    'controller' => __NAMESPACE__ . '\\Controller\\SetupFabric',
-                    'action' => 'index'
+    'console' => [
+        'router' => [
+            'routes' => [
+                'rabbitmq_module-setup-fabric' => [
+                    'options' => [
+                        'route'    => 'rabbitmq setup-fabric',
+                        'defaults' => [
+                            'controller' => __NAMESPACE__ . '\\Controller\\SetupFabric',
+                            'action' => 'index'
+                        ]
+                    ]
                 ]
-            ]
+            ],
+        ]
+    ],
+    'controllers' => [
+        'invokables' => [
+            __NAMESPACE__ . '\\Controller\\SetupFabric' => __NAMESPACE__ . '\\Controller\\SetupFabricController'
         ]
     ],
     'service_manager' => [
