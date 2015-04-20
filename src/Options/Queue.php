@@ -21,11 +21,11 @@ class Queue extends AbstractOptions
     /**
      * @var bool
      */
-    protected $durable = false;
+    protected $durable = true;
     /**
      * @var bool
      */
-    protected $autoDelete = true;
+    protected $autoDelete = false;
     /**
      * @var bool
      */
@@ -34,10 +34,6 @@ class Queue extends AbstractOptions
      * @var bool
      */
     protected $noWait = false;
-    /**
-     * @var bool
-     */
-    protected $declare = true;
     /**
      * @var array
      */
@@ -187,26 +183,6 @@ class Queue extends AbstractOptions
     public function setNoWait($noWait)
     {
         $this->noWait = $noWait;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isDeclare()
-    {
-        return $this->declare;
-    }
-
-    /**
-     * @param bool $declare
-     *
-     * @return $this
-     */
-    public function setDeclare($declare)
-    {
-        $this->declare = $declare;
 
         return $this;
     }

@@ -17,7 +17,6 @@ class QueueTest extends \PHPUnit_Framework_TestCase
             'exclusive' => true,
             'no_wait' => true,
             'ticket' => 1,
-            'declare' => true,
             'arguments' => [
                 'argument1' => 'value1'
             ],
@@ -37,7 +36,6 @@ class QueueTest extends \PHPUnit_Framework_TestCase
         static::assertEquals($configuration['exclusive'], $options->isExclusive());
         static::assertEquals($configuration['no_wait'], $options->isNoWait());
         static::assertEquals($configuration['ticket'], $options->getTicket());
-        static::assertEquals($configuration['declare'], $options->isDeclare());
         static::assertEquals($configuration['arguments'], $options->getArguments());
         static::assertEquals($configuration['routing_keys'], $options->getRoutingKeys());
     }

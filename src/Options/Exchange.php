@@ -21,11 +21,11 @@ class Exchange extends AbstractOptions
     /**
      * @var bool
      */
-    protected $durable = false;
+    protected $durable = true;
     /**
      * @var bool
      */
-    protected $autoDelete = true;
+    protected $autoDelete = false;
     /**
      * @var bool
      */
