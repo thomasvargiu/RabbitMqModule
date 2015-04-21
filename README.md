@@ -174,6 +174,17 @@ $consumer = $serviceLocator->get('rabbitmq.consumer.consumer-name');
 $consumer->consume();
 ```
 
+There is a console command available to start consumers. See below.
+
+
+## Console usage ##
+
+There are some console commands available:
+
+- ```rabbitmq setup-fabric```: setup fabric for each service, declaring exchanges and queues
+- ```rabbitmq consumer <name>```: start a consumer
+
+
 
 # Development status #
 
