@@ -67,7 +67,8 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, Co
     public function getConsoleUsage(AdapterInterface $console)
     {
         return [
-            'rabbitmq setup-fabric' => 'Sets up the Rabbit MQ fabric'
+            'rabbitmq setup-fabric' => 'Sets up the Rabbit MQ fabric',
+            'rabbitmq consumer <name> [--without-signals|-w]' => 'Start a consumer by name'
         ];
     }
 }

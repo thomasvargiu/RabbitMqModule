@@ -1,56 +1,48 @@
 <?php
 
-namespace RabbitMqModule\Controller;
+namespace RabbitMqModuleTest\Controller;
 
-use Zend\ServiceManager\ServiceManager;
+use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
 
-class SetupFabricControllerTest extends \PHPUnit_Framework_TestCase
+class SetupFabricControllerTest extends AbstractConsoleControllerTestCase
 {
-    /**
-     * @var SetupFabricController
-     */
-    protected $controller;
 
-    public function setUp()
+    protected function setUp()
     {
-        $this->controller = new SetupFabricController();
-        $console = static::getMockBuilder('Zend\\Console\\Adapter\\AdapterInterface')
-            ->getMockForAbstractClass();
-        $console->expects(static::any())
-            ->method('writeLine');
-        $console->expects(static::any())
-            ->method('write');
-        /** @var \Zend\Console\Adapter\AdapterInterface $console */
-        $this->controller->setConsole($console);
+        $config = include __DIR__ . '/../../TestConfiguration.php.dist';
+        $this->setApplicationConfig($config);
+        parent::setUp();
     }
 
-    public function testAction()
+    public function testDispatch()
     {
-        $configuration = [
-            'rabbitmq' => [
-                'consumer' => [
-                    'foo-consumer1' => [],
-                    'foo-consumer2' => []
-                ],
-                'producer' => [
-                    'bar-producer1' => [],
-                    'bar-producer2' => []
-                ]
-            ]
-        ];
-        $serviceLocator = new ServiceManager();
+        $serviceManager = $this->getApplicationServiceLocator();
+        $serviceManager->setAllowOverride(true);
+
         $service = static::getMockBuilder('RabbitMqModule\\Service\\SetupFabricAwareInterface')
             ->getMockForAbstractClass();
         $service->expects(static::exactly(4))
             ->method('setupFabric');
+        $serviceManager->setService('rabbitmq.consumer.foo-consumer1', $service);
+        $serviceManager->setService('rabbitmq.consumer.foo-consumer2', $service);
+        $serviceManager->setService('rabbitmq.producer.bar-producer1', $service);
+        $serviceManager->setService('rabbitmq.producer.bar-producer2', $service);
 
-        $serviceLocator->setService('Configuration', $configuration);
-        $serviceLocator->setService('rabbitmq.consumer.foo-consumer1', $service);
-        $serviceLocator->setService('rabbitmq.consumer.foo-consumer2', $service);
-        $serviceLocator->setService('rabbitmq.producer.bar-producer1', $service);
-        $serviceLocator->setService('rabbitmq.producer.bar-producer2', $service);
+        $configuration = $serviceManager->get('Configuration');
+        $configuration['rabbitmq']['consumer'] = [
+            'foo-consumer1' => [],
+            'foo-consumer2' => []
+        ];
+        $configuration['rabbitmq']['producer'] = [
+            'bar-producer1' => [],
+            'bar-producer2' => []
+        ];
+        $serviceManager->setService('Configuration', $configuration);
 
-        $this->controller->setServiceLocator($serviceLocator);
-        $this->controller->indexAction();
+        ob_start();
+        $this->dispatch('rabbitmq setup-fabric');
+        ob_end_clean();
+
+        $this->assertResponseStatusCode(0);
     }
 }

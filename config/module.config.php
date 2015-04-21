@@ -27,13 +27,23 @@ return [
                             'action' => 'index'
                         ]
                     ]
+                ],
+                'rabbitmq_module-consumer' => [
+                    'options' => [
+                        'route'    => 'rabbitmq consumer <name> [--without-signals|-w]',
+                        'defaults' => [
+                            'controller' => __NAMESPACE__ . '\\Controller\\Consumer',
+                            'action' => 'index'
+                        ]
+                    ]
                 ]
-            ],
+            ]
         ]
     ],
     'controllers' => [
         'invokables' => [
-            __NAMESPACE__ . '\\Controller\\SetupFabric' => __NAMESPACE__ . '\\Controller\\SetupFabricController'
+            __NAMESPACE__ . '\\Controller\\SetupFabric' => __NAMESPACE__ . '\\Controller\\SetupFabricController',
+            __NAMESPACE__ . '\\Controller\\Consumer' => __NAMESPACE__ . '\\Controller\\ConsumerController'
         ]
     ],
     'service_manager' => [

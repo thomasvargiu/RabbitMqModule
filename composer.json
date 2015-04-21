@@ -31,7 +31,7 @@
     "phpmd/phpmd" : "@stable",
     "fabpot/php-cs-fixer": "@stable",
     "mockery/mockery": "@stable",
-    "zendframework/zend-mvc": "~2.3"
+    "zendframework/zendframework": "~2.3"
   },
   "autoload": {
     "psr-4": {
