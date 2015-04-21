@@ -7,7 +7,7 @@ use Zend\ServiceManager\ServiceManager;
 class AbstractServiceFactoryTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Zend\ServiceManager\ServiceLocatorInterface
+     * @var \Zend\ServiceManager\ServiceManager
      */
     protected $serviceManager;
 
@@ -21,6 +21,14 @@ class AbstractServiceFactoryTest extends PHPUnit_Framework_TestCase
             'Configuration',
             [
                 'rabbitmq' => [
+                    'connection' => [
+                        'default' => []
+                    ],
+                    'producer' => [
+                        'foo' => [
+                            'exchange' => []
+                        ]
+                    ],
                     'foo' => [
                         'bar' => [
 
@@ -28,7 +36,8 @@ class AbstractServiceFactoryTest extends PHPUnit_Framework_TestCase
                     ]
                 ],
                 'rabbitmq_factories' => [
-                    'foo' => 'fooFactory'
+                    'foo' => 'fooFactory',
+                    'producer' => 'RabbitMqModuleTest\\Service\\ServiceFactoryMock'
                 ]
             ]
         );
@@ -40,5 +49,18 @@ class AbstractServiceFactoryTest extends PHPUnit_Framework_TestCase
         $factory = new AbstractServiceFactory();
         static::assertTrue($factory->canCreateServiceWithName($sm, 'rabbitmq.foo.bar', 'rabbitmq.foo.bar'));
         static::assertFalse($factory->canCreateServiceWithName($sm, 'rabbitmq.foo.bar', 'rabbitmq.foo.bar2'));
+    }
+
+    public function testCreateServiceWithName()
+    {
+        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass();
+        $sm = $this->serviceManager;
+        $sm->setService('rabbitmq.connection.default', $connection);
+        $factory = new AbstractServiceFactory();
+        static::assertTrue(
+            $factory->createServiceWithName($sm, 'rabbitmq.producer.foo', 'rabbitmq.producer.foo')
+        );
     }
 }

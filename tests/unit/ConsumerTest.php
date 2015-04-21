@@ -98,6 +98,134 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $consumer->processMessage($message);
     }
 
+    public function testPurge()
+    {
+        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass();
+        $channel = static::getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $queueOptions = new QueueOptions();
+        $queueOptions->setName('foo');
+
+        $channel->expects(static::once())
+            ->method('queue_purge')
+            ->with(static::equalTo('foo'), static::equalTo(true));
+
+        $consumer = new Consumer($connection, $channel);
+        $consumer->setQueueOptions($queueOptions);
+        $consumer->purgeQueue();
+    }
+
+    public function testStart()
+    {
+        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass();
+        $channel = static::getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $exchangeOptions = new ExchangeOptions();
+        $exchangeOptions->setName('foo');
+        $queueOptions = new QueueOptions();
+        $queueOptions->setName('foo');
+
+        $callbacks = range(0, 2);
+        $channel->callbacks = $callbacks;
+        $channel->expects(static::exactly(count($callbacks)))
+            ->method('wait')
+            ->willReturnCallback(function() use ($channel) {
+                array_shift($channel->callbacks);
+                return true;
+            });
+
+        $channel->expects(static::once())
+            ->method('basic_consume');
+        $channel->expects(static::exactly(count($callbacks)))
+            ->method('wait');
+
+        $consumer = new Consumer($connection, $channel);
+        $consumer->setExchangeOptions($exchangeOptions);
+        $consumer->setQueueOptions($queueOptions);
+        $consumer->start();
+    }
+
+    public function testConsume()
+    {
+        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass();
+        $channel = static::getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $exchangeOptions = new ExchangeOptions();
+        $exchangeOptions->setName('foo');
+        $queueOptions = new QueueOptions();
+        $queueOptions->setName('foo');
+
+        $callbacks = range(0, 2);
+        $channel->callbacks = $callbacks;
+        $channel->expects(static::exactly(count($callbacks)))
+            ->method('wait')
+            ->willReturnCallback(function() use ($channel) {
+                array_shift($channel->callbacks);
+                return true;
+            });
+
+        $channel->expects(static::once())
+            ->method('basic_consume');
+        $channel->expects(static::exactly(count($callbacks)))
+            ->method('wait');
+
+        $consumer = new Consumer($connection, $channel);
+        $consumer->setExchangeOptions($exchangeOptions);
+        $consumer->setQueueOptions($queueOptions);
+        $consumer->consume();
+    }
+
+    public function testConsumeWithStop()
+    {
+        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass();
+        $channel = static::getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $consumer = new Consumer($connection, $channel);
+
+        $exchangeOptions = new ExchangeOptions();
+        $exchangeOptions->setName('foo');
+        $queueOptions = new QueueOptions();
+        $queueOptions->setName('foo');
+
+        $callbacks = range(0, 2);
+        $channel->callbacks = $callbacks;
+        $channel->expects(static::atLeast(1))
+            ->method('wait')
+            ->willReturnCallback(function() use ($channel, $consumer) {
+                array_shift($channel->callbacks);
+                $consumer->forceStopConsumer();
+                return true;
+            });
+
+        $channel->expects(static::once())
+            ->method('basic_consume');
+        $channel->expects(static::once())
+            ->method('basic_cancel')
+            ->willReturnCallback(function () use ($channel) {
+                $channel->callbacks = [];
+                return true;
+            });
+        $channel->expects(static::atLeast(1))
+            ->method('wait');
+
+        $consumer->setExchangeOptions($exchangeOptions);
+        $consumer->setQueueOptions($queueOptions);
+        $consumer->consume();
+    }
+
     public function processMessageProvider()
     {
         return [

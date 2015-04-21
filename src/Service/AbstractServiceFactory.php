@@ -47,7 +47,7 @@ class AbstractServiceFactory implements AbstractFactoryInterface
         return [
             'serviceType' => $serviceType,
             'serviceName' => $serviceName,
-            'factoryClass' => $config['rabbitmq_factories'][$serviceType],
+            'factoryClass' => $config['rabbitmq_factories'][$serviceType]
         ];
     }
 
