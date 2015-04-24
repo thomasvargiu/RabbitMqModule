@@ -31,7 +31,8 @@ checks:
     assignment_of_null_return: true
 
 tools:
-  external_code_coverage: true
+  external_code_coverage:
+    timeout: 600
   php_code_sniffer:
     enabled: true
     config:
