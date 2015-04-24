@@ -7,8 +7,6 @@ return [
         'connection' => [
             'default' => []
         ],
-        'exchange' => [],
-        'queue' => [],
         'producer' => [],
         'consumer' => []
     ],
