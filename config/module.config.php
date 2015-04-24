@@ -35,6 +35,15 @@ return [
                             'action' => 'index'
                         ]
                     ]
+                ],
+                'rabbitmq_module-stdin-producer' => [
+                    'options' => [
+                        'route'    => 'rabbitmq stdin-producer <name> [--route=] <msg>',
+                        'defaults' => [
+                            'controller' => __NAMESPACE__ . '\\Controller\\StdInProducer',
+                            'action' => 'index'
+                        ]
+                    ]
                 ]
             ]
         ]
@@ -42,7 +51,8 @@ return [
     'controllers' => [
         'invokables' => [
             __NAMESPACE__ . '\\Controller\\SetupFabric' => __NAMESPACE__ . '\\Controller\\SetupFabricController',
-            __NAMESPACE__ . '\\Controller\\Consumer' => __NAMESPACE__ . '\\Controller\\ConsumerController'
+            __NAMESPACE__ . '\\Controller\\Consumer' => __NAMESPACE__ . '\\Controller\\ConsumerController',
+            __NAMESPACE__ . '\\Controller\\StdInProducer' => __NAMESPACE__ . '\\Controller\\StdInProducerController'
         ]
     ],
     'service_manager' => [

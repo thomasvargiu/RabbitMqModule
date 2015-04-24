@@ -69,7 +69,8 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, Co
     {
         return [
             'rabbitmq setup-fabric' => 'Sets up the Rabbit MQ fabric',
-            'rabbitmq consumer <name> [--without-signals|-w]' => 'Start a consumer by name'
+            'rabbitmq consumer <name> [--without-signals|-w]' => 'Start a consumer by name',
+            'rabbitmq stdin-producer <name> [--route=] <msg>' => 'Send a message with a producer'
         ];
     }
 }

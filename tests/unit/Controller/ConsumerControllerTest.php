@@ -2,15 +2,10 @@
 
 namespace RabbitMqModuleTest\Controller;
 
-use RabbitMqModule\Controller\ConsumerController;
 use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
 
 class ConsumerControllerTest extends AbstractConsoleControllerTestCase
 {
-    /**
-     * @var ConsumerController
-     */
-    protected $controller;
 
     protected function setUp()
     {
@@ -35,5 +30,16 @@ class ConsumerControllerTest extends AbstractConsoleControllerTestCase
         ob_end_clean();
 
         $this->assertResponseStatusCode(0);
+    }
+
+    public function testDispatchWithInvalidTestConsumer()
+    {
+        ob_start();
+        $this->dispatch('rabbitmq consumer foo');
+        $output = ob_get_clean();
+
+        static::assertRegExp('/No consumer with name "foo" found/', $output);
+
+        $this->assertResponseStatusCode(1);
     }
 }
