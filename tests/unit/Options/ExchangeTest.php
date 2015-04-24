@@ -20,6 +20,12 @@ class ExchangeTest extends \PHPUnit_Framework_TestCase
             'declare' => true,
             'arguments' => [
                 'argument1' => 'value1'
+            ],
+            'exchange_binds' => [
+                [
+                    'exchange' => ['name' => 'foo'],
+                    'routing_keys' => ['routing.1', 'routing.2']
+                ]
             ]
         ];
         $options = new Exchange();
@@ -35,5 +41,14 @@ class ExchangeTest extends \PHPUnit_Framework_TestCase
         static::assertEquals($configuration['ticket'], $options->getTicket());
         static::assertEquals($configuration['declare'], $options->isDeclare());
         static::assertEquals($configuration['arguments'], $options->getArguments());
+
+        $binds = $options->getExchangeBinds();
+        static::assertCount(1, $binds);
+
+        foreach ($binds as $bind) {
+            static::assertInstanceOf('RabbitMqModule\\Options\\Exchange', $bind->getExchange());
+            static::assertCount(2, $bind->getRoutingKeys());
+            static::assertEquals(['routing.1', 'routing.2'], $bind->getRoutingKeys());
+        }
     }
 }

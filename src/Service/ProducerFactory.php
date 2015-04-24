@@ -38,6 +38,7 @@ class ProducerFactory extends AbstractFactory
     /**
      * @param ServiceLocatorInterface $serviceLocator
      * @param Options                 $options
+     * @return Producer
      *
      * @throws InvalidArgumentException
      */

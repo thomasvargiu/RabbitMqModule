@@ -32,11 +32,18 @@ class Consumer extends BaseConsumer
 
     /**
      * @param AMQPMessage $msg
+     * @return $this
      */
     public function processMessage(AMQPMessage $msg)
     {
+        $this->getEventManager()->trigger(__FUNCTION__.'.pre', $this, compact('message'));
+
         $processFlag = call_user_func($this->getCallback(), $msg);
         $this->handleProcessMessage($msg, $processFlag);
+
+        $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, compact('message'));
+
+        return $this;
     }
 
     protected function handleProcessMessage(AMQPMessage $msg, $processFlag)

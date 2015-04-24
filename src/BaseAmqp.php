@@ -142,11 +142,14 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
     }
 
     /**
+     * @param ExchangeOptions $options
      * @return $this
      */
-    protected function declareExchange()
+    protected function declareExchange(ExchangeOptions $options = null)
     {
-        $options = $this->getExchangeOptions();
+        if (!$options) {
+            $options = $this->getExchangeOptions();
+        }
 
         if (!$options->isDeclare()) {
             return $this;
@@ -163,6 +166,22 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
             $options->getArguments(),
             $options->getTicket()
         );
+
+        $binds = $options->getExchangeBinds();
+        foreach ($binds as $bind) {
+            $this->declareExchange($bind->getExchange());
+            $routingKeys = $bind->getRoutingKeys();
+            if (!count($routingKeys)) {
+                $routingKeys = [''];
+            }
+            foreach ($routingKeys as $routingKey) {
+                $this->getChannel()->exchange_bind(
+                    $options->getName(),
+                    $bind->getExchange()->getName(),
+                    $routingKey
+                );
+            }
+        }
 
         $this->exchangeDeclared = true;
 

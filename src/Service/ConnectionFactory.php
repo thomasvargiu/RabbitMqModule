@@ -14,7 +14,7 @@ class ConnectionFactory extends AbstractFactory
     protected $factoryMap = [
         'stream' => 'RabbitMqModule\\Service\\Connection\\StreamConnectionFactory',
         'socket' => 'RabbitMqModule\\Service\\Connection\\SocketConnectionFactory',
-        'ssl' => 'RabbitMqModule\\Service\\Connection\\SSLConnectionFactory',
+        'ssl' => 'RabbitMqModule\\Service\\Connection\\SSLConnectionFactory'
     ];
 
     /**

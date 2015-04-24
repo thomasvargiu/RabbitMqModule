@@ -118,7 +118,7 @@ abstract class BaseConsumer extends BaseAmqp implements
             false,
             false,
             function ($message) {
-                $this->internalProcessMessage($message);
+                $this->processMessage($message);
             }
         );
     }
@@ -164,18 +164,6 @@ abstract class BaseConsumer extends BaseAmqp implements
         $this->getChannel()->basic_cancel($this->getConsumerTag());
 
         return $this;
-    }
-
-    /**
-     * @param AMQPMessage $message
-     */
-    protected function internalProcessMessage(AMQPMessage $message)
-    {
-        $this->getEventManager()->trigger(__FUNCTION__.'.pre', $this, compact('message'));
-
-        $this->processMessage($message);
-
-        $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, compact('message'));
     }
 
     /**

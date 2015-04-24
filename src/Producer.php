@@ -3,10 +3,8 @@
 namespace RabbitMqModule;
 
 use PhpAmqpLib\Message\AMQPMessage;
-use RabbitMqModule\Service\SetupFabricAwareInterface;
 
-class Producer extends BaseAmqp implements
-    SetupFabricAwareInterface
+class Producer extends BaseAmqp
 {
     /**
      * @var string

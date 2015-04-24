@@ -8,6 +8,7 @@ return [
             'default' => []
         ],
         'exchange' => [],
+        'queue' => [],
         'producer' => [],
         'consumer' => []
     ],

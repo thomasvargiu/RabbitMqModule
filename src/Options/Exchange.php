@@ -46,6 +46,10 @@ class Exchange extends AbstractOptions
      * @var int
      */
     protected $ticket = 0;
+    /**
+     * @var ExchangeBind[]
+     */
+    protected $exchangeBinds = [];
 
     /**
      * @return string
@@ -243,6 +247,45 @@ class Exchange extends AbstractOptions
     public function setTicket($ticket)
     {
         $this->ticket = $ticket;
+
+        return $this;
+    }
+
+    /**
+     * @return ExchangeBind[]
+     */
+    public function getExchangeBinds()
+    {
+        return $this->exchangeBinds;
+    }
+
+    /**
+     * @param array|ExchangeBind[] $exchangeBinds
+     * @return $this
+     */
+    public function setExchangeBinds(array $exchangeBinds)
+    {
+        $this->exchangeBinds = [];
+        foreach ($exchangeBinds as $bind) {
+            $this->addExchangeBind($bind);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param array|ExchangeBind $bind
+     * @return $this
+     */
+    public function addExchangeBind($bind)
+    {
+        if (is_array($bind)) {
+            $bind = new ExchangeBind($bind);
+        }
+        if (!$bind instanceof ExchangeBind) {
+            throw new \InvalidArgumentException('Invalid exchange bind options');
+        }
+        $this->exchangeBinds[] = $bind;
 
         return $this;
     }
