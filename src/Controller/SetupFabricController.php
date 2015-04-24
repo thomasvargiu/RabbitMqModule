@@ -7,7 +7,6 @@ use Zend\Mvc\Controller\AbstractConsoleController;
 
 class SetupFabricController extends AbstractConsoleController
 {
-
     public function indexAction()
     {
         $this->getConsole()->writeLine('Setting up the AMQP fabric');
@@ -38,6 +37,7 @@ class SetupFabricController extends AbstractConsoleController
                 $parts[] = $this->getServiceLocator()->get(sprintf('rabbitmq.%s.%s', $serviceKey, $key));
             }
         }
+
         return $parts;
     }
 
@@ -48,6 +48,7 @@ class SetupFabricController extends AbstractConsoleController
         if (!isset($config['rabbitmq'][$service])) {
             throw new \RuntimeException(sprintf('No service "rabbitmq.%s" found in configuration', $service));
         }
+
         return array_keys($config['rabbitmq'][$service]);
     }
 }

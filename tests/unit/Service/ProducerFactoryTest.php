@@ -20,10 +20,10 @@ class ProducerFactoryTest extends \PHPUnit_Framework_TestCase
                             'connection' => 'foo',
                             'exchange' => [
 
-                            ]
-                        ]
-                    ]
-                ]
+                            ],
+                        ],
+                    ],
+                ],
             ]
         );
 

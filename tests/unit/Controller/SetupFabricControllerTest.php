@@ -6,10 +6,9 @@ use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
 
 class SetupFabricControllerTest extends AbstractConsoleControllerTestCase
 {
-
     protected function setUp()
     {
-        $config = include __DIR__ . '/../../TestConfiguration.php.dist';
+        $config = include __DIR__.'/../../TestConfiguration.php.dist';
         $this->setApplicationConfig($config);
         parent::setUp();
     }
@@ -31,11 +30,11 @@ class SetupFabricControllerTest extends AbstractConsoleControllerTestCase
         $configuration = $serviceManager->get('Configuration');
         $configuration['rabbitmq']['consumer'] = [
             'foo-consumer1' => [],
-            'foo-consumer2' => []
+            'foo-consumer2' => [],
         ];
         $configuration['rabbitmq']['producer'] = [
             'bar-producer1' => [],
-            'bar-producer2' => []
+            'bar-producer2' => [],
         ];
         $serviceManager->setService('Configuration', $configuration);
 

@@ -18,12 +18,12 @@ class QueueTest extends \PHPUnit_Framework_TestCase
             'no_wait' => true,
             'ticket' => 1,
             'arguments' => [
-                'argument1' => 'value1'
+                'argument1' => 'value1',
             ],
             'routing_keys' => [
                 'routing1',
-                'routing2'
-            ]
+                'routing2',
+            ],
         ];
         $options = new Queue();
         $options->setFromArray($configuration);

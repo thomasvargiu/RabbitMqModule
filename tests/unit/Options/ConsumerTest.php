@@ -6,7 +6,6 @@ use RabbitMqModule\Options\Consumer;
 
 class ConsumerTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testOptions()
     {
         $configuration = [

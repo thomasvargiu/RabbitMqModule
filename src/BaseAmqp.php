@@ -143,6 +143,7 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
 
     /**
      * @param ExchangeOptions $options
+     *
      * @return $this
      */
     protected function declareExchange(ExchangeOptions $options = null)

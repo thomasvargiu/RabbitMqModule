@@ -28,15 +28,17 @@ class BaseAmqpTest extends \PHPUnit_Framework_TestCase
 
         $baseAmqp->shouldReceive('__destruct');
 
-        /** @var \RabbitMqModule\BaseAmqp $baseAmqp */
+        /* @var \RabbitMqModule\BaseAmqp $baseAmqp */
         $baseAmqp->setChannel($channel);
         static::assertEquals($channel, $baseAmqp->getChannel());
     }
 
-    protected static function getMethod($name) {
+    protected static function getMethod($name)
+    {
         $class = new \ReflectionClass('RabbitMqModule\\BaseAmqp');
         $method = $class->getMethod($name);
         $method->setAccessible(true);
+
         return $method;
     }
 
@@ -53,7 +55,7 @@ class BaseAmqpTest extends \PHPUnit_Framework_TestCase
 
         $baseAmqp->shouldReceive('__destruct');
 
-        /** @var \RabbitMqModule\BaseAmqp $baseAmqp */
+        /* @var \RabbitMqModule\BaseAmqp $baseAmqp */
         $baseAmqp->setChannel($channel);
         $baseAmqp->__destruct();
     }

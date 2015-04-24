@@ -9,7 +9,6 @@ use RabbitMqModule\Producer;
 
 class ProducerTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testProperties()
     {
         $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
@@ -90,12 +89,12 @@ class ProducerTest extends \PHPUnit_Framework_TestCase
         $channel->expects(static::once())
             ->method('basic_publish')
             ->with(static::callback(
-                function($subject){
+                function ($subject) {
                     return $subject instanceof AMQPMessage
                     && $subject->body === 'test-body'
                     && $subject->get_properties() === [
                         'content_type' => 'foo/bar',
-                        'delivery_mode' => 2
+                        'delivery_mode' => 2,
                     ];
                 }
             ), 'foo', 'test-key');

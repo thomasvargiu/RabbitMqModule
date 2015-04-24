@@ -6,7 +6,6 @@ use RabbitMqModule\Options\Producer;
 
 class ProducerTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testOptions()
     {
         $configuration = [

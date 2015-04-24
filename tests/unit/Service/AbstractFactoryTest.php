@@ -6,7 +6,6 @@ use Mockery as m;
 
 class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testGetOptions()
     {
         $configuration = [
@@ -18,7 +17,7 @@ class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
                     'name1' => [
                         'opt1' => 'value1'
                     ]
-                ],
+                ]
             ]
         ];
         $serviceLocator = m::mock('Zend\\ServiceManager\\ServiceLocatorInterface');
@@ -27,7 +26,7 @@ class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $serviceLocator->shouldReceive('get')->once()->andReturn($configuration);
         $factory->shouldReceive('getOptionsClass')->once()->andReturn('ArrayObject');
 
-        /** @var \RabbitMqModule\Service\AbstractFactory $factory */
+        /* @var \RabbitMqModule\Service\AbstractFactory $factory */
         $ret = $factory->getOptions($serviceLocator, 'default-key');
 
         static::assertInstanceOf('ArrayObject', $ret);
@@ -48,7 +47,7 @@ class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
                     'name1' => [
                         'opt1' => 'value1'
                     ]
-                ],
+                ]
             ]
         ];
         $serviceLocator = m::mock('Zend\\ServiceManager\\ServiceLocatorInterface');
@@ -56,7 +55,7 @@ class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
 
         $serviceLocator->shouldReceive('get')->once()->andReturn($configuration);
 
-        /** @var \RabbitMqModule\Service\AbstractFactory $factory */
+        /* @var \RabbitMqModule\Service\AbstractFactory $factory */
         $ret = $factory->getOptions($serviceLocator, 'default-key', 'invalid-key');
     }
 }

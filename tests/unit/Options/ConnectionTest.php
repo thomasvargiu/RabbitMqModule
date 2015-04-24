@@ -24,8 +24,8 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
             'connection_timeout' => 432,
             'ssl_options' => [
                 'opt1' => 'value1',
-                'opt2' => 'value2'
-            ]
+                'opt2' => 'value2',
+            ],
         ];
 
         $options = new Options();

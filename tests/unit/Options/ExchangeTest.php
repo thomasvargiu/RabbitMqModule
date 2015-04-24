@@ -19,14 +19,14 @@ class ExchangeTest extends \PHPUnit_Framework_TestCase
             'ticket' => 1,
             'declare' => true,
             'arguments' => [
-                'argument1' => 'value1'
+                'argument1' => 'value1',
             ],
             'exchange_binds' => [
                 [
                     'exchange' => ['name' => 'foo'],
-                    'routing_keys' => ['routing.1', 'routing.2']
-                ]
-            ]
+                    'routing_keys' => ['routing.1', 'routing.2'],
+                ],
+            ],
         ];
         $options = new Exchange();
         $options->setFromArray($configuration);

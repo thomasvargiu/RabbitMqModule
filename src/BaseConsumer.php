@@ -85,11 +85,13 @@ abstract class BaseConsumer extends BaseAmqp implements
 
     /**
      * @param int $idleTimeout
+     *
      * @return $this
      */
     public function setIdleTimeout($idleTimeout)
     {
         $this->idleTimeout = $idleTimeout;
+
         return $this;
     }
 

@@ -10,14 +10,13 @@ use RabbitMqModule\Consumer;
 
 class ConsumerTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testProperties()
     {
         $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
 
-        /** @var \PhpAmqpLib\Connection\AbstractConnection $connection */
+        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
         $consumer = new Consumer($connection);
 
         static::assertTrue($consumer->isAutoSetupFabricEnabled());
@@ -61,11 +60,10 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $exchangeBind->setExchange($exchangeBindOptions);
         $exchangeOptions->setExchangeBinds([$exchangeBind]);
 
-        /** @var \PhpAmqpLib\Connection\AbstractConnection $connection */
+        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
         $consumer = new Consumer($connection, $channel);
         $consumer->setQueueOptions($queueOptions);
         $consumer->setExchangeOptions($exchangeOptions);
-
 
         $channel->expects(static::exactly(1))
             ->method('exchange_bind');
@@ -93,10 +91,10 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $message->delivery_info = [
             'channel' => $channel,
-            'delivery_tag' => 'foo'
+            'delivery_tag' => 'foo',
         ];
 
-        /** @var \PhpAmqpLib\Connection\AbstractConnection $connection */
+        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
         $consumer = new Consumer($connection, $channel);
         $consumer->setCallback(function () use ($response) {
             return $response;
@@ -124,7 +122,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
             ->method('queue_purge')
             ->with(static::equalTo('foo'), static::equalTo(true));
 
-        /** @var \PhpAmqpLib\Connection\AbstractConnection $connection */
+        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
         $consumer = new Consumer($connection, $channel);
         $consumer->setQueueOptions($queueOptions);
         $consumer->purgeQueue();
@@ -147,8 +145,9 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $channel->callbacks = $callbacks;
         $channel->expects(static::exactly(count($callbacks)))
             ->method('wait')
-            ->willReturnCallback(function() use ($channel) {
+            ->willReturnCallback(function () use ($channel) {
                 array_shift($channel->callbacks);
+
                 return true;
             });
 
@@ -157,7 +156,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $channel->expects(static::exactly(count($callbacks)))
             ->method('wait');
 
-        /** @var \PhpAmqpLib\Connection\AbstractConnection $connection */
+        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
         $consumer = new Consumer($connection, $channel);
         $consumer->setExchangeOptions($exchangeOptions);
         $consumer->setQueueOptions($queueOptions);
@@ -181,8 +180,9 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $channel->callbacks = $callbacks;
         $channel->expects(static::exactly(count($callbacks)))
             ->method('wait')
-            ->willReturnCallback(function() use ($channel) {
+            ->willReturnCallback(function () use ($channel) {
                 array_shift($channel->callbacks);
+
                 return true;
             });
 
@@ -191,7 +191,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $channel->expects(static::exactly(count($callbacks)))
             ->method('wait');
 
-        /** @var \PhpAmqpLib\Connection\AbstractConnection $connection */
+        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
         $consumer = new Consumer($connection, $channel);
         $consumer->setExchangeOptions($exchangeOptions);
         $consumer->setQueueOptions($queueOptions);
@@ -207,7 +207,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        /** @var \PhpAmqpLib\Connection\AbstractConnection $connection */
+        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
         $consumer = new Consumer($connection, $channel);
 
         $exchangeOptions = new ExchangeOptions();
@@ -219,9 +219,10 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $channel->callbacks = $callbacks;
         $channel->expects(static::atLeast(1))
             ->method('wait')
-            ->willReturnCallback(function() use ($channel, $consumer) {
+            ->willReturnCallback(function () use ($channel, $consumer) {
                 array_shift($channel->callbacks);
                 $consumer->forceStopConsumer();
+
                 return true;
             });
 
@@ -231,6 +232,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
             ->method('basic_cancel')
             ->willReturnCallback(function () use ($channel) {
                 $channel->callbacks = [];
+
                 return true;
             });
         $channel->expects(static::atLeast(1))
@@ -248,24 +250,24 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
                 ConsumerInterface::MSG_ACK,
                 'basic_ack',
                 [
-                    static::equalTo('foo')
-                ]
+                    static::equalTo('foo'),
+                ],
             ],
             [
                 ConsumerInterface::MSG_REJECT,
                 'basic_reject',
                 [
                     static::equalTo('foo'),
-                    static::equalTo(false)
-                ]
+                    static::equalTo(false),
+                ],
             ],
             [
                 ConsumerInterface::MSG_REJECT_REQUEUE,
                 'basic_reject',
                 [
                     static::equalTo('foo'),
-                    static::equalTo(true)
-                ]
+                    static::equalTo(true),
+                ],
             ],
             [
                 ConsumerInterface::MSG_SINGLE_NACK_REQUEUE,
@@ -273,9 +275,9 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
                 [
                     static::equalTo('foo'),
                     static::equalTo(false),
-                    static::equalTo(true)
-                ]
-            ]
+                    static::equalTo(true),
+                ],
+            ],
         ];
     }
 }

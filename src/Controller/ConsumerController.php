@@ -7,7 +7,6 @@ use Zend\Mvc\Controller\AbstractConsoleController;
 
 class ConsumerController extends AbstractConsoleController
 {
-
     public function indexAction()
     {
         /** @var \Zend\Console\Request $request */
@@ -25,6 +24,7 @@ class ConsumerController extends AbstractConsoleController
                 ColorInterface::RED
             );
             $response->setErrorLevel(1);
+
             return $response;
         }
 

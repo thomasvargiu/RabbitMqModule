@@ -62,6 +62,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, Co
 
     /**
      * @param AdapterInterface $console
+     *
      * @return array|string|null
      */
     public function getConsoleUsage(AdapterInterface $console)

@@ -261,6 +261,7 @@ class Exchange extends AbstractOptions
 
     /**
      * @param array|ExchangeBind[] $exchangeBinds
+     *
      * @return $this
      */
     public function setExchangeBinds(array $exchangeBinds)
@@ -275,6 +276,7 @@ class Exchange extends AbstractOptions
 
     /**
      * @param array|ExchangeBind $bind
+     *
      * @return $this
      */
     public function addExchangeBind($bind)

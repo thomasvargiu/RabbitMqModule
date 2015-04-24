@@ -17,10 +17,10 @@ class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase
                 'rabbitmq' => [
                     'connection' => [
                         'foo' => [
-                            'type' => 'bar'
-                        ]
-                    ]
-                ]
+                            'type' => 'bar',
+                        ],
+                    ],
+                ],
             ]
         );
 
@@ -33,7 +33,7 @@ class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase
         $serviceManager->setService('barFactoryMock', $factoryMock);
 
         $factory->setFactoryMap([
-            'bar' => 'barFactoryMock'
+            'bar' => 'barFactoryMock',
         ]);
 
         $service = $factory->createService($serviceManager);

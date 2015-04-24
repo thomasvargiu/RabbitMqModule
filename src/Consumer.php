@@ -19,7 +19,7 @@ class Consumer extends BaseConsumer
     }
 
     /**
-     * Consume the message
+     * Consume the message.
      */
     public function consume()
     {

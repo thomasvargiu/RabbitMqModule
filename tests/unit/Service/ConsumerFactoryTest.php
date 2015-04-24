@@ -22,17 +22,17 @@ class ConsumerFactoryTest extends \PHPUnit_Framework_TestCase
 
                             ],
                             'queue' => [
-                                'name' => 'bar'
+                                'name' => 'bar',
                             ],
                             'qos' => [
                                 'prefetch_size' => 99,
-                                'prefetch_count' => 89
+                                'prefetch_count' => 89,
                             ],
-                            'callback' => function() {},
-                            'idle_timeout' => 5
-                        ]
-                    ]
-                ]
+                            'callback' => function () {},
+                            'idle_timeout' => 5,
+                        ],
+                    ],
+                ],
             ]
         );
 

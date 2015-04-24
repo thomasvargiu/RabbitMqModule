@@ -51,11 +51,13 @@ class ExchangeBind extends AbstractOptions
 
     /**
      * @param array $routingKeys
+     *
      * @return $this
      */
     public function setRoutingKeys($routingKeys)
     {
         $this->routingKeys = $routingKeys;
+
         return $this;
     }
 }

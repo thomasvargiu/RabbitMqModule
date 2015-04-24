@@ -1,4 +1,5 @@
 <?php
+
 namespace RabbitMqModule\Service;
 
 use PHPUnit_Framework_TestCase;
@@ -22,23 +23,23 @@ class AbstractServiceFactoryTest extends PHPUnit_Framework_TestCase
             [
                 'rabbitmq' => [
                     'connection' => [
-                        'default' => []
+                        'default' => [],
                     ],
                     'producer' => [
                         'foo' => [
-                            'exchange' => []
-                        ]
+                            'exchange' => [],
+                        ],
                     ],
                     'foo' => [
                         'bar' => [
 
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
                 'rabbitmq_factories' => [
                     'foo' => 'fooFactory',
-                    'producer' => 'RabbitMqModuleTest\\Service\\ServiceFactoryMock'
-                ]
+                    'producer' => 'RabbitMqModuleTest\\Service\\ServiceFactoryMock',
+                ],
             ]
         );
     }
