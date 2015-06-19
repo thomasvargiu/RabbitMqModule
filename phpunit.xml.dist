@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <phpunit
-    bootstrap="./tests/bootstrap.php"
-    colors="true"
-    convertErrorsToExceptions="true"
-    convertNoticesToExceptions="true"
-    convertWarningsToExceptions="true"
-    stopOnFailure="false"
-    processIsolation="false"
-    backupGlobals="false"
-    backupStaticAttributes="false"
-    syntaxCheck="true"
+        bootstrap="./vendor/autoload.php"
+        colors="true"
+        convertErrorsToExceptions="true"
+        convertNoticesToExceptions="true"
+        convertWarningsToExceptions="true"
+        verbose="true"
+        stopOnFailure="false"
+        processIsolation="false"
+        backupGlobals="false"
+        syntaxCheck="true"
 >
     <testsuite name="RabbitMqModule tests">
         <directory suffix="Test.php">./tests/unit</directory>
@@ -22,6 +22,6 @@
     </filter>
 
     <listeners>
-        <listener class="\Mockery\Adapter\Phpunit\TestListener"></listener>
+        <listener class="\Mockery\Adapter\Phpunit\TestListener" />
     </listeners>
 </phpunit>
