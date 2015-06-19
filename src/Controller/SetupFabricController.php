@@ -28,7 +28,7 @@ class SetupFabricController extends AbstractConsoleController
     {
         $serviceKeys = [
             'consumer',
-            'producer'
+            'producer',
         ];
         $parts = [];
         foreach ($serviceKeys as $serviceKey) {

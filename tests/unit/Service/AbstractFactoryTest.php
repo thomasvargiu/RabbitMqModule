@@ -12,13 +12,13 @@ class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
             'rabbitmq' => [
                 'default-key' => [
                     'default-name' => [
-                        'opt2' => 'value2'
+                        'opt2' => 'value2',
                     ],
                     'name1' => [
-                        'opt1' => 'value1'
-                    ]
-                ]
-            ]
+                        'opt1' => 'value1',
+                    ],
+                ],
+            ],
         ];
         $serviceLocator = m::mock('Zend\\ServiceManager\\ServiceLocatorInterface');
         $factory = m::mock('RabbitMqModule\\Service\\AbstractFactory[getOptionsClass]', ['default-name']);
@@ -42,13 +42,13 @@ class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
             'rabbitmq' => [
                 'default-key' => [
                     'default-name' => [
-                        'opt2' => 'value2'
+                        'opt2' => 'value2',
                     ],
                     'name1' => [
-                        'opt1' => 'value1'
-                    ]
-                ]
-            ]
+                        'opt1' => 'value1',
+                    ],
+                ],
+            ],
         ];
         $serviceLocator = m::mock('Zend\\ServiceManager\\ServiceLocatorInterface');
         $factory = m::mock('RabbitMqModule\\Service\\AbstractFactory[]', ['default-name']);

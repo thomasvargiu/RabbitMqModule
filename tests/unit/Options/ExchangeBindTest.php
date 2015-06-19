@@ -10,7 +10,7 @@ class ExchangeBindTest extends \PHPUnit_Framework_TestCase
     {
         $configuration = [
             'exchange' => ['name' => 'foo'],
-            'routing_keys' => ['routing.1', 'routing.2']
+            'routing_keys' => ['routing.1', 'routing.2'],
         ];
         $options = new ExchangeBind();
         $options->setFromArray($configuration);

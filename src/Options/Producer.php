@@ -59,6 +59,8 @@ class Producer extends AbstractOptions
      * @param array|Exchange $exchange
      *
      * @return $this
+     *
+     * @throws \InvalidArgumentException
      */
     public function setExchange($exchange)
     {
@@ -66,7 +68,9 @@ class Producer extends AbstractOptions
             $exchange = new Exchange($exchange);
         }
         if (!$exchange instanceof Exchange) {
-            throw new \InvalidArgumentException('Parameter "exchange" should be array or an instance of Exchange options');
+            throw new \InvalidArgumentException(
+                'Parameter "exchange" should be array or an instance of Exchange options'
+            );
         }
         $this->exchange = $exchange;
 
@@ -85,6 +89,8 @@ class Producer extends AbstractOptions
      * @param array|Queue $queue
      *
      * @return $this
+     *
+     * @throws \InvalidArgumentException
      */
     public function setQueue($queue)
     {
@@ -92,7 +98,9 @@ class Producer extends AbstractOptions
             $queue = new Queue($queue);
         }
         if (!$queue instanceof Queue) {
-            throw new \InvalidArgumentException('Parameter "queue" should be array or an instance of Queue options');
+            throw new \InvalidArgumentException(
+                'Parameter "queue" should be array or an instance of Queue options'
+            );
         }
         $this->queue = $queue;
 

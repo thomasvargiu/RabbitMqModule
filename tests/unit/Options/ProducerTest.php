@@ -11,13 +11,13 @@ class ProducerTest extends \PHPUnit_Framework_TestCase
         $configuration = [
             'connection' => 'connection-name',
             'exchange' => [
-                'name' => 'exchange-name'
+                'name' => 'exchange-name',
             ],
             'queue' => [
-                'name' => 'queue-name'
+                'name' => 'queue-name',
             ],
             'class' => 'class-name',
-            'auto_setup_fabric_enabled' => false
+            'auto_setup_fabric_enabled' => false,
         ];
         $options = new Producer();
         $options->setFromArray($configuration);

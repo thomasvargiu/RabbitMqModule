@@ -25,7 +25,9 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $queueOptions = new QueueOptions();
         $exchangeOptions = new ExchangeOptions();
 
-        $callback = function () {};
+        $callback = function () {
+
+        };
 
         $consumer->setConsumerTag('consumer-tag-test');
         $consumer->setCallback($callback);

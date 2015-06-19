@@ -11,10 +11,10 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $configuration = [
             'connection' => 'connection-name',
             'exchange' => [
-                'name' => 'exchange-name'
+                'name' => 'exchange-name',
             ],
             'queue' => [
-                'name' => 'queue-name'
+                'name' => 'queue-name',
             ],
             'callback' => 'callback-name',
             'idle_timeout' => 6,
@@ -23,7 +23,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
             ],
             'auto_setup_fabric_enabled' => false,
             'consumer_tag' => 'test-tag',
-            'signals_enabled' => true
+            'signals_enabled' => true,
         ];
         $options = new Consumer();
         $options->setFromArray($configuration);

@@ -75,6 +75,8 @@ class Consumer extends AbstractOptions
      * @param array|Exchange $exchange
      *
      * @return $this
+     *
+     * @throws \InvalidArgumentException
      */
     public function setExchange($exchange)
     {
@@ -82,7 +84,9 @@ class Consumer extends AbstractOptions
             $exchange = new Exchange($exchange);
         }
         if (!$exchange instanceof Exchange) {
-            throw new \InvalidArgumentException('Parameter "exchange" should be array or an instance of Exchange options');
+            throw new \InvalidArgumentException(
+                'Parameter "exchange" should be array or an instance of Exchange options'
+            );
         }
         $this->exchange = $exchange;
 

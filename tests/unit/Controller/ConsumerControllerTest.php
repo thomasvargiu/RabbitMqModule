@@ -6,7 +6,6 @@ use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
 
 class ConsumerControllerTest extends AbstractConsoleControllerTestCase
 {
-
     protected function setUp()
     {
         $config = include __DIR__.'/../../TestConfiguration.php.dist';

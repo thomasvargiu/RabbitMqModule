@@ -28,7 +28,9 @@ class ConsumerFactoryTest extends \PHPUnit_Framework_TestCase
                                 'prefetch_size' => 99,
                                 'prefetch_count' => 89,
                             ],
-                            'callback' => function () {},
+                            'callback' => function () {
+
+                            },
                             'idle_timeout' => 5,
                         ],
                     ],
