@@ -64,7 +64,7 @@ You can configure multiple producers in configuration:
 return [
     'rabbitmq' => [
         'producer' => [
-            'producer-name' => [
+            'producer_name' => [
                 'connection' => 'default', // the connection name
                 'exchange' => [
                     'type' => 'direct',
@@ -99,7 +99,7 @@ You can retrieve the connection from service locator:
 // Getting a producer
 /** @var \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator **/
 /** @var \RabbitMqModule\ProducerInterface $producer **/
-$producer = $serviceLocator->get('rabbitmq.producer.producer-name');
+$producer = $serviceLocator->get('rabbitmq.producer.producer_name');
 
 // Sending a message
 $producer->publish(json_encode(['foo' => 'bar']));
@@ -114,7 +114,7 @@ You can configure multiple consumers in configuration:
 return [
     'rabbitmq' => [
         'consumer' => [
-            'consumer-name' => [
+            'consumer_name' => [
                 'connection' => 'default', // the connection name
                 'exchange' => [
                     'type' => 'direct',
@@ -150,7 +150,7 @@ You can find all available options here:
 
 The ```callback``` key must contain one of the following:
 
-- A ```callable``: a closure or an invokable object that receive an ```PhpAmqpLib\Message\AMQPMessage``` object.
+- A ```callable```: a closure or an invokable object that receive an ```PhpAmqpLib\Message\AMQPMessage``` object.
 - An instance of ```RabbitMqModule\\ConsumerInterface```.
 - A string service name in service locator (can be anything ```callable``` or an instance of ```RabbitMqModule\\ConsumerInterface```.
 
@@ -168,7 +168,7 @@ You can retrieve the connection from service locator:
 // Getting a consumer
 /** @var \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator **/
 /** @var \RabbitMqModule\Consumer $consumer **/
-$consumer = $serviceLocator->get('rabbitmq.consumer.consumer-name');
+$consumer = $serviceLocator->get('rabbitmq.consumer.consumer_name');
 
 // Start consumer
 $consumer->consume();
