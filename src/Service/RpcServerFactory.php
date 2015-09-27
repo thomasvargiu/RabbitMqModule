@@ -2,13 +2,14 @@
 
 namespace RabbitMqModule\Service;
 
-use RabbitMqModule\Consumer;
 use RabbitMqModule\ConsumerInterface;
+use RabbitMqModule\RpcServer;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use RabbitMqModule\Options\Consumer as Options;
+use RabbitMqModule\Options\RpcServer as Options;
 use InvalidArgumentException;
+use RuntimeException;
 
-class ConsumerFactory extends AbstractFactory
+class RpcServerFactory extends AbstractFactory
 {
     /**
      * Get the class name of the options associated with this factory.
@@ -17,7 +18,7 @@ class ConsumerFactory extends AbstractFactory
      */
     public function getOptionsClass()
     {
-        return 'RabbitMqModule\\Options\\Consumer';
+        return 'RabbitMqModule\\Options\\RpcServer';
     }
 
     /**
@@ -25,14 +26,14 @@ class ConsumerFactory extends AbstractFactory
      *
      * @param ServiceLocatorInterface $serviceLocator
      *
-     * @return Consumer
+     * @return mixed
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         /* @var $options Options */
-        $options = $this->getOptions($serviceLocator, 'consumer');
+        $options = $this->getOptions($serviceLocator, 'rpc_server');
 
-        return $this->createConsumer($serviceLocator, $options);
+        return $this->createServer($serviceLocator, $options);
     }
 
     /**
@@ -41,9 +42,9 @@ class ConsumerFactory extends AbstractFactory
      *
      * @throws InvalidArgumentException
      *
-     * @return Consumer
+     * @return RpcServer
      */
-    protected function createConsumer(ServiceLocatorInterface $serviceLocator, Options $options)
+    protected function createServer(ServiceLocatorInterface $serviceLocator, Options $options)
     {
         $callback = $options->getCallback();
         if (is_string($callback)) {
@@ -58,21 +59,22 @@ class ConsumerFactory extends AbstractFactory
 
         /** @var \PhpAmqpLib\Connection\AbstractConnection $connection */
         $connection = $serviceLocator->get(sprintf('rabbitmq.connection.%s', $options->getConnection()));
-        $consumer = new Consumer($connection);
-        $consumer->setQueueOptions($options->getQueue());
-        $consumer->setExchangeOptions($options->getExchange());
-        $consumer->setConsumerTag($options->getConsumerTag() ?: sprintf('PHPPROCESS_%s_%s', gethostname(), getmypid()));
-        $consumer->setAutoSetupFabricEnabled($options->isAutoSetupFabricEnabled());
-        $consumer->setCallback($callback);
-        $consumer->setIdleTimeout($options->getIdleTimeout());
+        $server = new RpcServer($connection);
+        $server->setQueueOptions($options->getQueue());
+        $server->setExchangeOptions($options->getExchange());
+        $server->setConsumerTag($options->getConsumerTag() ?: sprintf('PHPPROCESS_%s_%s', gethostname(), getmypid()));
+        $server->setAutoSetupFabricEnabled($options->isAutoSetupFabricEnabled());
+        $server->setCallback($callback);
+        $server->setIdleTimeout($options->getIdleTimeout());
+        $server->setSerializer($options->getSerializer());
 
         if ($options->getQos()) {
-            $consumer->setQosOptions(
+            $server->setQosOptions(
                 $options->getQos()->getPrefetchSize(),
                 $options->getQos()->getPrefetchCount()
             );
         }
 
-        return $consumer;
+        return $server;
     }
 }

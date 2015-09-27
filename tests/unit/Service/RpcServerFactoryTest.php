@@ -2,20 +2,20 @@
 
 namespace RabbitMqModuleTest\Service;
 
-use RabbitMqModule\Service\ConsumerFactory;
+use RabbitMqModule\Service\RpcServerFactory;
 use Zend\ServiceManager\ServiceManager;
 
-class ConsumerFactoryTest extends \PHPUnit_Framework_TestCase
+class RpcServerFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreateService()
     {
-        $factory = new ConsumerFactory('foo');
+        $factory = new RpcServerFactory('foo');
         $serviceManager = new ServiceManager();
         $serviceManager->setService(
             'Configuration',
             [
                 'rabbitmq' => [
-                    'consumer' => [
+                    'rpc_server' => [
                         'foo' => [
                             'connection' => 'foo',
                             'exchange' => [
@@ -30,6 +30,7 @@ class ConsumerFactoryTest extends \PHPUnit_Framework_TestCase
                             ],
                             'callback' => 'callback-service',
                             'idle_timeout' => 5,
+                            'serializer' => 'PhpSerialize'
                         ],
                     ],
                 ],
@@ -62,12 +63,13 @@ class ConsumerFactoryTest extends \PHPUnit_Framework_TestCase
 
         $service = $factory->createService($serviceManager);
 
-        static::assertInstanceOf('RabbitMqModule\\Consumer', $service);
+        static::assertInstanceOf('RabbitMqModule\\RpcServer', $service);
         static::assertInstanceOf('RabbitMqModule\\Options\\Queue', $service->getQueueOptions());
         static::assertInstanceOf('RabbitMqModule\\Options\\Exchange', $service->getExchangeOptions());
         static::assertNotEmpty($service->getConsumerTag());
         static::assertTrue(is_callable($service->getCallback()));
         static::assertEquals(5, $service->getIdleTimeout());
+        static::assertInstanceOf('Zend\\Serializer\\Adapter\\AdapterInterface', $service->getSerializer());
     }
 
     /**
@@ -75,13 +77,13 @@ class ConsumerFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateServiceWithInvalidCallback()
     {
-        $factory = new ConsumerFactory('foo');
+        $factory = new RpcServerFactory('foo');
         $serviceManager = new ServiceManager();
         $serviceManager->setService(
             'Configuration',
             [
                 'rabbitmq' => [
-                    'consumer' => [
+                    'rpc_server' => [
                         'foo' => [
                             'connection' => 'foo',
                             'exchange' => [

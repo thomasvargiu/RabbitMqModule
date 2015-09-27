@@ -39,4 +39,31 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         static::assertEquals('test-tag', $options->getConsumerTag());
         static::assertEquals($configuration['signals_enabled'], $options->isSignalsEnabled());
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSetQueueInvalidValue()
+    {
+        $options = new Consumer();
+        $options->setQueue('');
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSetExchangeInvalidValue()
+    {
+        $options = new Consumer();
+        $options->setExchange('');
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSetWosInvalidValue()
+    {
+        $options = new Consumer();
+        $options->setQos('');
+    }
 }

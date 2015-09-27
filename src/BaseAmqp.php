@@ -153,7 +153,9 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
         }
 
         if (!$options->isDeclare()) {
+            // @codeCoverageIgnoreStart
             return $this;
+            // @codeCoverageIgnoreEnd
         }
 
         $this->getChannel()->exchange_declare(
@@ -197,7 +199,9 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
         $queueOptions = $this->getQueueOptions();
 
         if (!$queueOptions || null === $queueOptions->getName()) {
+            // @codeCoverageIgnoreStart
             return $this;
+            // @codeCoverageIgnoreEnd
         }
 
         $exchangeOptions = $this->getExchangeOptions();
@@ -254,7 +258,9 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
     public function reconnect()
     {
         if (!$this->getConnection()->isConnected()) {
+            // @codeCoverageIgnoreStart
             return $this;
+            // @codeCoverageIgnoreEnd
         }
         $this->channel = null;
         $this->getConnection()->reconnect();

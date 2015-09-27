@@ -23,7 +23,8 @@
     "zendframework/zend-stdlib": "~2.3",
     "zendframework/zend-servicemanager": "~2.3",
     "zendframework/zend-modulemanager": "~2.3",
-    "zendframework/zend-console": "~2.3"
+    "zendframework/zend-console": "~2.3",
+    "zendframework/zend-serializer": "~2.3"
   },
   "require-dev": {
     "phpunit/phpunit": "@stable",

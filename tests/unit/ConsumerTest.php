@@ -245,6 +245,24 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $consumer->consume();
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSetCallbackWithInvalidValue()
+    {
+        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass();
+        $channel = static::getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
+        $consumer = new Consumer($connection, $channel);
+
+        $consumer->setCallback('string');
+    }
+
     public function processMessageProvider()
     {
         return [

@@ -4,11 +4,12 @@ namespace RabbitMqModule\Service;
 
 use PhpAmqpLib\Connection\AbstractConnection;
 use RabbitMqModule\Producer;
+use RabbitMqModule\RpcClient;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use RabbitMqModule\Options\Producer as Options;
+use RabbitMqModule\Options\RpcClient as Options;
 use InvalidArgumentException;
 
-class ProducerFactory extends AbstractFactory
+class RpcClientFactory extends AbstractFactory
 {
     /**
      * Get the class name of the options associated with this factory.
@@ -17,7 +18,7 @@ class ProducerFactory extends AbstractFactory
      */
     public function getOptionsClass()
     {
-        return 'RabbitMqModule\\Options\\Producer';
+        return 'RabbitMqModule\\Options\\RpcClient';
     }
 
     /**
@@ -25,14 +26,14 @@ class ProducerFactory extends AbstractFactory
      *
      * @param ServiceLocatorInterface $serviceLocator
      *
-     * @return Producer
+     * @return mixed
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         /* @var $options Options */
-        $options = $this->getOptions($serviceLocator, 'producer');
+        $options = $this->getOptions($serviceLocator, 'rpc_client');
 
-        return $this->createProducer($serviceLocator, $options);
+        return $this->createClient($serviceLocator, $options);
     }
 
     /**
@@ -43,16 +44,12 @@ class ProducerFactory extends AbstractFactory
      *
      * @throws InvalidArgumentException
      */
-    protected function createProducer(ServiceLocatorInterface $serviceLocator, Options $options)
+    protected function createClient(ServiceLocatorInterface $serviceLocator, Options $options)
     {
         /** @var AbstractConnection $connection */
         $connection = $serviceLocator->get(sprintf('rabbitmq.connection.%s', $options->getConnection()));
-        $producer = new Producer($connection);
-        $producer->setExchangeOptions($options->getExchange());
-        if ($options->getQueue()) {
-            $producer->setQueueOptions($options->getQueue());
-        }
-        $producer->setAutoSetupFabricEnabled($options->isAutoSetupFabricEnabled());
+        $producer = new RpcClient($connection);
+        $producer->setSerializer($options->getSerializer());
 
         return $producer;
     }

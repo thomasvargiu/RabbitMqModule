@@ -56,6 +56,6 @@ class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $serviceLocator->shouldReceive('get')->once()->andReturn($configuration);
 
         /* @var \RabbitMqModule\Service\AbstractFactory $factory */
-        $ret = $factory->getOptions($serviceLocator, 'default-key', 'invalid-key');
+        $factory->getOptions($serviceLocator, 'default-key', 'invalid-key');
     }
 }

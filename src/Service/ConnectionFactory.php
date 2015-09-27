@@ -2,7 +2,9 @@
 
 namespace RabbitMqModule\Service;
 
+use InvalidArgumentException;
 use RabbitMqModule\Service\Connection\ConnectionFactoryInterface;
+use RuntimeException;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use RabbitMqModule\Options\Connection as ConnectionOptions;
 
@@ -68,18 +70,20 @@ class ConnectionFactory extends AbstractFactory
      * @param string                  $type
      *
      * @return ConnectionFactoryInterface
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     protected function getFactory(ServiceLocatorInterface $serviceLocator, $type)
     {
         $map = $this->getFactoryMap();
         if (!array_key_exists($type, $map)) {
-            throw new \InvalidArgumentException(sprintf('Options type "%s" not valid', $type));
+            throw new InvalidArgumentException(sprintf('Options type "%s" not valid', $type));
         }
 
         $className = $map[$type];
         $factory = $serviceLocator->get($className);
         if (!$factory instanceof ConnectionFactoryInterface) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 sprintf('Factory for type "%s" must be an instance of ConnectionFactoryInterface', $type)
             );
         }

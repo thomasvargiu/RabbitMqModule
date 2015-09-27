@@ -51,4 +51,13 @@ class ExchangeTest extends \PHPUnit_Framework_TestCase
             static::assertEquals(['routing.1', 'routing.2'], $bind->getRoutingKeys());
         }
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSetExchangeBindInvalidValue()
+    {
+        $options = new Exchange();
+        $options->addExchangeBind('');
+    }
 }

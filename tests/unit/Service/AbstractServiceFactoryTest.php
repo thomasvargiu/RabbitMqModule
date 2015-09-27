@@ -64,4 +64,16 @@ class AbstractServiceFactoryTest extends PHPUnit_Framework_TestCase
             $factory->createServiceWithName($sm, 'rabbitmq.producer.foo', 'rabbitmq.producer.foo')
         );
     }
+
+    /**
+     * @expectedException \Zend\ServiceManager\Exception\ServiceNotFoundException
+     */
+    public function testCreateServiceUnknown()
+    {
+        $sm = $this->serviceManager;
+        $factory = new AbstractServiceFactory();
+        static::assertTrue(
+            $factory->createServiceWithName($sm, 'rabbitmq.unknown-key.foo', 'rabbitmq.unknown-key.foo')
+        );
+    }
 }

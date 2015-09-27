@@ -28,4 +28,22 @@ class ProducerTest extends \PHPUnit_Framework_TestCase
         static::assertEquals($configuration['class'], $options->getClass());
         static::assertFalse($options->isAutoSetupFabricEnabled());
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSetQueueInvalidValue()
+    {
+        $options = new Producer();
+        $options->setQueue('');
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSetExchangeInvalidValue()
+    {
+        $options = new Producer();
+        $options->setExchange('');
+    }
 }

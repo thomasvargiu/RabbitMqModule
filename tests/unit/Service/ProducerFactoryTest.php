@@ -19,8 +19,12 @@ class ProducerFactoryTest extends \PHPUnit_Framework_TestCase
                         'foo' => [
                             'connection' => 'foo',
                             'exchange' => [
-
+                                'name' => 'exchange-name'
                             ],
+                            'queue' => [
+                                'name' => 'queue-name'
+                            ],
+                            'auto_setup_fabric_enabled' => false
                         ],
                     ],
                 ],
@@ -38,5 +42,9 @@ class ProducerFactoryTest extends \PHPUnit_Framework_TestCase
         $service = $factory->createService($serviceManager);
 
         static::assertInstanceOf('RabbitMqModule\\Producer', $service);
+        static::assertSame($connection, $service->getConnection());
+        static::assertEquals('exchange-name', $service->getExchangeOptions()->getName());
+        static::assertEquals('queue-name', $service->getQueueOptions()->getName());
+        static::assertFalse($service->isAutoSetupFabricEnabled());
     }
 }

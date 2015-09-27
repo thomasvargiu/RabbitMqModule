@@ -40,4 +40,58 @@ class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase
 
         static::assertEquals('foo', $service);
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testCreateServiceWithInvalidType()
+    {
+        $factory = new ConnectionFactory('foo');
+        $serviceManager = new ServiceManager();
+        $serviceManager->setService(
+            'Configuration',
+            [
+                'rabbitmq' => [
+                    'connection' => [
+                        'foo' => [
+                            'type' => 'foo',
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        $factory->createService($serviceManager);
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testCreateServiceWithInvalidFactory()
+    {
+        $factory = new ConnectionFactory('foo');
+        $serviceManager = new ServiceManager();
+        $serviceManager->setService(
+            'Configuration',
+            [
+                'rabbitmq' => [
+                    'connection' => [
+                        'foo' => [
+                            'type' => 'bar',
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        $serviceManager->setService('barFactoryMock', 'string');
+
+        $factory->setFactoryMap([
+            'bar' => 'barFactoryMock',
+        ]);
+
+        $service = $factory->createService($serviceManager);
+
+        static::assertEquals('foo', $service);
+    }
 }

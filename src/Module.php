@@ -25,6 +25,7 @@ namespace RabbitMqModule;
 use Zend\Console\Adapter\AdapterInterface;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\ConsoleBannerProviderInterface;
 use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface;
 
 /**
@@ -32,7 +33,11 @@ use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface;
  *
  * @codeCoverageIgnore
  */
-class Module implements AutoloaderProviderInterface, ConfigProviderInterface, ConsoleUsageProviderInterface
+class Module implements
+    AutoloaderProviderInterface,
+    ConfigProviderInterface,
+    ConsoleUsageProviderInterface,
+    ConsoleBannerProviderInterface
 {
     /**
      * Returns configuration to merge with application configuration.
@@ -70,7 +75,24 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, Co
         return [
             'rabbitmq setup-fabric' => 'Sets up the Rabbit MQ fabric',
             'rabbitmq consumer <name> [--without-signals|-w]' => 'Start a consumer by name',
+            'rabbitmq rpc_server <name> [--without-signals|-w]' => 'Start a rpc server by name',
             'rabbitmq stdin-producer <name> [--route=] <msg>' => 'Send a message with a producer',
         ];
+    }
+
+    /**
+     * Returns a string containing a banner text, that describes the module and/or the application.
+     * The banner is shown in the console window, when the user supplies invalid command-line parameters or invokes
+     * the application with no parameters.
+     *
+     * The method is called with active Zend\Console\Adapter\AdapterInterface that can be used to directly access Console and send
+     * output.
+     *
+     * @param AdapterInterface $console
+     * @return string|null
+     */
+    public function getConsoleBanner(AdapterInterface $console)
+    {
+        return 'RabbitMQ Module';
     }
 }

@@ -29,6 +29,8 @@ class SetupFabricController extends AbstractConsoleController
         $serviceKeys = [
             'consumer',
             'producer',
+            'rpc_client',
+            'rpc_server'
         ];
         $parts = [];
         foreach ($serviceKeys as $serviceKey) {

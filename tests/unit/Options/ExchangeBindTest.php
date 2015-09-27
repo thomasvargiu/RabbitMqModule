@@ -19,4 +19,13 @@ class ExchangeBindTest extends \PHPUnit_Framework_TestCase
         static::assertCount(2, $options->getRoutingKeys());
         static::assertEquals(['routing.1', 'routing.2'], $options->getRoutingKeys());
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSetExchangeInvalidValue()
+    {
+        $options = new ExchangeBind();
+        $options->setExchange('');
+    }
 }

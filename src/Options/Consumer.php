@@ -2,6 +2,7 @@
 
 namespace RabbitMqModule\Options;
 
+use InvalidArgumentException;
 use Zend\Stdlib\AbstractOptions;
 
 class Consumer extends AbstractOptions
@@ -76,7 +77,7 @@ class Consumer extends AbstractOptions
      *
      * @return $this
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function setExchange($exchange)
     {
@@ -84,7 +85,7 @@ class Consumer extends AbstractOptions
             $exchange = new Exchange($exchange);
         }
         if (!$exchange instanceof Exchange) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Parameter "exchange" should be array or an instance of Exchange options'
             );
         }
@@ -112,7 +113,7 @@ class Consumer extends AbstractOptions
             $queue = new Queue($queue);
         }
         if (!$queue instanceof Queue) {
-            throw new \InvalidArgumentException('Parameter "queue" should be array or an instance of Queue options');
+            throw new InvalidArgumentException('Parameter "queue" should be array or an instance of Queue options');
         }
         $this->queue = $queue;
 
@@ -198,7 +199,7 @@ class Consumer extends AbstractOptions
             $qos = new Qos($qos);
         }
         if (!$qos instanceof Qos) {
-            throw new \InvalidArgumentException('Parameter "qos" should be array or an instance of Qos options');
+            throw new InvalidArgumentException('Parameter "qos" should be array or an instance of Qos options');
         }
         $this->qos = $qos;
 
