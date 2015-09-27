@@ -2,6 +2,7 @@
 
 namespace RabbitMqModuleTest\Controller;
 
+use RabbitMqModule\Controller\ConsumerController;
 use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
 
 class ConsumerControllerTest extends AbstractConsoleControllerTestCase
@@ -40,5 +41,21 @@ class ConsumerControllerTest extends AbstractConsoleControllerTestCase
         static::assertRegExp('/No consumer with name "foo" found/', $output);
 
         $this->assertResponseStatusCode(1);
+    }
+
+    public function testStopConsumerController()
+    {
+        $consumer = static::getMock('RabbitMqModule\Consumer', ['forceStopConsumer', 'stopConsuming'], [], '', false);
+
+        $consumer->expects(static::once())
+            ->method('forceStopConsumer');
+
+        $consumer->expects(static::once())
+            ->method('stopConsuming');
+
+        $controller = new ConsumerController();
+        $controller->setConsumer($consumer);
+
+        $controller->stopConsumer();
     }
 }

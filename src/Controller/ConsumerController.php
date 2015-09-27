@@ -2,11 +2,18 @@
 
 namespace RabbitMqModule\Controller;
 
+use PhpAmqpLib\Exception\AMQPTimeoutException;
 use Zend\Console\ColorInterface;
 use Zend\Mvc\Controller\AbstractConsoleController;
+use RabbitMqModule\Consumer;
 
 class ConsumerController extends AbstractConsoleController
 {
+    /**
+     * @var Consumer
+     */
+    protected $consumer;
+
     public function indexAction()
     {
         /** @var \Zend\Console\Request $request */
@@ -15,6 +22,8 @@ class ConsumerController extends AbstractConsoleController
         $response = $this->getResponse();
 
         $this->getConsole()->writeLine(sprintf('Starting consumer %s', $request->getParam('name')));
+
+        $withoutSignals = $request->getParam('without-signals') || $request->getParam('w');
 
         $serviceName = sprintf('rabbitmq.consumer.%s', $request->getParam('name'));
 
@@ -29,9 +38,59 @@ class ConsumerController extends AbstractConsoleController
         }
 
         /** @var \RabbitMqModule\Consumer $consumer */
-        $consumer = $this->getServiceLocator()->get($serviceName);
-        $consumer->consume();
+        $this->consumer = $this->getServiceLocator()->get($serviceName);
+        $this->consumer->setSignalsEnabled(!$withoutSignals);
+
+        // @codeCoverageIgnoreStart
+        if (!$withoutSignals && extension_loaded('pcntl')) {
+            if (!function_exists('pcntl_signal')) {
+                throw new \BadFunctionCallException(
+                    'Function \'pcntl_signal\' is referenced in the php.ini \'disable_functions\' and can\'t be called.'
+                );
+            }
+
+            pcntl_signal(SIGTERM, [$this, 'stopConsumer']);
+            pcntl_signal(SIGINT, [$this, 'stopConsumer']);
+            //pcntl_signal(SIGHUP, [$this, 'restartConsumer']);
+        }
+        // @codeCoverageIgnoreEnd
+
+        $this->consumer->consume();
 
         return $response;
+    }
+
+    public function stopConsumer()
+    {
+        if ($this->consumer instanceof Consumer) {
+            $this->consumer->forceStopConsumer();
+            try {
+                $this->consumer->stopConsuming();
+            } catch (AMQPTimeoutException $e) {
+                // ignore
+            }
+        } else {
+            // @codeCoverageIgnoreStart
+            exit();
+            // @codeCoverageIgnoreEnd
+        }
+    }
+
+    /**
+     * @return Consumer
+     */
+    public function getConsumer()
+    {
+        return $this->consumer;
+    }
+
+    /**
+     * @param Consumer $consumer
+     * @return $this
+     */
+    public function setConsumer(Consumer $consumer)
+    {
+        $this->consumer = $consumer;
+        return $this;
     }
 }

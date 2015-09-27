@@ -27,6 +27,28 @@ abstract class BaseConsumer extends BaseAmqp implements
      * @var int
      */
     protected $idleTimeout = 0;
+    /**
+     * @var bool
+     */
+    protected $signalsEnabled = true;
+
+    /**
+     * @return boolean
+     */
+    public function isSignalsEnabled()
+    {
+        return $this->signalsEnabled;
+    }
+
+    /**
+     * @param boolean $signalsEnabled
+     * @return $this
+     */
+    public function setSignalsEnabled($signalsEnabled = true)
+    {
+        $this->signalsEnabled = $signalsEnabled;
+        return $this;
+    }
 
     /**
      * @return string
@@ -144,6 +166,17 @@ abstract class BaseConsumer extends BaseAmqp implements
 
     protected function maybeStopConsumer()
     {
+        // @codeCoverageIgnoreStart
+        if (extension_loaded('pcntl') && $this->isSignalsEnabled()) {
+            if (!function_exists('pcntl_signal_dispatch')) {
+                throw new \BadFunctionCallException(
+                    'Function \'pcntl_signal_dispatch\' is referenced in the php.ini \'disable_functions\' and can\'t be called.'
+                );
+            }
+            pcntl_signal_dispatch();
+        }
+        // @codeCoverageIgnoreEnd
+
         if ($this->forceStop) {
             $this->stopConsuming();
         }
