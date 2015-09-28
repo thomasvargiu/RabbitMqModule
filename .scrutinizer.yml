@@ -4,7 +4,8 @@ before_commands:
     - "composer update --no-interaction --prefer-source"
 
 tools:
-    external_code_coverage: true
+    external_code_coverage:
+        timeout: 600
     php_code_coverage: true
     php_code_sniffer:
         enabled: true
