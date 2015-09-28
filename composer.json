@@ -34,6 +34,9 @@
     "mockery/mockery": "@stable",
     "zendframework/zendframework": "~2.3"
   },
+  "suggest": {
+    "ext-pcntl": "Allows signal handling and process termination"
+  },
   "autoload": {
     "psr-4": {
       "RabbitMqModule\\": "src/"
