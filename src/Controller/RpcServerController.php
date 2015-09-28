@@ -28,7 +28,7 @@ class RpcServerController extends AbstractConsoleController
             return $response;
         }
 
-        /** @var \RabbitMqModule\Consumer $consumer */
+        /** @var \RabbitMqModule\RpcServer $consumer */
         $consumer = $this->getServiceLocator()->get($serviceName);
         $consumer->consume();
 
