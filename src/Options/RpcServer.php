@@ -22,7 +22,9 @@ class RpcServer extends Consumer
 
     /**
      * @param null|string|array|SerializerInterface $serializer
+     *
      * @return $this
+     *
      * @throws \InvalidArgumentException
      */
     public function setSerializer($serializer = null)
@@ -41,6 +43,7 @@ class RpcServer extends Consumer
             throw new \InvalidArgumentException('Invalid serializer instance or options');
         }
         $this->serializer = $serializer;
+
         return $this;
     }
 }

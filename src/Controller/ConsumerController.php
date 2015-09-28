@@ -37,7 +37,7 @@ class ConsumerController extends AbstractConsoleController
             return $response;
         }
 
-        /** @var \RabbitMqModule\Consumer $consumer */
+        /* @var \RabbitMqModule\Consumer $consumer */
         $this->consumer = $this->getServiceLocator()->get($serviceName);
         $this->consumer->setSignalsEnabled(!$withoutSignals);
 
@@ -86,11 +86,13 @@ class ConsumerController extends AbstractConsoleController
 
     /**
      * @param Consumer $consumer
+     *
      * @return $this
      */
     public function setConsumer(Consumer $consumer)
     {
         $this->consumer = $consumer;
+
         return $this;
     }
 }

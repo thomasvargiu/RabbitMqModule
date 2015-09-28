@@ -18,7 +18,7 @@ class RpcClientFactoryTest extends \PHPUnit_Framework_TestCase
                     'rpc_client' => [
                         'foo' => [
                             'connection' => 'foo',
-                            'serializer' => 'PhpSerialize'
+                            'serializer' => 'PhpSerialize',
                         ],
                     ],
                 ],

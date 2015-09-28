@@ -6,7 +6,6 @@ use RabbitMqModule\Options\RpcClient;
 
 class RpcClientTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testSetConnection()
     {
         $options = new RpcClient();

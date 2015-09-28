@@ -45,11 +45,11 @@ class RpcClient extends BaseAmqp
             'reply_to' => $this->getQueueName(),
             'delivery_mode' => 1, // non durable
             'expiration' => $expiration * 1000,
-            'correlation_id' => $requestId
+            'correlation_id' => $requestId,
         ]);
         $this->getChannel()->basic_publish($msg, $server, $routingKey);
 
-        $this->requests++;
+        ++$this->requests;
 
         if ($expiration > $this->timeout) {
             $this->timeout = $expiration;
@@ -62,8 +62,9 @@ class RpcClient extends BaseAmqp
     protected function getQueueName()
     {
         if (null === $this->queueName) {
-            list($this->queueName, ,) = $this->getChannel()->queue_declare('', false, false, true, false);
+            list($this->queueName) = $this->getChannel()->queue_declare('', false, false, true, false);
         }
+
         return $this->queueName;
     }
 
@@ -73,13 +74,15 @@ class RpcClient extends BaseAmqp
     public function getReplies()
     {
         $this->replies = [];
-        $consumer_tag = $this->getChannel()->basic_consume($this->getQueueName(), '', false, true, false, false, [$this, 'processMessage']);
+        $consumer_tag = $this->getChannel()
+            ->basic_consume($this->getQueueName(), '', false, true, false, false, [$this, 'processMessage']);
         while (count($this->replies) < $this->requests) {
             $this->getChannel()->wait(null, false, $this->timeout);
         }
         $this->getChannel()->basic_cancel($consumer_tag);
         $this->requests = 0;
         $this->timeout = 0;
+
         return $this->replies;
     }
 

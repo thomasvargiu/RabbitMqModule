@@ -19,12 +19,12 @@ class ProducerFactoryTest extends \PHPUnit_Framework_TestCase
                         'foo' => [
                             'connection' => 'foo',
                             'exchange' => [
-                                'name' => 'exchange-name'
+                                'name' => 'exchange-name',
                             ],
                             'queue' => [
-                                'name' => 'queue-name'
+                                'name' => 'queue-name',
                             ],
-                            'auto_setup_fabric_enabled' => false
+                            'auto_setup_fabric_enabled' => false,
                         ],
                     ],
                 ],

@@ -29,7 +29,7 @@ class RpcServer extends BaseConsumer
     }
 
     /**
-     * @param mixed $result
+     * @param mixed  $result
      * @param string $client
      * @param string $correlationId
      */
@@ -40,7 +40,7 @@ class RpcServer extends BaseConsumer
     }
 
     /**
-     * Get the serializer
+     * Get the serializer.
      *
      * @return SerializerInterface
      */
@@ -50,14 +50,16 @@ class RpcServer extends BaseConsumer
     }
 
     /**
-     * Set the serializer
+     * Set the serializer.
      *
      * @param SerializerInterface $serializer
+     *
      * @return $this
      */
     public function setSerializer(SerializerInterface $serializer = null)
     {
         $this->serializer = $serializer;
+
         return $this;
     }
 }

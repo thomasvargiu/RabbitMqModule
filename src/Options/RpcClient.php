@@ -47,7 +47,9 @@ class RpcClient extends AbstractOptions
 
     /**
      * @param null|string|array|SerializerInterface $serializer
+     *
      * @return $this
+     *
      * @throws \InvalidArgumentException
      */
     public function setSerializer($serializer = null)
@@ -66,6 +68,7 @@ class RpcClient extends AbstractOptions
             throw new \InvalidArgumentException('Invalid serializer instance or options');
         }
         $this->serializer = $serializer;
+
         return $this;
     }
 }

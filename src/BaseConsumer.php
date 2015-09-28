@@ -33,7 +33,7 @@ abstract class BaseConsumer extends BaseAmqp implements
     protected $signalsEnabled = true;
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isSignalsEnabled()
     {
@@ -41,12 +41,14 @@ abstract class BaseConsumer extends BaseAmqp implements
     }
 
     /**
-     * @param boolean $signalsEnabled
+     * @param bool $signalsEnabled
+     *
      * @return $this
      */
     public function setSignalsEnabled($signalsEnabled = true)
     {
         $this->signalsEnabled = $signalsEnabled;
+
         return $this;
     }
 
@@ -170,7 +172,8 @@ abstract class BaseConsumer extends BaseAmqp implements
         if (extension_loaded('pcntl') && $this->isSignalsEnabled()) {
             if (!function_exists('pcntl_signal_dispatch')) {
                 throw new \BadFunctionCallException(
-                    'Function \'pcntl_signal_dispatch\' is referenced in the php.ini \'disable_functions\' and can\'t be called.'
+                    'Function \'pcntl_signal_dispatch\' is referenced in the php.ini' .
+                    '\'disable_functions\' and can\'t be called.'
                 );
             }
             pcntl_signal_dispatch();

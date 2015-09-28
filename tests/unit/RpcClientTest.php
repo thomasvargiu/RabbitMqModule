@@ -8,7 +8,6 @@ use Zend\Serializer\Serializer;
 
 class RpcClientTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testAddRequestAndGetReplies()
     {
         $body = 'body';
@@ -34,7 +33,7 @@ class RpcClientTest extends \PHPUnit_Framework_TestCase
         $channel->expects(static::once())
             ->method('basic_publish')
             ->with(
-                static::callback(function(AMQPMessage $a) use ($body, $requestId, $serializer) {
+                static::callback(function (AMQPMessage $a) use ($body, $requestId, $serializer) {
                     return $a->body === $serializer->serialize($body)
                         && $a->get('reply_to') === 'queue-name'
                         && $a->get('correlation_id') === $requestId
@@ -57,7 +56,7 @@ class RpcClientTest extends \PHPUnit_Framework_TestCase
 
         $channel->expects(static::once())
             ->method('basic_consume')
-            ->with('queue-name', '', false, true, false, false, static::callback(function($a) {
+            ->with('queue-name', '', false, true, false, false, static::callback(function ($a) {
                 return is_callable($a);
             }))
             ->willReturn('consumer_tag');
@@ -67,6 +66,7 @@ class RpcClientTest extends \PHPUnit_Framework_TestCase
             ->with(
                 static::callback(function ($a) use ($rpcClient, $message) {
                     $rpcClient->processMessage($message);
+
                     return is_null($a);
                 }),
                 false,

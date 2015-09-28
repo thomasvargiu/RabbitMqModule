@@ -30,7 +30,7 @@ class RpcServerFactoryTest extends \PHPUnit_Framework_TestCase
                             ],
                             'callback' => 'callback-service',
                             'idle_timeout' => 5,
-                            'serializer' => 'PhpSerialize'
+                            'serializer' => 'PhpSerialize',
                         ],
                     ],
                 ],

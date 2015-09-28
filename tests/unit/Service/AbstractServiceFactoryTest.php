@@ -13,7 +13,7 @@ class AbstractServiceFactoryTest extends PHPUnit_Framework_TestCase
     protected $serviceManager;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setUp()
     {

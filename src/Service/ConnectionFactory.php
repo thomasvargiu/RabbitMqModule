@@ -70,6 +70,7 @@ class ConnectionFactory extends AbstractFactory
      * @param string                  $type
      *
      * @return ConnectionFactoryInterface
+     *
      * @throws InvalidArgumentException
      * @throws RuntimeException
      */

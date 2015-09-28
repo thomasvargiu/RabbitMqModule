@@ -2,17 +2,11 @@
 
 namespace RabbitMqModuleTest;
 
-use RabbitMqModule\ConsumerInterface;
-use RabbitMqModule\Options\ExchangeBind;
-use RabbitMqModule\Options\Queue as QueueOptions;
-use RabbitMqModule\Options\Exchange as ExchangeOptions;
-use RabbitMqModule\Consumer;
 use RabbitMqModule\RpcServer;
 use Zend\Serializer\Serializer;
 
 class RpcServerTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testProcessMessage()
     {
         $response = 'ciao';
@@ -26,7 +20,7 @@ class RpcServerTest extends \PHPUnit_Framework_TestCase
 
         $message = new \PhpAmqpLib\Message\AMQPMessage('request', [
             'reply_to' => 'foo',
-            'correlation_id' => 'bar'
+            'correlation_id' => 'bar',
         ]);
 
         $message->delivery_info = [
@@ -42,7 +36,7 @@ class RpcServerTest extends \PHPUnit_Framework_TestCase
 
         $channel->expects(static::once())->method('basic_publish')
             ->with(
-                static::callback(function($a) use ($response) {
+                static::callback(function ($a) use ($response) {
                     return $a instanceof \PhpAmqpLib\Message\AMQPMessage
                         && $a->body === $response
                         && $a->get('correlation_id') === 'bar'
@@ -68,7 +62,7 @@ class RpcServerTest extends \PHPUnit_Framework_TestCase
 
         $message = new \PhpAmqpLib\Message\AMQPMessage('request', [
             'reply_to' => 'foo',
-            'correlation_id' => 'bar'
+            'correlation_id' => 'bar',
         ]);
 
         $message->delivery_info = [
@@ -87,7 +81,7 @@ class RpcServerTest extends \PHPUnit_Framework_TestCase
 
         $channel->expects(static::once())->method('basic_publish')
             ->with(
-                static::callback(function($a) use ($response) {
+                static::callback(function ($a) use ($response) {
                     return $a instanceof \PhpAmqpLib\Message\AMQPMessage
                     && $a->body === '{"response":"ciao"}'
                     && $a->get('correlation_id') === 'bar'
@@ -99,5 +93,4 @@ class RpcServerTest extends \PHPUnit_Framework_TestCase
 
         $rpcServer->processMessage($message);
     }
-
 }

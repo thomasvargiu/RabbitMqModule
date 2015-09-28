@@ -6,7 +6,6 @@ use RabbitMqModule\Options\RpcServer;
 
 class RpcServerTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testSetSerializer()
     {
         $options = new RpcServer();

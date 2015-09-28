@@ -7,7 +7,6 @@ use RabbitMqModule\RpcServer;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use RabbitMqModule\Options\RpcServer as Options;
 use InvalidArgumentException;
-use RuntimeException;
 
 class RpcServerFactory extends AbstractFactory
 {
