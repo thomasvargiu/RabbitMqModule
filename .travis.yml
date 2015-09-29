@@ -16,7 +16,7 @@ before_script:
   - php composer.phar update --no-interaction --prefer-source
 
 script:
-  - ./vendor/bin/phpunit --coverage-clover ./clover.xml
+  - ./vendor/bin/phpunit -d zend.enable_gc=0 --coverage-clover ./clover.xml
   - ./vendor/bin/phpcs --standard=PSR2 ./src/ ./tests/
 
 after_script:

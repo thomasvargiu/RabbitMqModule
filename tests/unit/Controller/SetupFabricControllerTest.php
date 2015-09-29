@@ -2,6 +2,7 @@
 
 namespace RabbitMqModuleTest\Controller;
 
+use RabbitMqModule\Controller\SetupFabricController;
 use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
 
 class SetupFabricControllerTest extends AbstractConsoleControllerTestCase
@@ -43,5 +44,19 @@ class SetupFabricControllerTest extends AbstractConsoleControllerTestCase
         ob_end_clean();
 
         $this->assertResponseStatusCode(0);
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testGetServiceKeysException()
+    {
+        $consoleMock = static::getMockBuilder('Zend\Console\Adapter\AdapterInterface')->getMock();
+        $serviceLocatorMock = static::getMockBuilder('Zend\ServiceManager\ServiceLocatorInterface')->getMock();
+        $serviceLocatorMock->method('get')->with('Configuration')->willReturn([]);
+        $controller = new SetupFabricController();
+        $controller->setConsole($consoleMock);
+        $controller->setServiceLocator($serviceLocatorMock);
+        $controller->indexAction();
     }
 }
