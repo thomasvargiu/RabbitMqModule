@@ -1,8 +1,7 @@
 <?php
 
-namespace RabbitMqModuleTest\Service;
+namespace RabbitMqModule\Service;
 
-use RabbitMqModule\Service\ProducerFactory;
 use Zend\ServiceManager\ServiceManager;
 
 class ProducerFactoryTest extends \PHPUnit_Framework_TestCase

@@ -1,8 +1,6 @@
 <?php
 
-namespace RabbitMqModuleTest\Options;
-
-use RabbitMqModule\Options\Qos;
+namespace RabbitMqModule\Options;
 
 class QosTest extends \PHPUnit_Framework_TestCase
 {

@@ -1,9 +1,8 @@
 <?php
 
-namespace RabbitMqModuleTest;
+namespace RabbitMqModule;
 
 use PhpAmqpLib\Message\AMQPMessage;
-use RabbitMqModule\RpcClient;
 use Zend\Serializer\Serializer;
 
 class RpcClientTest extends \PHPUnit_Framework_TestCase

@@ -1,6 +1,6 @@
 <?php
 
-namespace RabbitMqModuleTest\Options;
+namespace RabbitMqModule\Options;
 
 use RabbitMqModule\Options\Connection as Options;
 

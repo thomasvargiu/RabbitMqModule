@@ -1,8 +1,6 @@
 <?php
 
-namespace RabbitMqModuleTest\Options;
-
-use RabbitMqModule\Options\Queue;
+namespace RabbitMqModule\Options;
 
 class QueueTest extends \PHPUnit_Framework_TestCase
 {

@@ -1,8 +1,7 @@
 <?php
 
-namespace RabbitMqModuleTest;
+namespace RabbitMqModule;
 
-use RabbitMqModule\RpcServer;
 use Zend\Serializer\Serializer;
 
 class RpcServerTest extends \PHPUnit_Framework_TestCase

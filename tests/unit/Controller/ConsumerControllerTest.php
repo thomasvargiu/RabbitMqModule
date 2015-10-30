@@ -1,8 +1,7 @@
 <?php
 
-namespace RabbitMqModuleTest\Controller;
+namespace RabbitMqModule\Controller;
 
-use RabbitMqModule\Controller\ConsumerController;
 use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
 
 class ConsumerControllerTest extends AbstractConsoleControllerTestCase
@@ -53,9 +52,37 @@ class ConsumerControllerTest extends AbstractConsoleControllerTestCase
         $consumer->expects(static::once())
             ->method('stopConsuming');
 
-        $controller = new ConsumerController();
+        $stub = $this->getMockBuilder('RabbitMqModule\\Controller\\ConsumerController')
+            ->setMethods(array('callExit'))
+            ->getMock();
+
+        $stub->expects(static::once())
+            ->method('callExit');
+
+        /** @var ConsumerController $controller */
+        $controller = $stub;
         $controller->setConsumer($consumer);
 
         $controller->stopConsumer();
+    }
+
+    public function testDispatchWithoutSignals()
+    {
+        $consumer = static::getMock('RabbitMqModule\Consumer', array('consume'), array(), '', false);
+        $consumer
+            ->expects(static::once())
+            ->method('consume');
+
+        $serviceManager = $this->getApplicationServiceLocator();
+        $serviceManager->setAllowOverride(true);
+        $serviceManager->setService('rabbitmq.consumer.foo', $consumer);
+
+        ob_start();
+        $this->dispatch('rabbitmq consumer foo --without-signals');
+        ob_end_clean();
+
+        static::assertTrue(defined('AMQP_WITHOUT_SIGNALS'));
+
+        $this->assertResponseStatusCode(0);
     }
 }

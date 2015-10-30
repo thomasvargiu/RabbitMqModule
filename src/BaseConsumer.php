@@ -143,9 +143,7 @@ abstract class BaseConsumer extends BaseAmqp implements
             false,
             false,
             false,
-            function ($message) {
-                $this->processMessage($message);
-            }
+            [$this, 'processMessage']
         );
     }
 
@@ -172,7 +170,7 @@ abstract class BaseConsumer extends BaseAmqp implements
         if (extension_loaded('pcntl') && $this->isSignalsEnabled()) {
             if (!function_exists('pcntl_signal_dispatch')) {
                 throw new \BadFunctionCallException(
-                    'Function \'pcntl_signal_dispatch\' is referenced in the php.ini' .
+                    'Function \'pcntl_signal_dispatch\' is referenced in the php.ini'.
                     '\'disable_functions\' and can\'t be called.'
                 );
             }

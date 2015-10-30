@@ -1,6 +1,6 @@
 <?php
 
-namespace RabbitMqModuleTest;
+namespace RabbitMqModule;
 
 use Mockery as m;
 
@@ -68,6 +68,18 @@ class BaseAmqpTest extends \PHPUnit_Framework_TestCase
         $connection->shouldReceive('isConnected')->once()->andReturn(true);
         $connection->shouldReceive('reconnect')->once();
 
+        $baseAmqp->shouldReceive('__destruct');
+
+        /** @var \RabbitMqModule\BaseAmqp $baseAmqp */
+        static::assertEquals($baseAmqp, $baseAmqp->reconnect());
+    }
+
+    public function testReconnectWhenConnected()
+    {
+        $connection = m::mock('PhpAmqpLib\\Connection\\AbstractConnection');
+        $baseAmqp = m::mock('RabbitMqModule\\BaseAmqp[__destruct]', [$connection]);
+
+        $connection->shouldReceive('isConnected')->once()->andReturn(false);
         $baseAmqp->shouldReceive('__destruct');
 
         /** @var \RabbitMqModule\BaseAmqp $baseAmqp */

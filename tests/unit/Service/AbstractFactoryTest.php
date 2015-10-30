@@ -1,6 +1,6 @@
 <?php
 
-namespace RabbitMqModuleTest\Service;
+namespace RabbitMqModule\Service;
 
 use Mockery as m;
 

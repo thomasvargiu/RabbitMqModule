@@ -1,8 +1,6 @@
 <?php
 
-namespace RabbitMqModuleTest\Options;
-
-use RabbitMqModule\Options\Consumer;
+namespace RabbitMqModule\Options;
 
 class ConsumerTest extends \PHPUnit_Framework_TestCase
 {

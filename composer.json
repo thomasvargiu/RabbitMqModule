@@ -19,7 +19,7 @@
   ],
   "require": {
     "php": ">=5.4.0",
-    "videlalvaro/php-amqplib": "~2.5",
+    "videlalvaro/php-amqplib": "~2.6",
     "zendframework/zend-stdlib": "~2.3",
     "zendframework/zend-servicemanager": "~2.3",
     "zendframework/zend-modulemanager": "~2.3",
@@ -41,7 +41,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "RabbitMqModuleTest\\": "tests/unit/"
+      "RabbitMqModule\\": "tests/unit/"
     }
   }
 }

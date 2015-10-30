@@ -1,8 +1,6 @@
 <?php
 
-namespace RabbitMqModuleTest\Options;
-
-use RabbitMqModule\Options\RpcClient;
+namespace RabbitMqModule\Options;
 
 class RpcClientTest extends \PHPUnit_Framework_TestCase
 {

@@ -3,21 +3,31 @@
 namespace RabbitMqModule\Controller;
 
 use RabbitMqModule\Service\SetupFabricAwareInterface;
+use Zend\Console\ColorInterface;
 use Zend\Mvc\Controller\AbstractConsoleController;
 
 class SetupFabricController extends AbstractConsoleController
 {
     public function indexAction()
     {
+        /** @var \Zend\Console\Response $response */
+        $response = $this->getResponse();
         $this->getConsole()->writeLine('Setting up the AMQP fabric');
 
-        $services = $this->getServiceParts();
+        try {
+            $services = $this->getServiceParts();
 
-        foreach ($services as $service) {
-            if (!$service instanceof SetupFabricAwareInterface) {
-                continue;
+            foreach ($services as $service) {
+                if (!$service instanceof SetupFabricAwareInterface) {
+                    continue;
+                }
+                $service->setupFabric();
             }
-            $service->setupFabric();
+        } catch (\Exception $e) {
+            $response->setErrorLevel(1);
+            $this->getConsole()->writeText(sprintf('Exception: %s', $e->getMessage()), ColorInterface::LIGHT_RED);
+
+            return $response;
         }
     }
 

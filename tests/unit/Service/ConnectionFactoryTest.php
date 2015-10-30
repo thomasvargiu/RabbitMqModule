@@ -1,8 +1,7 @@
 <?php
 
-namespace RabbitMqModuleTest\Service;
+namespace RabbitMqModule\Service;
 
-use RabbitMqModule\Service\ConnectionFactory;
 use Zend\ServiceManager\ServiceManager;
 
 class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase

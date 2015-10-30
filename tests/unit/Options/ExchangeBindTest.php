@@ -1,8 +1,6 @@
 <?php
 
-namespace RabbitMqModuleTest\Options;
-
-use RabbitMqModule\Options\ExchangeBind;
+namespace RabbitMqModule\Options;
 
 class ExchangeBindTest extends \PHPUnit_Framework_TestCase
 {

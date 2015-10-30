@@ -1,8 +1,7 @@
 <?php
 
-namespace RabbitMqModuleTest\Service;
+namespace RabbitMqModule\Service;
 
-use RabbitMqModule\Service\ConsumerFactory;
 use Zend\ServiceManager\ServiceManager;
 
 class ConsumerFactoryTest extends \PHPUnit_Framework_TestCase

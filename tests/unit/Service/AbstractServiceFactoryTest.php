@@ -38,7 +38,7 @@ class AbstractServiceFactoryTest extends PHPUnit_Framework_TestCase
                 ],
                 'rabbitmq_factories' => [
                     'foo' => 'fooFactory',
-                    'producer' => 'RabbitMqModuleTest\\Service\\ServiceFactoryMock',
+                    'producer' => 'RabbitMqModule\\Service\\ServiceFactoryMock',
                 ],
             ]
         );

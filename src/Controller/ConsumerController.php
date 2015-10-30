@@ -41,6 +41,10 @@ class ConsumerController extends AbstractConsoleController
         $this->consumer = $this->getServiceLocator()->get($serviceName);
         $this->consumer->setSignalsEnabled(!$withoutSignals);
 
+        if ($withoutSignals) {
+            define('AMQP_WITHOUT_SIGNALS', true);
+        }
+
         // @codeCoverageIgnoreStart
         if (!$withoutSignals && extension_loaded('pcntl')) {
             if (!function_exists('pcntl_signal')) {
@@ -51,7 +55,6 @@ class ConsumerController extends AbstractConsoleController
 
             pcntl_signal(SIGTERM, [$this, 'stopConsumer']);
             pcntl_signal(SIGINT, [$this, 'stopConsumer']);
-            //pcntl_signal(SIGHUP, [$this, 'restartConsumer']);
         }
         // @codeCoverageIgnoreEnd
 
@@ -60,6 +63,9 @@ class ConsumerController extends AbstractConsoleController
         return $response;
     }
 
+    /**
+     * Stop consumer.
+     */
     public function stopConsumer()
     {
         if ($this->consumer instanceof Consumer) {
@@ -69,19 +75,8 @@ class ConsumerController extends AbstractConsoleController
             } catch (AMQPTimeoutException $e) {
                 // ignore
             }
-        } else {
-            // @codeCoverageIgnoreStart
-            exit();
-            // @codeCoverageIgnoreEnd
         }
-    }
-
-    /**
-     * @return Consumer
-     */
-    public function getConsumer()
-    {
-        return $this->consumer;
+        $this->callExit(0);
     }
 
     /**
@@ -94,5 +89,14 @@ class ConsumerController extends AbstractConsoleController
         $this->consumer = $consumer;
 
         return $this;
+    }
+
+    /**
+     * @param int $code
+     * @codeCoverageIgnore
+     */
+    protected function callExit($code)
+    {
+        exit($code);
     }
 }

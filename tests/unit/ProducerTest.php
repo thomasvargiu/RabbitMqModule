@@ -1,11 +1,10 @@
 <?php
 
-namespace RabbitMqModuleTest;
+namespace RabbitMqModule;
 
 use PhpAmqpLib\Message\AMQPMessage;
 use RabbitMqModule\Options\Queue as QueueOptions;
 use RabbitMqModule\Options\Exchange as ExchangeOptions;
-use RabbitMqModule\Producer;
 
 class ProducerTest extends \PHPUnit_Framework_TestCase
 {

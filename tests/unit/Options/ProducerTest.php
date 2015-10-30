@@ -1,8 +1,6 @@
 <?php
 
-namespace RabbitMqModuleTest\Options;
-
-use RabbitMqModule\Options\Producer;
+namespace RabbitMqModule\Options;
 
 class ProducerTest extends \PHPUnit_Framework_TestCase
 {

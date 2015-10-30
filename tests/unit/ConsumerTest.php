@@ -1,12 +1,10 @@
 <?php
 
-namespace RabbitMqModuleTest;
+namespace RabbitMqModule;
 
-use RabbitMqModule\ConsumerInterface;
 use RabbitMqModule\Options\ExchangeBind;
 use RabbitMqModule\Options\Queue as QueueOptions;
 use RabbitMqModule\Options\Exchange as ExchangeOptions;
-use RabbitMqModule\Consumer;
 
 class ConsumerTest extends \PHPUnit_Framework_TestCase
 {
@@ -72,6 +70,86 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $channel->expects(static::exactly(2))
             ->method('exchange_declare');
         $channel->expects(static::once())
+            ->method('queue_declare');
+
+        static::assertSame($consumer, $consumer->setupFabric());
+    }
+
+    public function testSetupFabricWithEmptyQueueName()
+    {
+        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass();
+        $channel = static::getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $queueOptions = new QueueOptions();
+        $exchangeOptions = new ExchangeOptions();
+        $exchangeOptions->setDeclare(false);
+
+        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
+        $consumer = new Consumer($connection, $channel);
+        $consumer->setQueueOptions($queueOptions);
+        $consumer->setExchangeOptions($exchangeOptions);
+
+        $channel->expects(static::never())
+            ->method('exchange_bind');
+        $channel->expects(static::never())
+            ->method('exchange_declare');
+        $channel->expects(static::never())
+            ->method('queue_declare');
+
+        static::assertSame($consumer, $consumer->setupFabric());
+    }
+
+    public function testSetupFabricWithoutQueueOptions()
+    {
+        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass();
+        $channel = static::getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $exchangeOptions = new ExchangeOptions();
+        $exchangeOptions->setDeclare(false);
+
+        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
+        $consumer = new Consumer($connection, $channel);
+        $consumer->setExchangeOptions($exchangeOptions);
+
+        $channel->expects(static::never())
+            ->method('exchange_bind');
+        $channel->expects(static::never())
+            ->method('exchange_declare');
+        $channel->expects(static::never())
+            ->method('queue_declare');
+
+        static::assertSame($consumer, $consumer->setupFabric());
+    }
+
+    public function testSetupFabricWithNoDeclareExchange()
+    {
+        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass();
+        $channel = static::getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $exchangeOptions = new ExchangeOptions();
+        $exchangeOptions->setDeclare(false);
+
+        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
+        $consumer = new Consumer($connection, $channel);
+        $consumer->setExchangeOptions($exchangeOptions);
+
+        $channel->expects(static::never())
+            ->method('exchange_bind');
+        $channel->expects(static::never())
+            ->method('exchange_declare');
+        $channel->expects(static::never())
             ->method('queue_declare');
 
         static::assertSame($consumer, $consumer->setupFabric());

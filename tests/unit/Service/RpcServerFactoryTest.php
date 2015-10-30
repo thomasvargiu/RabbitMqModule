@@ -1,8 +1,7 @@
 <?php
 
-namespace RabbitMqModuleTest\Service;
+namespace RabbitMqModule\Service;
 
-use RabbitMqModule\Service\RpcServerFactory;
 use Zend\ServiceManager\ServiceManager;
 
 class RpcServerFactoryTest extends \PHPUnit_Framework_TestCase

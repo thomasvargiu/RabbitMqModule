@@ -1,6 +1,6 @@
 <?php
 
-namespace RabbitMqModuleTest\Controller;
+namespace RabbitMqModule\Controller;
 
 use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
 
