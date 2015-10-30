@@ -9,12 +9,6 @@ Integrates php-amqplib with Zend Framework 2 and RabbitMq.
 
 Inspired from [RabbitMqBundle](https://github.com/videlalvaro/RabbitMqBundle/) for Symfony 2
 
-
-**Status: development**
-
-Not ready for production environment yet (see below).
-
-
 ## Usage ##
 
 ### Connections ###
@@ -26,12 +20,18 @@ return [
     'rabbitmq' => [
         'connection' => [
             // connection name
-            'default' => [
+            'default' => [ // default values
                 'type' => 'stream', // Available: stream, socket, ssl
                 'host' => 'localhost',
+                'port' => 5672,
                 'username' => 'guest',
                 'password' => 'guest',
-                'vhost' => '/'
+                'vhost' => '/',
+                'insist' => false,
+                'read_write_timeout' => 2,
+                'keep_alive' => false,
+                'connection_timeout' => 3,
+                'heartbeat' => 0
             ]
         ]
     ]
@@ -68,13 +68,27 @@ return [
                 'connection' => 'default', // the connection name
                 'exchange' => [
                     'type' => 'direct',
-                    'name' => 'exchange-name'
+                    'name' => 'exchange-name',
+                    'durable' => true,      // (default)
+                    'auto_delete' => false, // (default)
+                    'internal' => false,    // (default)
+                    'no_wait' => false,     // (default)
+                    'declare' => true,      // (default)
+                    'arguments' => [],      // (default)
+                    'ticket' => 0,          // (default)
+                    'exchange_binds' => []  // (default)
                 ],
                 'queue' => [ // optional queue
                     'name' => 'queue-name' // can be an empty string,
-                    'routing_keys' => [
-                        // optional routing keys
-                    ]
+                    'type' => null,         // (default)
+                    'passive' => false,     // (default)
+                    'durable' => true,      // (default)
+                    'auto_delete' => false, // (default)
+                    'exclusive' => false,   // (default)
+                    'no_wait' => false,     // (default)
+                    'arguments' => [],      // (default)
+                    'ticket' => 0,          // (default)
+                    'routing_keys' => []    // (default)
                 ],
                 'auto_setup_fabric_enabled' => true // auto-setup exchanges and queues 
             ]
@@ -93,7 +107,7 @@ You can find all available options here:
 
 #### Retrieve the service ####
 
-You can retrieve the connection from service locator:
+You can retrieve the producer from service locator:
 
 ```php
 // Getting a producer
@@ -129,6 +143,9 @@ return [
                 'auto_setup_fabric_enabled' => true, // auto-setup exchanges and queues
                 'qos' => [
                     // optional QOS options for RabbitMQ
+                    'prefetch_size' => 0,
+                    'prefetch_count' => 0,
+                    'global' => false
                 ],
                 'callback' => 'my-service-name',
             ]
@@ -162,7 +179,7 @@ If your callback return anything else different from ```false``` and one of ```C
 
 #### Retrieve the service ####
 
-You can retrieve the connection from service locator:
+You can retrieve the consumer from service locator:
 
 ```php
 // Getting a consumer
@@ -176,26 +193,44 @@ $consumer->consume();
 
 There is a console command available to start consumers. See below.
 
+#### Consumer Example ####
+
+```php
+use PhpAmqpLib\Message\AMQPMessage;
+use RabbitMqModule\ConsumerInterface;
+
+class FetchProposalsConsumer implements ConsumerInterface
+{
+    /**
+     * @param AMQPMessage $message
+     *
+     * @return int
+     */
+    public function execute(AMQPMessage $message)
+    {
+        $data = json_decode($message->body, true);
+
+        try {
+            // do something...
+        } catch (\PDOException $e) {
+            return ConsumerInterface::MSG_REJECT_REQUEUE;
+        } catch (\Exception $e) {
+            return ConsumerInterface::MSG_REJECT;
+        }
+
+        return ConsumerInterface::MSG_ACK;
+    }
+}
+
+
+```
 
 ## Console usage ##
 
 There are some console commands available:
 
-- ```rabbitmq setup-fabric```: setup fabric for each service, declaring exchanges and queues
-- ```rabbitmq consumer <name>```: start a consumer
+- ```rabbitmq setup-fabric```: Setup fabric for each service, declaring exchanges and queues
+- ```rabbitmq consumer <name> [--without-signals|-w]```: Start a consumer by name
+- ```rabbitmq rpc_server <name> [--without-signals|-w]```: Start a rpc server by name
+- ```rabbitmq stdin-producer <name> [--route=] <msg>```: Send a message with a producer
 
-
-
-# Development status #
-
-This module is not ready for production environment yet.
-
-Why? It's not fully tested in AMQP environment and all things in my mind are not implemented yet.
-
-## Missing things ##
-
-- Console commands
-- RPC services (client and server)
-- Multiple consumer
-- Something not in my mind yet
-- Tests, tests, tests...
