@@ -74,6 +74,7 @@ class Module implements
     {
         return [
             'rabbitmq setup-fabric' => 'Sets up the Rabbit MQ fabric',
+            'rabbitmq list consumers' => 'List available consumers',
             'rabbitmq consumer <name> [--without-signals|-w]' => 'Start a consumer by name',
             'rabbitmq rpc_server <name> [--without-signals|-w]' => 'Start a rpc server by name',
             'rabbitmq stdin-producer <name> [--route=] <msg>' => 'Send a message with a producer',

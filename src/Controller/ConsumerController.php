@@ -64,6 +64,36 @@ class ConsumerController extends AbstractConsoleController
     }
 
     /**
+     * List available consumers
+     *
+     * @return string
+     */
+    public function listAction()
+    {
+        /** @var array $config */
+        $config = $this->getServiceLocator()->get('Configuration');
+
+        if (!array_key_exists('rabbitmq', $config) || !array_key_exists('consumer', $config['rabbitmq'])) {
+            return 'No \'rabbitmq.consumer\' configuration key found!';
+        }
+
+        $consumers = $config['rabbitmq']['consumer'];
+
+        if (!is_array($consumers) || count($consumers) === 0) {
+            return 'No consumers defined!';
+        }
+
+        foreach ($consumers as $name => $configuration) {
+            $description = array_key_exists('description', $configuration) ? (string)$configuration['description'] : '';
+            $this->getConsole()->writeLine(sprintf(
+                '- %s: %s',
+                $this->getConsole()->colorize($name, ColorInterface::LIGHT_GREEN),
+                $this->getConsole()->colorize($description, ColorInterface::LIGHT_YELLOW)
+            ));
+        }
+    }
+
+    /**
      * Stop consumer.
      */
     public function stopConsumer()

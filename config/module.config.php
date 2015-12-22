@@ -31,6 +31,15 @@ return [
                         ]
                     ]
                 ],
+                'rabbitmq_module-list_consumers' => [
+                    'options' => [
+                        'route'    => 'rabbitmq list consumers',
+                        'defaults' => [
+                            'controller' => __NAMESPACE__ . '\\Controller\\Consumer',
+                            'action' => 'list'
+                        ]
+                    ]
+                ],
                 'rabbitmq_module-consumer' => [
                     'options' => [
                         'route'    => 'rabbitmq consumer <name> [--without-signals|-w]',

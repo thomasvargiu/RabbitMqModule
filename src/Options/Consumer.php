@@ -43,6 +43,10 @@ class Consumer extends AbstractOptions
      * @var bool
      */
     protected $signalsEnabled = true;
+    /**
+     * @var string
+     */
+    protected $description;
 
     /**
      * @return string
@@ -243,6 +247,24 @@ class Consumer extends AbstractOptions
     {
         $this->signalsEnabled = $signalsEnabled;
 
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
         return $this;
     }
 }

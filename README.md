@@ -129,6 +129,7 @@ return [
     'rabbitmq' => [
         'consumer' => [
             'consumer_name' => [
+                'description' => 'Consumer description',
                 'connection' => 'default', // the connection name
                 'exchange' => [
                     'type' => 'direct',
@@ -144,7 +145,7 @@ return [
                 'qos' => [
                     // optional QOS options for RabbitMQ
                     'prefetch_size' => 0,
-                    'prefetch_count' => 0,
+                    'prefetch_count' => 1,
                     'global' => false
                 ],
                 'callback' => 'my-service-name',
@@ -191,7 +192,7 @@ $consumer = $serviceLocator->get('rabbitmq.consumer.consumer_name');
 $consumer->consume();
 ```
 
-There is a console command available to start consumers. See below.
+There is a console command available to list and start consumers. See below.
 
 #### Consumer Example ####
 
@@ -225,11 +226,45 @@ class FetchProposalsConsumer implements ConsumerInterface
 
 ```
 
+## Exchange2exchange binding
+
+You can configure exchange2exchange binding in producers or consumers.
+Example:
+
+```php
+return [
+    'rabbitmq' => [
+        'consumer' => [
+            'consumer_name' => [
+                // ...
+                'exchange' => [
+                    'type' => 'fanout',
+                    'name' => 'exchange_to_bind_to',
+                    'exchange_binds' => [
+                        [
+                            'exchange' => [
+                                'type' => 'fanout',
+                                'name' => 'main_exchange'
+                            ],
+                            'routing_keys' => [
+                                '#'
+                            ]
+                        ]
+                    ]
+                ],
+            ]
+        ]
+    ]
+]
+```
+
+
 ## Console usage ##
 
 There are some console commands available:
 
 - ```rabbitmq setup-fabric```: Setup fabric for each service, declaring exchanges and queues
+- ```rabbitmq list consumers```: List available consumers
 - ```rabbitmq consumer <name> [--without-signals|-w]```: Start a consumer by name
 - ```rabbitmq rpc_server <name> [--without-signals|-w]```: Start a rpc server by name
 - ```rabbitmq stdin-producer <name> [--route=] <msg>```: Send a message with a producer

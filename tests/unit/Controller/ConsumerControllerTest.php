@@ -6,6 +6,7 @@ use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
 
 class ConsumerControllerTest extends AbstractConsoleControllerTestCase
 {
+
     protected function setUp()
     {
         $config = include __DIR__.'/../../TestConfiguration.php.dist';
@@ -59,6 +60,7 @@ class ConsumerControllerTest extends AbstractConsoleControllerTestCase
         $stub->expects(static::once())
             ->method('callExit');
 
+        /** @var \RabbitMqModule\Consumer $consumer */
         /** @var ConsumerController $controller */
         $controller = $stub;
         $controller->setConsumer($consumer);
@@ -82,6 +84,60 @@ class ConsumerControllerTest extends AbstractConsoleControllerTestCase
         ob_end_clean();
 
         static::assertTrue(defined('AMQP_WITHOUT_SIGNALS'));
+
+        $this->assertResponseStatusCode(0);
+    }
+
+    public function testListConsumersWithNoConsumers()
+    {
+        ob_start();
+        $this->dispatch('rabbitmq list consumers');
+        ob_end_clean();
+
+        $this->assertConsoleOutputContains('No consumers defined!');
+
+        $this->assertResponseStatusCode(0);
+    }
+
+    public function testListConsumersWithNoConfigKey()
+    {
+        $serviceManager = $this->getApplicationServiceLocator();
+        $serviceManager->setAllowOverride(true);
+        /** @var array $configuration */
+        $configuration = $serviceManager->get('Configuration');
+        unset($configuration['rabbitmq']);
+        $serviceManager->setService('Configuration', $configuration);
+
+        ob_start();
+        $this->dispatch('rabbitmq list consumers');
+        ob_end_clean();
+
+        $this->assertConsoleOutputContains('No \'rabbitmq.consumer\' configuration key found!');
+
+        $this->assertResponseStatusCode(0);
+    }
+
+    public function testListConsumers()
+    {
+        $serviceManager = $this->getApplicationServiceLocator();
+        $serviceManager->setAllowOverride(true);
+        /** @var array $configuration */
+        $configuration = $serviceManager->get('Configuration');
+        $configuration['rabbitmq']['consumer'] = [
+            'consumer_key1' => [],
+            'consumer_key2' => ['description' => 'foo description']
+        ];
+        $serviceManager->setService('Configuration', $configuration);
+
+        ob_start();
+        $this->dispatch('rabbitmq list consumers');
+        $content = ob_get_contents();
+        ob_end_clean();
+
+
+        static::assertTrue(false !== strpos($content, 'consumer_key1'));
+        static::assertTrue(false !== strpos($content, 'consumer_key2'));
+        static::assertTrue(false !== strpos($content, 'foo description'));
 
         $this->assertResponseStatusCode(0);
     }
