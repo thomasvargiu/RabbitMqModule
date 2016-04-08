@@ -31,7 +31,8 @@ return [
                 'read_write_timeout' => 2,
                 'keep_alive' => false,
                 'connection_timeout' => 3,
-                'heartbeat' => 0
+                'heartbeat' => 0,
+                'lazy' => false
             ]
         ]
     ]
