@@ -12,8 +12,6 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 class StreamConnectionFactory implements ConnectionFactoryInterface
 {
     /**
-     * @codeCoverageIgnore
-     *
      * @param ConnectionOptions $options
      *
      * @return AMQPStreamConnection
@@ -24,7 +22,7 @@ class StreamConnectionFactory implements ConnectionFactoryInterface
             return $this->createLazyConnection($options);
         }
 
-        return $this->createConnection($options);
+        return $this->createStreamConnection($options);
     }
 
     /**
@@ -53,6 +51,7 @@ class StreamConnectionFactory implements ConnectionFactoryInterface
     }
 
     /**
+     * @codeCoverageIgnore
      * @param ConnectionOptions $options
      *
      * @return AMQPStreamConnection

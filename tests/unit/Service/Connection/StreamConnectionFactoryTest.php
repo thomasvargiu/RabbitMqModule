@@ -1,6 +1,7 @@
 <?php
 
 namespace RabbitMqModule\Service\Connection;
+
 use RabbitMqModule\Options\Connection;
 
 /**
@@ -9,32 +10,15 @@ use RabbitMqModule\Options\Connection;
  */
 class StreamConnectionFactoryTest extends \PHPUnit_Framework_TestCase
 {
-
-    /**
-     * @param $lazy
-     * @param $expectedConnectionClass
-     * @dataProvider createServiceDataProvider
-     */
-    public function testCreateService($lazy, $expectedConnectionClass)
+    public function testCreateService()
     {
-        $options = new Connection(['lazy' => $lazy]);
+        $options = new Connection(['lazy' => true]);
         $factory = new StreamConnectionFactory();
 
         $result = $factory->createConnection($options);
         $this->assertInstanceOf(
-            $expectedConnectionClass,
+            '\PhpAmqpLib\Connection\AMQPLazyConnection',
             $result
         );
-    }
-
-    /**
-     * @return array
-     */
-    public function createServiceDataProvider()
-    {
-        return [
-            [true, '\PhpAmqpLib\Connection\AMQPLazyConnection'],
-            [true, '\PhpAmqpLib\Connection\AMQPStreamConnection'],
-        ];
     }
 }
