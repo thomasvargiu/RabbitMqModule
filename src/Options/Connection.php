@@ -62,10 +62,6 @@ class Connection extends AbstractOptions
      * @var array
      */
     protected $sslOptions;
-    /**
-     * @var bool
-     */
-    protected $lazy = false;
 
     /**
      * @return string
@@ -345,21 +341,5 @@ class Connection extends AbstractOptions
         $this->sslOptions = $sslOptions;
 
         return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isLazy()
-    {
-        return $this->lazy;
-    }
-
-    /**
-     * @param boolean $lazy
-     */
-    public function setLazy($lazy)
-    {
-        $this->lazy = (bool) $lazy;
     }
 }

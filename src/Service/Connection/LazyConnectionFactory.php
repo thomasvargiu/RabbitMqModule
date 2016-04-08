@@ -2,23 +2,22 @@
 
 namespace RabbitMqModule\Service\Connection;
 
+use PhpAmqpLib\Connection\AMQPLazyConnection;
 use RabbitMqModule\Options\Connection as ConnectionOptions;
-use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 /**
  * Class StreamConnectionFactory.
+ * @author Krzysztof Gzocha <kgzocha@gmail.com>
  */
-class StreamConnectionFactory implements ConnectionFactoryInterface
+class LazyConnectionFactory implements ConnectionFactoryInterface
 {
     /**
-     * @codeCoverageIgnore
-     *
      * @param ConnectionOptions $options
-     * @return AMQPStreamConnection
+     * @return AMQPLazyConnection
      */
     public function createConnection(ConnectionOptions $options)
     {
-        return new AMQPStreamConnection(
+        return new AMQPLazyConnection(
             $options->getHost(),
             $options->getPort(),
             $options->getUsername(),
