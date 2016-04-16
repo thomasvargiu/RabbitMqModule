@@ -4,9 +4,13 @@ namespace RabbitMqModule\Controller;
 
 use PhpAmqpLib\Exception\AMQPTimeoutException;
 use Zend\Console\ColorInterface;
-use Zend\Mvc\Controller\AbstractConsoleController;
 use RabbitMqModule\Consumer;
 
+/**
+ * Class ConsumerController
+ *
+ * @package RabbitMqModule\Controller
+ */
 class ConsumerController extends AbstractConsoleController
 {
     /**
@@ -27,7 +31,7 @@ class ConsumerController extends AbstractConsoleController
 
         $serviceName = sprintf('rabbitmq.consumer.%s', $request->getParam('name'));
 
-        if (!$this->getServiceLocator()->has($serviceName)) {
+        if (!$this->container->has($serviceName)) {
             $this->getConsole()->writeLine(
                 sprintf('No consumer with name "%s" found', $request->getParam('name')),
                 ColorInterface::RED
@@ -38,7 +42,7 @@ class ConsumerController extends AbstractConsoleController
         }
 
         /* @var \RabbitMqModule\Consumer $consumer */
-        $this->consumer = $this->getServiceLocator()->get($serviceName);
+        $this->consumer = $this->container->get($serviceName);
         $this->consumer->setSignalsEnabled(!$withoutSignals);
 
         if ($withoutSignals) {
@@ -71,7 +75,7 @@ class ConsumerController extends AbstractConsoleController
     public function listAction()
     {
         /** @var array $config */
-        $config = $this->getServiceLocator()->get('Configuration');
+        $config = $this->container->get('Configuration');
 
         if (!array_key_exists('rabbitmq', $config) || !array_key_exists('consumer', $config['rabbitmq'])) {
             return 'No \'rabbitmq.consumer\' configuration key found!';

@@ -26,7 +26,7 @@ return [
                     'options' => [
                         'route'    => 'rabbitmq setup-fabric',
                         'defaults' => [
-                            'controller' => __NAMESPACE__ . '\\Controller\\SetupFabric',
+                            'controller' => 'RabbitMqModule\\Controller\\SetupFabricController',
                             'action' => 'index'
                         ]
                     ]
@@ -35,7 +35,7 @@ return [
                     'options' => [
                         'route'    => 'rabbitmq list consumers',
                         'defaults' => [
-                            'controller' => __NAMESPACE__ . '\\Controller\\Consumer',
+                            'controller' => 'RabbitMqModule\\Controller\\ConsumerController',
                             'action' => 'list'
                         ]
                     ]
@@ -44,7 +44,7 @@ return [
                     'options' => [
                         'route'    => 'rabbitmq consumer <name> [--without-signals|-w]',
                         'defaults' => [
-                            'controller' => __NAMESPACE__ . '\\Controller\\Consumer',
+                            'controller' => 'RabbitMqModule\\Controller\\ConsumerController',
                             'action' => 'index'
                         ]
                     ]
@@ -53,7 +53,7 @@ return [
                     'options' => [
                         'route'    => 'rabbitmq rpc_server <name> [--without-signals|-w]',
                         'defaults' => [
-                            'controller' => __NAMESPACE__ . '\\Controller\\RpcServer',
+                            'controller' => 'RabbitMqModule\\Controller\\RpcServerController',
                             'action' => 'index'
                         ]
                     ]
@@ -62,7 +62,7 @@ return [
                     'options' => [
                         'route'    => 'rabbitmq stdin-producer <name> [--route=] <msg>',
                         'defaults' => [
-                            'controller' => __NAMESPACE__ . '\\Controller\\StdInProducer',
+                            'controller' => 'RabbitMqModule\\Controller\\StdInProducerController',
                             'action' => 'index'
                         ]
                     ]
@@ -71,12 +71,16 @@ return [
         ]
     ],
     'controllers' => [
-        'invokables' => [
-            __NAMESPACE__ . '\\Controller\\SetupFabric' => __NAMESPACE__ . '\\Controller\\SetupFabricController',
-            __NAMESPACE__ . '\\Controller\\Consumer' => __NAMESPACE__ . '\\Controller\\ConsumerController',
-            __NAMESPACE__ . '\\Controller\\RpcServer' => __NAMESPACE__ . '\\Controller\\RpcServerController',
-            __NAMESPACE__ . '\\Controller\\StdInProducer' => __NAMESPACE__ . '\\Controller\\StdInProducerController'
-        ]
+        'factories' => [
+            'RabbitMqModule\\Controller\\SetupFabricController' =>
+                'RabbitMqModule\\Controller\\Factory\\SetupFabricControllerFactory',
+            'RabbitMqModule\\Controller\\ConsumerController' =>
+                'RabbitMqModule\\Controller\\Factory\\ConsumerControllerFactory',
+            'RabbitMqModule\\Controller\\RpcServerController' =>
+                'RabbitMqModule\\Controller\\Factory\\RpcServerControllerFactory',
+            'RabbitMqModule\\Controller\\StdInProducerController' =>
+                'RabbitMqModule\\Controller\\Factory\\StdInProducerControllerFactory'
+        ],
     ],
     'service_manager' => [
         'invokables' => [

@@ -3,8 +3,12 @@
 namespace RabbitMqModule\Controller;
 
 use Zend\Console\ColorInterface;
-use Zend\Mvc\Controller\AbstractConsoleController;
 
+/**
+ * Class RpcServerController
+ *
+ * @package RabbitMqModule\Controller
+ */
 class RpcServerController extends AbstractConsoleController
 {
     public function indexAction()
@@ -18,7 +22,7 @@ class RpcServerController extends AbstractConsoleController
 
         $serviceName = sprintf('rabbitmq.rpc_server.%s', $request->getParam('name'));
 
-        if (!$this->getServiceLocator()->has($serviceName)) {
+        if (!$this->container->has($serviceName)) {
             $this->getConsole()->writeLine(
                 sprintf('No rpc server with name "%s" found', $request->getParam('name')),
                 ColorInterface::RED
@@ -29,7 +33,7 @@ class RpcServerController extends AbstractConsoleController
         }
 
         /** @var \RabbitMqModule\RpcServer $consumer */
-        $consumer = $this->getServiceLocator()->get($serviceName);
+        $consumer = $this->container->get($serviceName);
         $consumer->consume();
 
         return $response;

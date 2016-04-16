@@ -53,7 +53,11 @@ class ConsumerControllerTest extends AbstractConsoleControllerTestCase
         $consumer->expects(static::once())
             ->method('stopConsuming');
 
+        $container = $this->getMockBuilder('Zend\ServiceManager\ServiceLocatorInterface')
+            ->getMock();
+
         $stub = $this->getMockBuilder('RabbitMqModule\\Controller\\ConsumerController')
+            ->setConstructorArgs([$container])
             ->setMethods(array('callExit'))
             ->getMock();
 

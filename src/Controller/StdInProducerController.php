@@ -3,8 +3,12 @@
 namespace RabbitMqModule\Controller;
 
 use Zend\Console\ColorInterface;
-use Zend\Mvc\Controller\AbstractConsoleController;
 
+/**
+ * Class StdInProducerController
+ *
+ * @package RabbitMqModule\Controller
+ */
 class StdInProducerController extends AbstractConsoleController
 {
     public function indexAction()
@@ -20,7 +24,7 @@ class StdInProducerController extends AbstractConsoleController
 
         $serviceName = sprintf('rabbitmq.producer.%s', $producerName);
 
-        if (!$this->getServiceLocator()->has($serviceName)) {
+        if (!$this->container->has($serviceName)) {
             $this->getConsole()->writeLine(
                 sprintf('No producer with name "%s" found', $producerName),
                 ColorInterface::RED
@@ -31,7 +35,7 @@ class StdInProducerController extends AbstractConsoleController
         }
 
         /** @var \RabbitMqModule\Producer $producer */
-        $producer = $this->getServiceLocator()->get($serviceName);
+        $producer = $this->container->get($serviceName);
         $producer->publish($msg, $route);
 
         return $response;

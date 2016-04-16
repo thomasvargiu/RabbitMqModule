@@ -11,9 +11,18 @@ matrix:
   allow_failures:
     - php: hhvm
 
+env:
+  matrix:
+    - DEPENDENCIES=""
+    - DEPENDENCIES="--prefer-lowest --prefer-stable"
+
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
 before_script:
-  - curl -s http://getcomposer.org/installer | php
-  - php composer.phar update --no-interaction --prefer-source
+  - composer update --no-interaction --prefer-source $DEPENDENCIES
 
 script:
   - ./vendor/bin/phpunit --coverage-clover ./clover.xml
