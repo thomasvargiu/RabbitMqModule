@@ -1,4 +1,10 @@
+sudo: false
+
 language: php
+
+cache:
+  directories:
+    - $HOME/.composer/cache
 
 php:
   - 5.4
@@ -15,11 +21,6 @@ env:
   matrix:
     - DEPENDENCIES=""
     - DEPENDENCIES="--prefer-lowest --prefer-stable"
-
-
-cache:
-  directories:
-    - $HOME/.composer/cache
 
 before_script:
   - composer update --no-interaction --prefer-source $DEPENDENCIES
