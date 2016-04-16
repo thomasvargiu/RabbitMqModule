@@ -2,8 +2,6 @@
 
 namespace RabbitMqModule\Service;
 
-use Mockery as m;
-
 class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetOptions()
@@ -20,11 +18,18 @@ class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
                 ],
             ],
         ];
-        $serviceLocator = m::mock('Zend\\ServiceManager\\ServiceLocatorInterface');
-        $factory = m::mock('RabbitMqModule\\Service\\AbstractFactory[getOptionsClass]', ['default-name']);
+        
+        $serviceLocator = static::getMockBuilder('Zend\\ServiceManager\\ServiceLocatorInterface')
+            ->setMethods(['get', 'has'])
+            ->getMock();
+        $factory = static::getMockBuilder('RabbitMqModule\\Service\\AbstractFactory')
+            ->setConstructorArgs(['default-name'])
+            ->setMethods(['getOptionsClass', 'createService'])
+            ->getMock();
 
-        $serviceLocator->shouldReceive('get')->once()->andReturn($configuration);
-        $factory->shouldReceive('getOptionsClass')->once()->andReturn('ArrayObject');
+        $serviceLocator->method('get')->willReturn($configuration);
+        $serviceLocator->method('has')->willReturn(true);
+        $factory->method('getOptionsClass')->willReturn('ArrayObject');
 
         /* @var \RabbitMqModule\Service\AbstractFactory $factory */
         $ret = $factory->getOptions($serviceLocator, 'default-key');
@@ -50,10 +55,16 @@ class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
                 ],
             ],
         ];
-        $serviceLocator = m::mock('Zend\\ServiceManager\\ServiceLocatorInterface');
-        $factory = m::mock('RabbitMqModule\\Service\\AbstractFactory[]', ['default-name']);
 
-        $serviceLocator->shouldReceive('get')->once()->andReturn($configuration);
+        $serviceLocator = static::getMockBuilder('Zend\\ServiceManager\\ServiceLocatorInterface')
+            ->setMethods(['get', 'has'])
+            ->getMock();
+        $factory = static::getMockBuilder('RabbitMqModule\\Service\\AbstractFactory')
+            ->setConstructorArgs(['default-name'])
+            ->setMethods(['getOptionsClass', 'createService'])
+            ->getMock();
+
+        $serviceLocator->method('get')->willReturn($configuration);
 
         /* @var \RabbitMqModule\Service\AbstractFactory $factory */
         $factory->getOptions($serviceLocator, 'default-key', 'invalid-key');
