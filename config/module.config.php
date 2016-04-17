@@ -90,7 +90,9 @@ return [
             'RabbitMqModule\\Service\\Connection\\SslConnectionFactory' =>
                 'RabbitMqModule\\Service\\Connection\\SslConnectionFactory',
             'RabbitMqModule\\Service\\Connection\\SocketConnectionFactory' =>
-                'RabbitMqModule\\Service\\Connection\\SocketConnectionFactory'
+                'RabbitMqModule\\Service\\Connection\\SocketConnectionFactory',
+            'RabbitMqModule\\Service\\Connection\\LazyConnectionFactory' =>
+                'RabbitMqModule\\Service\\Connection\\LazyConnectionFactory'
         ],
         'abstract_factories' => [
             'RabbitMqModule\\Service\\AbstractServiceFactory' => 'RabbitMqModule\\Service\\AbstractServiceFactory'
