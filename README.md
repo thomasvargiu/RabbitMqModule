@@ -21,7 +21,7 @@ return [
         'connection' => [
             // connection name
             'default' => [ // default values
-                'type' => 'stream', // Available: stream, socket, ssl
+                'type' => 'stream', // Available: stream, socket, ssl, lazy
                 'host' => 'localhost',
                 'port' => 5672,
                 'username' => 'guest',

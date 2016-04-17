@@ -17,6 +17,7 @@ class ConnectionFactory extends AbstractFactory
         'stream' => 'RabbitMqModule\\Service\\Connection\\StreamConnectionFactory',
         'socket' => 'RabbitMqModule\\Service\\Connection\\SocketConnectionFactory',
         'ssl' => 'RabbitMqModule\\Service\\Connection\\SSLConnectionFactory',
+        'lazy' => 'RabbitMqModule\\Service\\Connection\\LazyConnectionFactory',
     ];
 
     /**
