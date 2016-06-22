@@ -15,7 +15,11 @@ class StdInProducerControllerTest extends AbstractConsoleControllerTestCase
 
     public function testDispatchWithTestProducer()
     {
-        $producer = static::getMock('RabbitMqModule\Producer', array('publish'), array(), '', false);
+        $producer = static::getMockBuilder('RabbitMqModule\Producer')
+            ->setMethods(['publish'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $producer
             ->expects(static::once())
             ->method('publish')

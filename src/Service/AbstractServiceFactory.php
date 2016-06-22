@@ -17,8 +17,11 @@ class AbstractServiceFactory implements AbstractFactoryInterface
      *
      * @return bool
      */
-    public function canCreateServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
-    {
+    public function canCreateServiceWithName(
+        ServiceLocatorInterface $serviceLocator,
+        $name,
+        $requestedName
+    ) {
         return false !== $this->getFactoryMapping($serviceLocator, $requestedName);
     }
 
@@ -32,7 +35,12 @@ class AbstractServiceFactory implements AbstractFactoryInterface
     {
         $matches = [];
 
-        if (!preg_match('/^rabbitmq\.(?P<serviceType>[a-z0-9_]+)\.(?P<serviceName>[a-z0-9_]+)$/', $name, $matches)) {
+        if (!preg_match(
+            '/^rabbitmq\.(?P<serviceType>[a-z0-9_]+)\.(?P<serviceName>[a-z0-9_\-A-Z]+)$/',
+            $name,
+            $matches
+        )
+        ) {
             return false;
         }
 
@@ -40,7 +48,11 @@ class AbstractServiceFactory implements AbstractFactoryInterface
         $serviceType = $matches['serviceType'];
         $serviceName = $matches['serviceName'];
 
-        if (!isset($config['rabbitmq_factories'][$serviceType], $config['rabbitmq'][$serviceType][$serviceName])) {
+        if (!isset(
+            $config['rabbitmq_factories'][$serviceType],
+            $config['rabbitmq'][$serviceType][$serviceName]
+        )
+        ) {
             return false;
         }
 
@@ -60,8 +72,11 @@ class AbstractServiceFactory implements AbstractFactoryInterface
      *
      * @return mixed
      */
-    public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
-    {
+    public function createServiceWithName(
+        ServiceLocatorInterface $serviceLocator,
+        $name,
+        $requestedName
+    ) {
         $mappings = $this->getFactoryMapping($serviceLocator, $requestedName);
 
         if (!$mappings) {
