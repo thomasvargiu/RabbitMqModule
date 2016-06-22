@@ -13,65 +13,96 @@ class AbstractServiceFactoryTest extends PHPUnit_Framework_TestCase
     protected $serviceManager;
 
     /**
+     * @var AbstractServiceFactory
+     */
+    private $factory;
+
+    /**
      * {@inheritdoc}
      */
     public function setUp()
     {
+        $this->factory = new AbstractServiceFactory();
         $this->serviceManager = new ServiceManager();
         $this->serviceManager->setService(
             'Configuration',
             [
                 'rabbitmq' => [
-                    'connection' => [
-                        'default' => [],
-                    ],
                     'producer' => [
-                        'foo' => [
-                            'exchange' => [],
-                        ],
+                        'custom_Producer-09' => [],
+                        'bar' => [],
+                        'wrong~name' => [],
                     ],
-                    'foo' => [
-                        'bar' => [
-
-                        ],
+                    'my_service_type' => [
+                        'foo' => []
                     ],
                 ],
                 'rabbitmq_factories' => [
-                    'foo' => 'fooFactory',
                     'producer' => 'RabbitMqModule\\Service\\ServiceFactoryMock',
                 ],
             ]
         );
     }
 
-    public function testCanCreateServiceWithName()
+    /**
+     * @dataProvider getServiceName
+     */
+    public function testCanCreateServiceWithName($serviceName, $expectedResult)
     {
         $sm = $this->serviceManager;
-        $factory = new AbstractServiceFactory();
-        static::assertTrue($factory->canCreateServiceWithName($sm, 'rabbitmq.foo.bar', 'rabbitmq.foo.bar'));
-        static::assertFalse($factory->canCreateServiceWithName($sm, 'rabbitmq.foo.bar', 'rabbitmq.foo.bar2'));
+
+        static::assertSame($expectedResult, $this->factory->canCreateServiceWithName(
+            $sm,
+            $serviceName,
+            $serviceName
+        ));
+
     }
 
-    public function testCreateServiceWithName()
+    public function testItSuccessfullyCreatesConfiguredService()
     {
-        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
-            ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
-        $sm = $this->serviceManager;
-        $sm->setService('rabbitmq.connection.default', $connection);
-        $factory = new AbstractServiceFactory();
         static::assertTrue(
-            $factory->createServiceWithName($sm, 'rabbitmq.producer.foo', 'rabbitmq.producer.foo')
+            $this->factory->createServiceWithName($this->serviceManager,
+                'rabbitmq.producer.bar', 'rabbitmq.producer.bar'
+            )
         );
     }
 
     /**
      * @expectedException \Zend\ServiceManager\Exception\ServiceNotFoundException
      */
-    public function testCreateServiceUnknown()
+    public function testItThrowsServiceNotFoundExceptionForUnknownServiceName()
     {
-        $sm = $this->serviceManager;
-        $factory = new AbstractServiceFactory();
-        $factory->createServiceWithName($sm, 'rabbitmq.unknown-key.foo', 'rabbitmq.unknown-key.foo');
+        $this->factory->createServiceWithName(
+            $this->serviceManager,
+            'rabbitmq.unknown-key.foo',
+            'rabbitmq.unknown-key.foo'
+        );
+    }
+
+    public function getServiceName()
+    {
+        return [
+            'not configured service type' => [
+                'rabbitmq.not_configured_type.foo',
+                false
+            ],
+            'configured but not supported service type' => [
+                'rabbitmq.my_service_type.foo',
+                false
+            ],
+            'configured service but with not supported sign' => [
+                'rabbitmq.producer.wrong~name',
+                false
+            ],
+            'service type with not supported sign' => [
+                'rabbitmq.produ&cer.custom_Producer-09',
+                false
+            ],
+            'correctly configured producer' => [
+                'rabbitmq.producer.custom_Producer-09',
+                true
+            ],
+        ];
     }
 }

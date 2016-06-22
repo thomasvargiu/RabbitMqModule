@@ -32,7 +32,7 @@ class AbstractServiceFactory implements AbstractFactoryInterface
     {
         $matches = [];
 
-        if (!preg_match('/^rabbitmq\.(?P<serviceType>[a-z0-9_]+)\.(?P<serviceName>[a-z0-9_]+)$/', $name, $matches)) {
+        if (!preg_match('/^rabbitmq\.(?P<serviceType>[a-z0-9_]+)\.(?P<serviceName>[a-z0-9_\-A-Z]+)$/', $name, $matches)) {
             return false;
         }
 
