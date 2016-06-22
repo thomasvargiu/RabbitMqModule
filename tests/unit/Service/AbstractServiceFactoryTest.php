@@ -72,8 +72,6 @@ class AbstractServiceFactoryTest extends PHPUnit_Framework_TestCase
     {
         $sm = $this->serviceManager;
         $factory = new AbstractServiceFactory();
-        static::assertTrue(
-            $factory->createServiceWithName($sm, 'rabbitmq.unknown-key.foo', 'rabbitmq.unknown-key.foo')
-        );
+        $factory->createServiceWithName($sm, 'rabbitmq.unknown-key.foo', 'rabbitmq.unknown-key.foo');
     }
 }
