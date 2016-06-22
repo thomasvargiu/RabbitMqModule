@@ -62,8 +62,10 @@ class AbstractServiceFactoryTest extends PHPUnit_Framework_TestCase
     public function testItSuccessfullyCreatesConfiguredService()
     {
         static::assertTrue(
-            $this->factory->createServiceWithName($this->serviceManager,
-                'rabbitmq.producer.bar', 'rabbitmq.producer.bar'
+            $this->factory->createServiceWithName(
+                $this->serviceManager,
+                'rabbitmq.producer.bar',
+                'rabbitmq.producer.bar'
             )
         );
     }
