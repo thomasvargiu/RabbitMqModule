@@ -6,7 +6,7 @@
   "license": "MIT",
   "homepage": "https://github.com/thomasvargiu/RabbitMqModule",
   "keywords": [
-    "zf2",
+    "zf3",
     "zend framework",
     "rabbitmq",
     "amqp"
@@ -20,16 +20,15 @@
   "require": {
     "php": "^5.4 || ^7.0",
     "php-amqplib/php-amqplib": "^2.6",
-    "zendframework/zend-stdlib": "^2.3",
-    "zendframework/zend-servicemanager": "^2.3",
+    "zendframework/zend-stdlib": "^3.0.0",
+    "zendframework/zend-servicemanager": "^3.0.0",
     "zendframework/zend-modulemanager": "^2.3",
-    "zendframework/zend-console": "^2.3",
-    "zendframework/zend-serializer": "^2.3"
+    "zendframework/zend-mvc-console": "^1.1.10",
+    "zendframework/zend-serializer": "^2.8"
   },
   "require-dev": {
-    "zendframework/zendframework": "^2.3",
+    "zendframework/zendframework": "^3.0.0",
     "phpunit/phpunit": "^4.8 || ^5.2",
-    "squizlabs/php_codesniffer": "^2.5",
     "phpmd/phpmd" : "^2.4",
     "fabpot/php-cs-fixer": "^1.11"
   },
