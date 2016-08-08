@@ -2,7 +2,7 @@
 
 namespace RabbitMqModule\Controller;
 
-use Zend\Mvc\Controller\AbstractConsoleController as BaseController;
+use Zend\Mvc\Console\Controller\AbstractConsoleController as BaseController;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class AbstractConsoleController extends BaseController

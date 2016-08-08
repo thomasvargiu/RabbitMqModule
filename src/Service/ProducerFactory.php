@@ -2,6 +2,7 @@
 
 namespace RabbitMqModule\Service;
 
+use Interop\Container\ContainerInterface;
 use PhpAmqpLib\Connection\AbstractConnection;
 use RabbitMqModule\Producer;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -23,16 +24,17 @@ class ProducerFactory extends AbstractFactory
     /**
      * Create service.
      *
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return Producer
+     * @param ContainerInterface | ServiceLocatorInterface $container
+     * @param string $rName
+     * @param array|null $options
+     * @return mixed
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $rName, array $options = null)
     {
         /* @var $options Options */
-        $options = $this->getOptions($serviceLocator, 'producer');
+        $options = $this->getOptions($container, 'producer');
 
-        return $this->createProducer($serviceLocator, $options);
+        return $this->createProducer($container, $options);
     }
 
     /**

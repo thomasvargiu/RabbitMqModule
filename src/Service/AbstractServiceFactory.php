@@ -2,33 +2,72 @@
 
 namespace RabbitMqModule\Service;
 
-use Zend\ServiceManager\AbstractFactoryInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\AbstractPluginManager;
+use Zend\ServiceManager\Factory\AbstractFactoryInterface;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class AbstractServiceFactory implements AbstractFactoryInterface
 {
     /**
-     * Determine if we can create a service with name.
+     * @param ContainerInterface $container
+     * @param string $rName
+     * @param array|null $options
+     * @return mixed
+     */
+    public function __invoke(ContainerInterface $container, $rName, array $options = null)
+    {
+        $mappings = $this->getFactoryMapping($container, $rName);
+
+        if (!$mappings) {
+            throw new ServiceNotFoundException();
+        }
+
+        $factoryClass = $mappings['factoryClass'];
+        /* @var $factory \RabbitMqModule\Service\AbstractFactory */
+        $factory = new $factoryClass($mappings['serviceName']);
+
+        return $factory($container, $mappings['serviceName']);
+    }
+
+
+    /**
      *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @param                         $name
-     * @param                         $requestedName
-     *
+     * @param ContainerInterface $services
+     * @param string                  $rName
      * @return bool
      */
-    public function canCreateServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
+    public function canCreate(ContainerInterface $services, $rName)
     {
-        return false !== $this->getFactoryMapping($serviceLocator, $requestedName);
+        return false !== $this->getFactoryMapping($services, $rName);
     }
 
     /**
-     * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator
-     * @param string                                       $name
+     * Determine if we can create a service with name
+     *
+     * @param ServiceLocatorInterface $container
+     * @param string                                        $name
+     * @param string
+     * @return bool
+     */
+    public function canCreateServiceWithName(ServiceLocatorInterface $container, $name, $requestedName)
+    {
+        // v2 => may need to get parent service locator
+        if ($container instanceof AbstractPluginManager) {
+            $container = $container->getServiceLocator() ?: $container;
+        }
+
+        return $this->canCreate($container, $requestedName);
+    }
+
+    /**
+     * @param ContainerInterface $container
+     * @param                    $name
      *
      * @return bool|array
      */
-    private function getFactoryMapping(ServiceLocatorInterface $serviceLocator, $name)
+    private function getFactoryMapping(ContainerInterface $container, $name)
     {
         $matches = [];
 
@@ -36,7 +75,7 @@ class AbstractServiceFactory implements AbstractFactoryInterface
             return false;
         }
 
-        $config = $serviceLocator->get('Configuration');
+        $config = $container->get('Configuration');
         $serviceType = $matches['serviceType'];
         $serviceName = $matches['serviceName'];
 
@@ -54,24 +93,19 @@ class AbstractServiceFactory implements AbstractFactoryInterface
     /**
      * Create service with name.
      *
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ServiceLocatorInterface $container
      * @param                         $name
-     * @param                         $requestedName
+     * @param                         $rName
      *
      * @return mixed
      */
-    public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
+    public function createServiceWithName(ServiceLocatorInterface $container, $name, $rName)
     {
-        $mappings = $this->getFactoryMapping($serviceLocator, $requestedName);
-
-        if (!$mappings) {
-            throw new ServiceNotFoundException();
+        // v2 => may need to get parent service locator
+        if ($container instanceof AbstractPluginManager) {
+            $container = $container->getServiceLocator() ?: $container;
         }
 
-        $factoryClass = $mappings['factoryClass'];
-        /* @var $factory \RabbitMqModule\Service\AbstractFactory */
-        $factory = new $factoryClass($mappings['serviceName']);
-
-        return $factory->createService($serviceLocator);
+        return $this($container, $rName);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace RabbitMqModule\Service;
 
+use Interop\Container\ContainerInterface;
 use RabbitMqModule\ConsumerInterface;
 use RabbitMqModule\RpcServer;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -23,16 +24,17 @@ class RpcServerFactory extends AbstractFactory
     /**
      * Create service.
      *
-     * @param ServiceLocatorInterface $serviceLocator
-     *
+     * @param ContainerInterface | ServiceLocatorInterface $container
+     * @param string $rName
+     * @param array|null $options
      * @return mixed
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $rName, array $options = null)
     {
         /* @var $options Options */
-        $options = $this->getOptions($serviceLocator, 'rpc_server');
+        $options = $this->getOptions($container, 'rpc_server');
 
-        return $this->createServer($serviceLocator, $options);
+        return $this->createServer($container, $options);
     }
 
     /**

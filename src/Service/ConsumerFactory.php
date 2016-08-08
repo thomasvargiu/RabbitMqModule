@@ -2,6 +2,7 @@
 
 namespace RabbitMqModule\Service;
 
+use Interop\Container\ContainerInterface;
 use RabbitMqModule\Consumer;
 use RabbitMqModule\ConsumerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -23,16 +24,17 @@ class ConsumerFactory extends AbstractFactory
     /**
      * Create service.
      *
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return Consumer
+     * @param ContainerInterface | ServiceLocatorInterface $container
+     * @param string $rName
+     * @param array|null $options
+     * @return mixed
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $rName, array $options = null)
     {
         /* @var $options Options */
-        $options = $this->getOptions($serviceLocator, 'consumer');
+        $options = $this->getOptions($container, 'consumer');
 
-        return $this->createConsumer($serviceLocator, $options);
+        return $this->createConsumer($container, $options);
     }
 
     /**

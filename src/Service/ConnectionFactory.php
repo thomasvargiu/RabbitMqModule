@@ -2,6 +2,7 @@
 
 namespace RabbitMqModule\Service;
 
+use Interop\Container\ContainerInterface;
 use InvalidArgumentException;
 use RabbitMqModule\Service\Connection\ConnectionFactoryInterface;
 use RuntimeException;
@@ -53,15 +54,16 @@ class ConnectionFactory extends AbstractFactory
     /**
      * Create service.
      *
-     * @param ServiceLocatorInterface $serviceLocator
-     *
+     * @param ContainerInterface | ServiceLocatorInterface $container
+     * @param string $requestedName
+     * @param array|null $options
      * @return mixed
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         /* @var $options ConnectionOptions */
-        $options = $this->getOptions($serviceLocator, 'connection');
-        $factory = $this->getFactory($serviceLocator, $options->getType());
+        $options = $this->getOptions($container, 'connection');
+        $factory = $this->getFactory($container, $options->getType());
 
         return $factory->createConnection($options);
     }

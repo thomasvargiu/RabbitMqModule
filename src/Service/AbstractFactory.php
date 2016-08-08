@@ -2,7 +2,8 @@
 
 namespace RabbitMqModule\Service;
 
-use Zend\ServiceManager\FactoryInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use RuntimeException;
 
@@ -17,6 +18,16 @@ abstract class AbstractFactory implements FactoryInterface
      * @var \Zend\Stdlib\AbstractOptions
      */
     protected $options;
+
+    /**
+     * @param ContainerInterface $container
+     * @param string $rName
+     * @param array|null $options
+     * @return mixed
+     */
+    public function __invoke(ContainerInterface $container, $rName, array $options = null)
+    {
+    }
 
     /**
      * @param string $name

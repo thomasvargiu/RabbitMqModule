@@ -2,8 +2,9 @@
 
 namespace RabbitMqModule\Controller\Factory;
 
+use Interop\Container\ContainerInterface;
 use RabbitMqModule\Controller\StdInProducerController as Controller;
-use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
@@ -15,13 +16,14 @@ class StdInProducerControllerFactory implements FactoryInterface
 {
     /**
      * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return Controller
+     * 
+     * @param ContainerInterface|ServiceLocatorInterface $container
+     * @param string $requestedName
+     * @param array|null $options
+     * @return mixed
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        /** @var $serviceLocator \Zend\ServiceManager\AbstractPluginManager */
-        return new Controller($serviceLocator->getServiceLocator());
+        return new Controller($container);
     }
 }

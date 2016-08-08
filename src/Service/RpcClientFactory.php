@@ -2,6 +2,7 @@
 
 namespace RabbitMqModule\Service;
 
+use Interop\Container\ContainerInterface;
 use PhpAmqpLib\Connection\AbstractConnection;
 use RabbitMqModule\Producer;
 use RabbitMqModule\RpcClient;
@@ -24,16 +25,17 @@ class RpcClientFactory extends AbstractFactory
     /**
      * Create service.
      *
-     * @param ServiceLocatorInterface $serviceLocator
-     *
+     * @param ContainerInterface | ServiceLocatorInterface $container
+     * @param string $rName
+     * @param array|null $options
      * @return mixed
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $rName, array $options = null)
     {
         /* @var $options Options */
-        $options = $this->getOptions($serviceLocator, 'rpc_client');
+        $options = $this->getOptions($container, 'rpc_client');
 
-        return $this->createClient($serviceLocator, $options);
+        return $this->createClient($container, $options);
     }
 
     /**
