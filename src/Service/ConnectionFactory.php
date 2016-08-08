@@ -55,11 +55,11 @@ class ConnectionFactory extends AbstractFactory
      * Create service.
      *
      * @param ContainerInterface | ServiceLocatorInterface $container
-     * @param string $requestedName
+     * @param string $rName
      * @param array|null $options
      * @return mixed
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container, $rName, array $options = null)
     {
         /* @var $options ConnectionOptions */
         $options = $this->getOptions($container, 'connection');
