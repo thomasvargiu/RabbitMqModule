@@ -24,7 +24,6 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $exchangeOptions = new ExchangeOptions();
 
         $callback = function () {
-
         };
 
         $consumer->setConsumerTag('consumer-tag-test');

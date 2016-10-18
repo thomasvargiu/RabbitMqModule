@@ -6,8 +6,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerAwareTrait;
 
-abstract class BaseConsumer extends BaseAmqp implements
-    EventManagerAwareInterface
+abstract class BaseConsumer extends BaseAmqp implements EventManagerAwareInterface
 {
     use EventManagerAwareTrait;
 

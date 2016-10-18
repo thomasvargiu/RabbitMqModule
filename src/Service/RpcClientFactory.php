@@ -33,9 +33,9 @@ class RpcClientFactory extends AbstractFactory
      *
      * @return object
      *
-     * @throws ServiceNotFoundException   if unable to resolve the service.
+     * @throws ServiceNotFoundException   if unable to resolve the service
      * @throws ServiceNotCreatedException if an exception is raised when
-     *                                    creating a service.
+     *                                    creating a service
      * @throws ContainerException         if any other error occurs
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
