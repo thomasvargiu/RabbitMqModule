@@ -260,11 +260,13 @@ class Consumer extends AbstractOptions
 
     /**
      * @param string $description
+     *
      * @return $this
      */
     public function setDescription($description)
     {
         $this->description = $description;
+
         return $this;
     }
 }

@@ -5,9 +5,7 @@ namespace RabbitMqModule\Controller;
 use Zend\Console\ColorInterface;
 
 /**
- * Class RpcServerController
- *
- * @package RabbitMqModule\Controller
+ * Class RpcServerController.
  */
 class RpcServerController extends AbstractConsoleController
 {

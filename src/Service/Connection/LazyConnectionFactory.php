@@ -7,12 +7,14 @@ use RabbitMqModule\Options\Connection as ConnectionOptions;
 
 /**
  * Class StreamConnectionFactory.
+ *
  * @author Krzysztof Gzocha <kgzocha@gmail.com>
  */
 class LazyConnectionFactory implements ConnectionFactoryInterface
 {
     /**
      * @param ConnectionOptions $options
+     *
      * @return AMQPLazyConnection
      */
     public function createConnection(ConnectionOptions $options)

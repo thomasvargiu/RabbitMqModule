@@ -5,7 +5,6 @@ namespace RabbitMqModule\Service;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
 use PhpAmqpLib\Connection\AbstractConnection;
-use RabbitMqModule\Producer;
 use RabbitMqModule\RpcClient;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
@@ -26,16 +25,18 @@ class RpcClientFactory extends AbstractFactory
     }
 
     /**
-     * Create an object
+     * Create an object.
      *
-     * @param  ContainerInterface $container
-     * @param  string $requestedName
-     * @param  null|array $options
+     * @param ContainerInterface $container
+     * @param string             $requestedName
+     * @param null|array         $options
+     *
      * @return object
-     * @throws ServiceNotFoundException if unable to resolve the service.
+     *
+     * @throws ServiceNotFoundException   if unable to resolve the service.
      * @throws ServiceNotCreatedException if an exception is raised when
-     *     creating a service.
-     * @throws ContainerException if any other error occurs
+     *                                    creating a service.
+     * @throws ContainerException         if any other error occurs
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
@@ -59,7 +60,7 @@ class RpcClientFactory extends AbstractFactory
 
     /**
      * @param ContainerInterface $container
-     * @param Options $options
+     * @param Options            $options
      *
      * @return RpcClient
      *

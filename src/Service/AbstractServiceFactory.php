@@ -15,8 +15,8 @@ class AbstractServiceFactory implements AbstractFactoryInterface
      * Determine if we can create a service with name.
      *
      * @param ServiceLocatorInterface $serviceLocator
-     * @param string $name
-     * @param string $requestedName
+     * @param string                  $name
+     * @param string                  $requestedName
      *
      * @return bool
      */
@@ -27,7 +27,7 @@ class AbstractServiceFactory implements AbstractFactoryInterface
 
     /**
      * @param ContainerInterface $container
-     * @param string $name
+     * @param string             $name
      *
      * @return bool|array
      */
@@ -58,8 +58,8 @@ class AbstractServiceFactory implements AbstractFactoryInterface
      * Create service with name.
      *
      * @param ServiceLocatorInterface $serviceLocator
-     * @param string $name
-     * @param string $requestedName
+     * @param string                  $name
+     * @param string                  $requestedName
      *
      * @return mixed
      */
@@ -71,8 +71,9 @@ class AbstractServiceFactory implements AbstractFactoryInterface
     /**
      * Can the factory create an instance for the service?
      *
-     * @param  ContainerInterface $container
-     * @param  string $requestedName
+     * @param ContainerInterface $container
+     * @param string             $requestedName
+     *
      * @return bool
      */
     public function canCreate(ContainerInterface $container, $requestedName)
@@ -81,16 +82,18 @@ class AbstractServiceFactory implements AbstractFactoryInterface
     }
 
     /**
-     * Create an object
+     * Create an object.
      *
-     * @param  ContainerInterface $container
-     * @param  string $requestedName
-     * @param  null|array $options
+     * @param ContainerInterface $container
+     * @param string             $requestedName
+     * @param null|array         $options
+     *
      * @return object
-     * @throws ServiceNotFoundException if unable to resolve the service.
+     *
+     * @throws ServiceNotFoundException   if unable to resolve the service.
      * @throws ServiceNotCreatedException if an exception is raised when
-     *     creating a service.
-     * @throws ContainerException if any other error occurs
+     *                                    creating a service.
+     * @throws ContainerException         if any other error occurs
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {

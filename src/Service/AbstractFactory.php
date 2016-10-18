@@ -38,8 +38,8 @@ abstract class AbstractFactory implements FactoryInterface
      * Gets options from configuration based on name.
      *
      * @param ContainerInterface $container
-     * @param string                  $key
-     * @param null|string             $name
+     * @param string             $key
+     * @param null|string        $name
      *
      * @return \Zend\Stdlib\AbstractOptions
      *

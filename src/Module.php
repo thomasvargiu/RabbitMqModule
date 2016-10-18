@@ -20,6 +20,7 @@
 /**
  * @codeCoverageIgnore
  */
+
 namespace RabbitMqModule;
 
 use Zend\Console\Adapter\AdapterInterface;

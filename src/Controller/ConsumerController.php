@@ -7,9 +7,7 @@ use Zend\Console\ColorInterface;
 use RabbitMqModule\Consumer;
 
 /**
- * Class ConsumerController
- *
- * @package RabbitMqModule\Controller
+ * Class ConsumerController.
  */
 class ConsumerController extends AbstractConsoleController
 {
@@ -68,7 +66,7 @@ class ConsumerController extends AbstractConsoleController
     }
 
     /**
-     * List available consumers
+     * List available consumers.
      *
      * @return string
      */
@@ -88,7 +86,7 @@ class ConsumerController extends AbstractConsoleController
         }
 
         foreach ($consumers as $name => $configuration) {
-            $description = array_key_exists('description', $configuration) ? (string)$configuration['description'] : '';
+            $description = array_key_exists('description', $configuration) ? (string) $configuration['description'] : '';
             $this->getConsole()->writeLine(sprintf(
                 '- %s: %s',
                 $this->getConsole()->colorize($name, ColorInterface::LIGHT_GREEN),

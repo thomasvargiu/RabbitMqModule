@@ -18,7 +18,7 @@ class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
                 ],
             ],
         ];
-        
+
         $serviceLocator = $this->getMockBuilder('Zend\\ServiceManager\\ServiceManager')
             ->disableOriginalConstructor()
             ->setMethods(['get', 'has'])

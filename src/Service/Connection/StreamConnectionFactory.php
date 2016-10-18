@@ -14,6 +14,7 @@ class StreamConnectionFactory implements ConnectionFactoryInterface
      * @codeCoverageIgnore
      *
      * @param ConnectionOptions $options
+     *
      * @return AMQPStreamConnection
      */
     public function createConnection(ConnectionOptions $options)

@@ -5,9 +5,7 @@ namespace RabbitMqModule\Controller;
 use Zend\Console\ColorInterface;
 
 /**
- * Class StdInProducerController
- *
- * @package RabbitMqModule\Controller
+ * Class StdInProducerController.
  */
 class StdInProducerController extends AbstractConsoleController
 {
