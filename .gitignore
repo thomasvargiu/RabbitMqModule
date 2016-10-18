@@ -1,5 +1,4 @@
 # Composer files
-composer.lock
 composer.phar
 vendor/
 build/
