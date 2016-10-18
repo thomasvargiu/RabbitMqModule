@@ -63,10 +63,6 @@ matrix:
   allow_failures:
     - php: hhvm
 
-matrix:
-  allow_failures:
-    - php: hhvm
-
 before_install:
   - if [[ $EXECUTE_TEST_SCRUTINIZER != 'true' ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
   - composer self-update
