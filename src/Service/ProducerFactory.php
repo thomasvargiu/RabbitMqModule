@@ -2,8 +2,12 @@
 
 namespace RabbitMqModule\Service;
 
+use Interop\Container\ContainerInterface;
+use Interop\Container\Exception\ContainerException;
 use PhpAmqpLib\Connection\AbstractConnection;
 use RabbitMqModule\Producer;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use RabbitMqModule\Options\Producer as Options;
 use InvalidArgumentException;
@@ -21,6 +25,26 @@ class ProducerFactory extends AbstractFactory
     }
 
     /**
+     * Create an object
+     *
+     * @param  ContainerInterface $container
+     * @param  string $requestedName
+     * @param  null|array $options
+     * @return object
+     * @throws ServiceNotFoundException if unable to resolve the service.
+     * @throws ServiceNotCreatedException if an exception is raised when
+     *     creating a service.
+     * @throws ContainerException if any other error occurs
+     */
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    {
+        /* @var $options Options */
+        $options = $this->getOptions($container, 'producer');
+
+        return $this->createProducer($container, $options);
+    }
+
+    /**
      * Create service.
      *
      * @param ServiceLocatorInterface $serviceLocator
@@ -29,24 +53,21 @@ class ProducerFactory extends AbstractFactory
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        /* @var $options Options */
-        $options = $this->getOptions($serviceLocator, 'producer');
-
-        return $this->createProducer($serviceLocator, $options);
+        return $this($serviceLocator, 'Producer');
     }
 
     /**
-     * @param ServiceLocatorInterface $serviceLocator
-     * @param Options                 $options
+     * @param ContainerInterface $container
+     * @param Options $options
      *
      * @return Producer
      *
      * @throws InvalidArgumentException
      */
-    protected function createProducer(ServiceLocatorInterface $serviceLocator, Options $options)
+    protected function createProducer(ContainerInterface $container, Options $options)
     {
         /** @var AbstractConnection $connection */
-        $connection = $serviceLocator->get(sprintf('rabbitmq.connection.%s', $options->getConnection()));
+        $connection = $container->get(sprintf('rabbitmq.connection.%s', $options->getConnection()));
         $producer = new Producer($connection);
         $producer->setExchangeOptions($options->getExchange());
         if ($options->getQueue()) {

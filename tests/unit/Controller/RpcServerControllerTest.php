@@ -15,7 +15,10 @@ class RpcServerControllerTest extends AbstractConsoleControllerTestCase
 
     public function testDispatchWithTestConsumer()
     {
-        $consumer = static::getMock('RabbitMqModule\RpcServer', array('consume'), array(), '', false);
+        $consumer = $this->getMockBuilder('RabbitMqModule\Consumer')
+            ->setMethods(['consume'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $consumer
             ->expects(static::once())
             ->method('consume');

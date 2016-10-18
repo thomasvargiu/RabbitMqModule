@@ -18,7 +18,7 @@ class SetupFabricControllerTest extends AbstractConsoleControllerTestCase
         $serviceManager = $this->getApplicationServiceLocator();
         $serviceManager->setAllowOverride(true);
 
-        $service = static::getMockBuilder('RabbitMqModule\\Service\\SetupFabricAwareInterface')
+        $service = $this->getMockBuilder('RabbitMqModule\\Service\\SetupFabricAwareInterface')
             ->getMockForAbstractClass();
         $service->expects(static::exactly(4))
             ->method('setupFabric');

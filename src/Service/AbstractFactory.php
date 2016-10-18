@@ -2,8 +2,8 @@
 
 namespace RabbitMqModule\Service;
 
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use RuntimeException;
 
 abstract class AbstractFactory implements FactoryInterface
@@ -37,7 +37,7 @@ abstract class AbstractFactory implements FactoryInterface
     /**
      * Gets options from configuration based on name.
      *
-     * @param ServiceLocatorInterface $sl
+     * @param ContainerInterface $container
      * @param string                  $key
      * @param null|string             $name
      *
@@ -45,13 +45,13 @@ abstract class AbstractFactory implements FactoryInterface
      *
      * @throws \RuntimeException
      */
-    public function getOptions(ServiceLocatorInterface $sl, $key, $name = null)
+    public function getOptions(ContainerInterface $container, $key, $name = null)
     {
         if ($name === null) {
             $name = $this->getName();
         }
 
-        $options = $sl->get('Configuration');
+        $options = $container->get('config');
         $options = $options['rabbitmq'];
         $options = isset($options[$key][$name]) ? $options[$key][$name] : null;
 

@@ -2,8 +2,12 @@
 
 namespace RabbitMqModule\Service;
 
+use Interop\Container\ContainerInterface;
+use Interop\Container\Exception\ContainerException;
 use RabbitMqModule\ConsumerInterface;
 use RabbitMqModule\RpcServer;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use RabbitMqModule\Options\RpcServer as Options;
 use InvalidArgumentException;
@@ -21,6 +25,26 @@ class RpcServerFactory extends AbstractFactory
     }
 
     /**
+     * Create an object
+     *
+     * @param  ContainerInterface $container
+     * @param  string $requestedName
+     * @param  null|array $options
+     * @return object
+     * @throws ServiceNotFoundException if unable to resolve the service.
+     * @throws ServiceNotCreatedException if an exception is raised when
+     *     creating a service.
+     * @throws ContainerException if any other error occurs
+     */
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    {
+        /* @var $options Options */
+        $options = $this->getOptions($container, 'rpc_server');
+
+        return $this->createServer($container, $options);
+    }
+
+    /**
      * Create service.
      *
      * @param ServiceLocatorInterface $serviceLocator
@@ -29,25 +53,22 @@ class RpcServerFactory extends AbstractFactory
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        /* @var $options Options */
-        $options = $this->getOptions($serviceLocator, 'rpc_server');
-
-        return $this->createServer($serviceLocator, $options);
+        return $this($serviceLocator, 'RpcServer');
     }
 
     /**
-     * @param ServiceLocatorInterface $serviceLocator
-     * @param Options                 $options
+     * @param ContainerInterface $container
+     * @param Options $options
      *
      * @throws InvalidArgumentException
      *
      * @return RpcServer
      */
-    protected function createServer(ServiceLocatorInterface $serviceLocator, Options $options)
+    protected function createServer(ContainerInterface $container, Options $options)
     {
         $callback = $options->getCallback();
         if (is_string($callback)) {
-            $callback = $serviceLocator->get($callback);
+            $callback = $container->get($callback);
         }
         if ($callback instanceof ConsumerInterface) {
             $callback = [$callback, 'execute'];
@@ -57,7 +78,7 @@ class RpcServerFactory extends AbstractFactory
         }
 
         /** @var \PhpAmqpLib\Connection\AbstractConnection $connection */
-        $connection = $serviceLocator->get(sprintf('rabbitmq.connection.%s', $options->getConnection()));
+        $connection = $container->get(sprintf('rabbitmq.connection.%s', $options->getConnection()));
         $server = new RpcServer($connection);
         $server->setQueueOptions($options->getQueue());
         $server->setExchangeOptions($options->getExchange());

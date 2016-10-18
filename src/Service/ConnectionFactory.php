@@ -2,9 +2,13 @@
 
 namespace RabbitMqModule\Service;
 
+use Interop\Container\ContainerInterface;
+use Interop\Container\Exception\ContainerException;
 use InvalidArgumentException;
 use RabbitMqModule\Service\Connection\ConnectionFactoryInterface;
 use RuntimeException;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use RabbitMqModule\Options\Connection as ConnectionOptions;
 
@@ -51,6 +55,27 @@ class ConnectionFactory extends AbstractFactory
     }
 
     /**
+     * Create an object
+     *
+     * @param  ContainerInterface $container
+     * @param  string $requestedName
+     * @param  null|array $options
+     * @return object
+     * @throws ServiceNotFoundException if unable to resolve the service.
+     * @throws ServiceNotCreatedException if an exception is raised when
+     *     creating a service.
+     * @throws ContainerException if any other error occurs
+     */
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    {
+        /* @var $options ConnectionOptions */
+        $options = $this->getOptions($container, 'connection');
+        $factory = $this->getFactory($container, $options->getType());
+
+        return $factory->createConnection($options);
+    }
+
+    /**
      * Create service.
      *
      * @param ServiceLocatorInterface $serviceLocator
@@ -59,23 +84,19 @@ class ConnectionFactory extends AbstractFactory
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        /* @var $options ConnectionOptions */
-        $options = $this->getOptions($serviceLocator, 'connection');
-        $factory = $this->getFactory($serviceLocator, $options->getType());
-
-        return $factory->createConnection($options);
+        return $this($serviceLocator, 'Connection');
     }
 
     /**
-     * @param ServiceLocatorInterface $serviceLocator
-     * @param string                  $type
+     * @param ContainerInterface $container
+     * @param string $type
      *
      * @return ConnectionFactoryInterface
      *
      * @throws InvalidArgumentException
      * @throws RuntimeException
      */
-    protected function getFactory(ServiceLocatorInterface $serviceLocator, $type)
+    protected function getFactory(ContainerInterface $container, $type)
     {
         $map = $this->getFactoryMap();
         if (!array_key_exists($type, $map)) {
@@ -83,7 +104,7 @@ class ConnectionFactory extends AbstractFactory
         }
 
         $className = $map[$type];
-        $factory = $serviceLocator->get($className);
+        $factory = $container->get($className);
         if (!$factory instanceof ConnectionFactoryInterface) {
             throw new RuntimeException(
                 sprintf('Factory for type "%s" must be an instance of ConnectionFactoryInterface', $type)

@@ -11,7 +11,7 @@ class ConsumerFactoryTest extends \PHPUnit_Framework_TestCase
         $factory = new ConsumerFactory('foo');
         $serviceManager = new ServiceManager();
         $serviceManager->setService(
-            'Configuration',
+            'config',
             [
                 'rabbitmq' => [
                     'consumer' => [
@@ -35,14 +35,14 @@ class ConsumerFactoryTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
             ->setMethods(['channel'])
             ->getMockForAbstractClass();
-        $channel = static::getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+        $channel = $this->getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
             ->disableOriginalConstructor()
             ->getMock();
-        $callback = static::getMockBuilder('RabbitMqModule\\ConsumerInterface')
+        $callback = $this->getMockBuilder('RabbitMqModule\\ConsumerInterface')
             ->disableOriginalConstructor()
             ->setMethods(['execute'])
             ->getMockForAbstractClass();
@@ -77,7 +77,7 @@ class ConsumerFactoryTest extends \PHPUnit_Framework_TestCase
         $factory = new ConsumerFactory('foo');
         $serviceManager = new ServiceManager();
         $serviceManager->setService(
-            'Configuration',
+            'config',
             [
                 'rabbitmq' => [
                     'consumer' => [

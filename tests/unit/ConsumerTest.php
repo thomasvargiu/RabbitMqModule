@@ -10,7 +10,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
 {
     public function testProperties()
     {
-        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
 
@@ -44,10 +44,10 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
 
     public function testSetupFabric()
     {
-        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
-        $channel = static::getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+        $channel = $this->getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -77,10 +77,10 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
 
     public function testSetupFabricWithEmptyQueueName()
     {
-        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
-        $channel = static::getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+        $channel = $this->getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -105,10 +105,10 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
 
     public function testSetupFabricWithoutQueueOptions()
     {
-        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
-        $channel = static::getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+        $channel = $this->getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -131,10 +131,10 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
 
     public function testSetupFabricWithNoDeclareExchange()
     {
-        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
-        $channel = static::getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+        $channel = $this->getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -160,13 +160,13 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
      */
     public function testProcessMessage($response, $method, $paramsExpects)
     {
-        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
-        $channel = static::getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+        $channel = $this->getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
             ->disableOriginalConstructor()
             ->getMock();
-        $message = static::getMockBuilder('PhpAmqpLib\\Message\\AMQPMessage')
+        $message = $this->getMockBuilder('PhpAmqpLib\\Message\\AMQPMessage')
             ->disableOriginalConstructor()
             ->getMock();
         $message->delivery_info = [
@@ -189,10 +189,10 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
 
     public function testPurge()
     {
-        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
-        $channel = static::getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+        $channel = $this->getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
             ->disableOriginalConstructor()
             ->getMock();
         $queueOptions = new QueueOptions();
@@ -210,10 +210,10 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
 
     public function testStart()
     {
-        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
-        $channel = static::getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+        $channel = $this->getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
             ->disableOriginalConstructor()
             ->getMock();
         $exchangeOptions = new ExchangeOptions();
@@ -245,10 +245,10 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
 
     public function testConsume()
     {
-        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
-        $channel = static::getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+        $channel = $this->getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
             ->disableOriginalConstructor()
             ->getMock();
         $exchangeOptions = new ExchangeOptions();
@@ -280,10 +280,10 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
 
     public function testConsumeWithStop()
     {
-        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
-        $channel = static::getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+        $channel = $this->getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -328,10 +328,10 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetCallbackWithInvalidValue()
     {
-        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
-        $channel = static::getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+        $channel = $this->getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
             ->disableOriginalConstructor()
             ->getMock();
 

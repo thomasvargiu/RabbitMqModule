@@ -2,22 +2,22 @@
 
 namespace RabbitMqModule\Controller;
 
+use Interop\Container\ContainerInterface;
 use Zend\Mvc\Controller\AbstractConsoleController as BaseController;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 class AbstractConsoleController extends BaseController
 {
     /**
-     * @var ServiceLocatorInterface
+     * @var ContainerInterface
      */
     protected $container;
 
     /**
      * ConsumerController constructor.
      *
-     * @param ServiceLocatorInterface $container
+     * @param ContainerInterface $container
      */
-    public function __construct(ServiceLocatorInterface $container)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }

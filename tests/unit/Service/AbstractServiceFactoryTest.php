@@ -19,7 +19,7 @@ class AbstractServiceFactoryTest extends PHPUnit_Framework_TestCase
     {
         $this->serviceManager = new ServiceManager();
         $this->serviceManager->setService(
-            'Configuration',
+            'config',
             [
                 'rabbitmq' => [
                     'connection' => [
@@ -52,28 +52,13 @@ class AbstractServiceFactoryTest extends PHPUnit_Framework_TestCase
         static::assertFalse($factory->canCreateServiceWithName($sm, 'rabbitmq.foo.bar', 'rabbitmq.foo.bar2'));
     }
 
-    public function testCreateServiceWithName()
-    {
-        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
-            ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
-        $sm = $this->serviceManager;
-        $sm->setService('rabbitmq.connection.default', $connection);
-        $factory = new AbstractServiceFactory();
-        static::assertTrue(
-            $factory->createServiceWithName($sm, 'rabbitmq.producer.foo', 'rabbitmq.producer.foo')
-        );
-    }
-
     /**
-     * @expectedException \Zend\ServiceManager\Exception\ServiceNotFoundException
+     * @expectedException \Interop\Container\Exception\ContainerException
      */
     public function testCreateServiceUnknown()
     {
         $sm = $this->serviceManager;
         $factory = new AbstractServiceFactory();
-        static::assertTrue(
-            $factory->createServiceWithName($sm, 'rabbitmq.unknown-key.foo', 'rabbitmq.unknown-key.foo')
-        );
+        $factory->createServiceWithName($sm, 'rabbitmq.unknown-key.foo', 'rabbitmq.unknown-key.foo');
     }
 }

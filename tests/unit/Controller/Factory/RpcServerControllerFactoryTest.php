@@ -6,9 +6,9 @@ class RpcServerControllerFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testFactory()
     {
-        $serviceLocator = static::getMockBuilder('Zend\ServiceManager\ServiceLocatorInterface')
+        $serviceLocator = $this->getMockBuilder('Zend\ServiceManager\ServiceManager')
             ->getMock();
-        $pluginManager = static::getMockBuilder('Zend\ServiceManager\AbstractPluginManager')
+        $pluginManager = $this->getMockBuilder('Zend\ServiceManager\AbstractPluginManager')
             ->disableOriginalConstructor()
             ->getMock();
 

@@ -11,7 +11,7 @@ class RpcClientFactoryTest extends \PHPUnit_Framework_TestCase
         $factory = new RpcClientFactory('foo');
         $serviceManager = new ServiceManager();
         $serviceManager->setService(
-            'Configuration',
+            'config',
             [
                 'rabbitmq' => [
                     'rpc_client' => [
@@ -24,7 +24,7 @@ class RpcClientFactoryTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         $serviceManager->setService('rabbitmq.connection.foo', $connection);

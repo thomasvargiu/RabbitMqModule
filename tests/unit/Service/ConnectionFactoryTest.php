@@ -11,7 +11,7 @@ class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase
         $factory = new ConnectionFactory('foo');
         $serviceManager = new ServiceManager();
         $serviceManager->setService(
-            'Configuration',
+            'config',
             [
                 'rabbitmq' => [
                     'connection' => [
@@ -23,7 +23,7 @@ class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $factoryMock = static::getMockBuilder('RabbitMqModule\\Service\\Connection\\ConnectionFactoryInterface')
+        $factoryMock = $this->getMockBuilder('RabbitMqModule\\Service\\Connection\\ConnectionFactoryInterface')
             ->getMock();
         $factoryMock->expects(static::once())
             ->method('createConnection')
@@ -48,7 +48,7 @@ class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase
         $factory = new ConnectionFactory('foo');
         $serviceManager = new ServiceManager();
         $serviceManager->setService(
-            'Configuration',
+            'config',
             [
                 'rabbitmq' => [
                     'connection' => [
@@ -71,7 +71,7 @@ class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase
         $factory = new ConnectionFactory('foo');
         $serviceManager = new ServiceManager();
         $serviceManager->setService(
-            'Configuration',
+            'config',
             [
                 'rabbitmq' => [
                     'connection' => [

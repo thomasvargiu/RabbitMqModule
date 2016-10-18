@@ -10,7 +10,7 @@ class ProducerTest extends \PHPUnit_Framework_TestCase
 {
     public function testProperties()
     {
-        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
 
@@ -39,10 +39,10 @@ class ProducerTest extends \PHPUnit_Framework_TestCase
 
     public function testSetupFabric()
     {
-        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
-        $channel = static::getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+        $channel = $this->getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -64,10 +64,10 @@ class ProducerTest extends \PHPUnit_Framework_TestCase
 
     public function testPublish()
     {
-        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
-        $channel = static::getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+        $channel = $this->getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
             ->disableOriginalConstructor()
             ->getMock();
 

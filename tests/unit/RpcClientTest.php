@@ -17,10 +17,10 @@ class RpcClientTest extends \PHPUnit_Framework_TestCase
 
         $serializer = Serializer::factory('json');
 
-        $connection = static::getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
-        $channel = static::getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+        $channel = $this->getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
             ->disableOriginalConstructor()
             ->getMock();
 

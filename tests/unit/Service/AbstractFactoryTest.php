@@ -19,13 +19,14 @@ class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
             ],
         ];
         
-        $serviceLocator = static::getMockBuilder('Zend\\ServiceManager\\ServiceLocatorInterface')
+        $serviceLocator = $this->getMockBuilder('Zend\\ServiceManager\\ServiceManager')
+            ->disableOriginalConstructor()
             ->setMethods(['get', 'has'])
             ->getMock();
-        $factory = static::getMockBuilder('RabbitMqModule\\Service\\AbstractFactory')
+        $factory = $this->getMockBuilder('RabbitMqModule\\Service\\AbstractFactory')
             ->setConstructorArgs(['default-name'])
-            ->setMethods(['getOptionsClass', 'createService'])
-            ->getMock();
+            ->setMethods(['getOptionsClass', 'createService', '__invoke'])
+            ->getMockForAbstractClass();
 
         $serviceLocator->method('get')->willReturn($configuration);
         $serviceLocator->method('has')->willReturn(true);
@@ -56,13 +57,13 @@ class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
             ],
         ];
 
-        $serviceLocator = static::getMockBuilder('Zend\\ServiceManager\\ServiceLocatorInterface')
+        $serviceLocator = $this->getMockBuilder('Zend\\ServiceManager\\ServiceManager')
             ->setMethods(['get', 'has'])
             ->getMock();
-        $factory = static::getMockBuilder('RabbitMqModule\\Service\\AbstractFactory')
+        $factory = $this->getMockBuilder('RabbitMqModule\\Service\\AbstractFactory')
             ->setConstructorArgs(['default-name'])
-            ->setMethods(['getOptionsClass', 'createService'])
-            ->getMock();
+            ->setMethods(['getOptionsClass', 'createService', '__invoke'])
+            ->getMockForAbstractClass();
 
         $serviceLocator->method('get')->willReturn($configuration);
 
