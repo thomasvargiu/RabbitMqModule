@@ -3,7 +3,7 @@
 namespace RabbitMqModule\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use RuntimeException;
 
 abstract class AbstractFactory implements FactoryInterface

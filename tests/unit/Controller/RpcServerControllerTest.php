@@ -8,7 +8,7 @@ class RpcServerControllerTest extends AbstractConsoleControllerTestCase
 {
     protected function setUp()
     {
-        $config = include __DIR__.'/../../TestConfiguration.php.dist';
+        $config = include __DIR__.'/../../TestConfiguration.php';
         $this->setApplicationConfig($config);
         parent::setUp();
     }

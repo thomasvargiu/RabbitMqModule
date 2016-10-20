@@ -6,16 +6,11 @@ class RpcServerControllerFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testFactory()
     {
-        $serviceLocator = $this->getMockBuilder('Zend\ServiceManager\ServiceManager')
+        $container = $this->getMockBuilder('Interop\Container\ContainerInterface')
             ->getMock();
-        $pluginManager = $this->getMockBuilder('Zend\ServiceManager\AbstractPluginManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $pluginManager->method('getServiceLocator')->willReturn($serviceLocator);
 
         $factory = new RpcServerControllerFactory();
-        $controller = $factory->createService($pluginManager);
+        $controller = $factory($container, 'service-name');
 
         static::assertInstanceOf('RabbitMqModule\Controller\RpcServerController', $controller);
     }

@@ -38,7 +38,7 @@ class ProducerFactoryTest extends \PHPUnit_Framework_TestCase
             $connection
         );
 
-        $service = $factory->createService($serviceManager);
+        $service = $factory($serviceManager, 'service-name');
 
         static::assertInstanceOf('RabbitMqModule\\Producer', $service);
         static::assertSame($connection, $service->getConnection());

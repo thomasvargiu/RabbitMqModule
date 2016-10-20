@@ -18,20 +18,18 @@ class ConsumerController extends AbstractConsoleController
 
     public function indexAction()
     {
-        /** @var \Zend\Console\Request $request */
-        $request = $this->getRequest();
         /** @var \Zend\Console\Response $response */
         $response = $this->getResponse();
 
-        $this->getConsole()->writeLine(sprintf('Starting consumer %s', $request->getParam('name')));
+        $this->getConsole()->writeLine(sprintf('Starting consumer %s', $this->params('name')));
 
-        $withoutSignals = $request->getParam('without-signals') || $request->getParam('w');
+        $withoutSignals = $this->params('without-signals') || $this->params('w');
 
-        $serviceName = sprintf('rabbitmq.consumer.%s', $request->getParam('name'));
+        $serviceName = sprintf('rabbitmq.consumer.%s', $this->params('name'));
 
         if (!$this->container->has($serviceName)) {
             $this->getConsole()->writeLine(
-                sprintf('No consumer with name "%s" found', $request->getParam('name')),
+                sprintf('No consumer with name "%s" found', $this->params('name')),
                 ColorInterface::RED
             );
             $response->setErrorLevel(1);

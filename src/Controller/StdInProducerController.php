@@ -11,14 +11,12 @@ class StdInProducerController extends AbstractConsoleController
 {
     public function indexAction()
     {
-        /** @var \Zend\Console\Request $request */
-        $request = $this->getRequest();
         /** @var \Zend\Console\Response $response */
         $response = $this->getResponse();
 
-        $producerName = $request->getParam('name');
-        $route = $request->getParam('route', '');
-        $msg = $request->getParam('msg');
+        $producerName = $this->params('name');
+        $route = $this->params('route', '');
+        $msg = $this->params('msg');
 
         $serviceName = sprintf('rabbitmq.producer.%s', $producerName);
 

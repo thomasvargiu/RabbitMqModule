@@ -59,7 +59,7 @@ class ConsumerFactoryTest extends \PHPUnit_Framework_TestCase
         $serviceManager->setService('rabbitmq.connection.foo', $connection);
         $serviceManager->setService('callback-service', $callback);
 
-        $service = $factory->createService($serviceManager);
+        $service = $factory($serviceManager, 'service-name');
 
         static::assertInstanceOf('RabbitMqModule\\Consumer', $service);
         static::assertInstanceOf('RabbitMqModule\\Options\\Queue', $service->getQueueOptions());
@@ -100,6 +100,6 @@ class ConsumerFactoryTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $factory->createService($serviceManager);
+        $factory($serviceManager, 'service-name');
     }
 }

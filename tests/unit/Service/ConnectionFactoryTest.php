@@ -35,7 +35,7 @@ class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase
             'bar' => 'barFactoryMock',
         ]);
 
-        $service = $factory->createService($serviceManager);
+        $service = $factory($serviceManager, 'service-name');
 
         static::assertEquals('foo', $service);
     }
@@ -60,7 +60,7 @@ class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $factory->createService($serviceManager);
+        $factory($serviceManager, 'service-name');
     }
 
     /**
@@ -89,7 +89,7 @@ class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase
             'bar' => 'barFactoryMock',
         ]);
 
-        $service = $factory->createService($serviceManager);
+        $service = $factory($serviceManager, 'service-name');
 
         static::assertEquals('foo', $service);
     }
