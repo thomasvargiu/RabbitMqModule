@@ -76,8 +76,8 @@ class AbstractServiceFactory implements AbstractFactoryInterface
 
         $factoryClass = $mappings['factoryClass'];
         /* @var $factory \RabbitMqModule\Service\AbstractFactory */
-        $factory = new $factoryClass($mappings['serviceName'], $requestedName, $options);
+        $factory = new $factoryClass($mappings['serviceName']);
 
-        return $factory($container);
+        return $factory($container, $requestedName, $options);
     }
 }
