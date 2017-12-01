@@ -42,21 +42,20 @@ matrix:
     - php: 7.1
       env:
         - DEPS=latest
-    - php: hhvm
+    - php: 7.2
       env:
         - DEPS=lowest
-    - php: hhvm
+    - php: 7.2
       env:
-        - DEPS=locked
-    - php: hhvm
+        - DEPS=latest
+    - php: nightly
+      env:
+        - DEPS=lowest
+    - php: nightly
       env:
         - DEPS=latest
   allow_failures:
-    - php: hhvm
-
-before_install:
-  - if [[ $EXECUTE_TEST_SCRUTINIZER != 'true' ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
-  - composer self-update
+    - php: nightly
 
 install:
   - if [[ $DEPS == 'latest' ]]; then travis_retry composer update $COMPOSER_ARGS ; fi
