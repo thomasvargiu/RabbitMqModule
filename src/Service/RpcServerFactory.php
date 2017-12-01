@@ -8,7 +8,6 @@ use RabbitMqModule\ConsumerInterface;
 use RabbitMqModule\RpcServer;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use RabbitMqModule\Options\RpcServer as Options;
 use InvalidArgumentException;
 
@@ -21,7 +20,7 @@ class RpcServerFactory extends AbstractFactory
      */
     public function getOptionsClass()
     {
-        return 'RabbitMqModule\\Options\\RpcServer';
+        return \RabbitMqModule\Options\RpcServer::class;
     }
 
     /**
@@ -44,18 +43,6 @@ class RpcServerFactory extends AbstractFactory
         $options = $this->getOptions($container, 'rpc_server');
 
         return $this->createServer($container, $options);
-    }
-
-    /**
-     * Create service.
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        return $this($serviceLocator, 'RpcServer');
     }
 
     /**

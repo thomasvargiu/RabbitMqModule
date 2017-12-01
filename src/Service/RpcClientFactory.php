@@ -8,7 +8,6 @@ use PhpAmqpLib\Connection\AbstractConnection;
 use RabbitMqModule\RpcClient;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use RabbitMqModule\Options\RpcClient as Options;
 use InvalidArgumentException;
 
@@ -21,7 +20,7 @@ class RpcClientFactory extends AbstractFactory
      */
     public function getOptionsClass()
     {
-        return 'RabbitMqModule\\Options\\RpcClient';
+        return \RabbitMqModule\Options\RpcClient::class;
     }
 
     /**
@@ -44,18 +43,6 @@ class RpcClientFactory extends AbstractFactory
         $options = $this->getOptions($container, 'rpc_client');
 
         return $this->createClient($container, $options);
-    }
-
-    /**
-     * Create service.
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        return $this($serviceLocator, 'RpcClient');
     }
 
     /**

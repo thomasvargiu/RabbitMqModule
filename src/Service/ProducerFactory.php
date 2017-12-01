@@ -8,7 +8,6 @@ use PhpAmqpLib\Connection\AbstractConnection;
 use RabbitMqModule\Producer;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use RabbitMqModule\Options\Producer as Options;
 use InvalidArgumentException;
 
@@ -21,7 +20,7 @@ class ProducerFactory extends AbstractFactory
      */
     public function getOptionsClass()
     {
-        return 'RabbitMqModule\\Options\\Producer';
+        return \RabbitMqModule\Options\Producer::class;
     }
 
     /**
@@ -31,7 +30,7 @@ class ProducerFactory extends AbstractFactory
      * @param string             $requestedName
      * @param null|array         $options
      *
-     * @return object
+     * @return Producer
      *
      * @throws ServiceNotFoundException   if unable to resolve the service
      * @throws ServiceNotCreatedException if an exception is raised when
@@ -44,18 +43,6 @@ class ProducerFactory extends AbstractFactory
         $options = $this->getOptions($container, 'producer');
 
         return $this->createProducer($container, $options);
-    }
-
-    /**
-     * Create service.
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return Producer
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        return $this($serviceLocator, 'Producer');
     }
 
     /**

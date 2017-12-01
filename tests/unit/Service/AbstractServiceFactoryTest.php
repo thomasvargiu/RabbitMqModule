@@ -8,7 +8,7 @@ use Zend\ServiceManager\ServiceManager;
 class AbstractServiceFactoryTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Zend\ServiceManager\ServiceManager
+     * @var \Interop\Container\ContainerInterface
      */
     protected $serviceManager;
 
@@ -48,8 +48,8 @@ class AbstractServiceFactoryTest extends PHPUnit_Framework_TestCase
     {
         $sm = $this->serviceManager;
         $factory = new AbstractServiceFactory();
-        static::assertTrue($factory->canCreateServiceWithName($sm, 'rabbitmq.foo.bar', 'rabbitmq.foo.bar'));
-        static::assertFalse($factory->canCreateServiceWithName($sm, 'rabbitmq.foo.bar', 'rabbitmq.foo.bar2'));
+        static::assertTrue($factory->canCreate($sm, 'rabbitmq.foo.bar'));
+        static::assertFalse($factory->canCreate($sm, 'rabbitmq.foo.bar2'));
     }
 
     /**
@@ -59,6 +59,6 @@ class AbstractServiceFactoryTest extends PHPUnit_Framework_TestCase
     {
         $sm = $this->serviceManager;
         $factory = new AbstractServiceFactory();
-        $factory->createServiceWithName($sm, 'rabbitmq.unknown-key.foo', 'rabbitmq.unknown-key.foo');
+        $factory($sm, 'rabbitmq.unknown-key.foo');
     }
 }

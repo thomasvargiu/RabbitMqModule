@@ -29,7 +29,7 @@ class RpcClientFactoryTest extends \PHPUnit_Framework_TestCase
             ->getMockForAbstractClass();
         $serviceManager->setService('rabbitmq.connection.foo', $connection);
 
-        $service = $factory->createService($serviceManager);
+        $service = $factory($serviceManager, 'service-name');
 
         static::assertInstanceOf('RabbitMqModule\\RpcClient', $service);
         static::assertInstanceOf('Zend\\Serializer\\Adapter\\AdapterInterface', $service->getSerializer());

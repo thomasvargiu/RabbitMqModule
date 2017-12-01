@@ -5,33 +5,15 @@ namespace RabbitMqModule\Controller\Factory;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
 use RabbitMqModule\Controller\ConsumerController as Controller;
-use Zend\ServiceManager\AbstractPluginManager;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class ConsumerControllerFactory.
  */
 class ConsumerControllerFactory implements FactoryInterface
 {
-    /**
-     * Create service.
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return Controller
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        if ($serviceLocator instanceof AbstractPluginManager) {
-            $serviceLocator = $serviceLocator->getServiceLocator() ?: $serviceLocator;
-        }
-
-        return $this($serviceLocator, Controller::class);
-    }
-
     /**
      * Create an object.
      *

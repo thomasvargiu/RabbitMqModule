@@ -8,7 +8,6 @@ use RabbitMqModule\Consumer;
 use RabbitMqModule\ConsumerInterface;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use RabbitMqModule\Options\Consumer as Options;
 use InvalidArgumentException;
 
@@ -21,7 +20,7 @@ class ConsumerFactory extends AbstractFactory
      */
     public function getOptionsClass()
     {
-        return 'RabbitMqModule\\Options\\Consumer';
+        return \RabbitMqModule\Options\Consumer::class;
     }
 
     /**
@@ -31,7 +30,7 @@ class ConsumerFactory extends AbstractFactory
      * @param string             $requestedName
      * @param null|array         $options
      *
-     * @return object
+     * @return Consumer
      *
      * @throws ServiceNotFoundException   if unable to resolve the service
      * @throws ServiceNotCreatedException if an exception is raised when
@@ -44,18 +43,6 @@ class ConsumerFactory extends AbstractFactory
         $options = $this->getOptions($container, 'consumer');
 
         return $this->createConsumer($container, $options);
-    }
-
-    /**
-     * Create service.
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return Consumer
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        return $this($serviceLocator, 'Consumer');
     }
 
     /**
