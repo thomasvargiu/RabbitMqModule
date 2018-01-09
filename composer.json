@@ -20,9 +20,10 @@
   "require": {
     "php": "^7.1",
     "psr/container": "^1.0",
-    "php-amqplib/php-amqplib": "^2.6.3",
-    "zendframework/zend-stdlib": "^3.0",
-    "zendframework/zend-servicemanager": "^3.0",
+    "container-interop/container-interop": "^1.2",
+    "php-amqplib/php-amqplib": "^2.7",
+    "zendframework/zend-stdlib": "^3.1",
+    "zendframework/zend-servicemanager": "^3.3",
     "zendframework/zend-modulemanager": "^2.7.1 || ^3.0",
     "zendframework/zend-mvc": "^3.0.3",
     "zendframework/zend-mvc-console": "^1.1.11",
@@ -31,7 +32,7 @@
   },
   "require-dev": {
     "phpunit/phpunit": "^6.0",
-    "zendframework/zend-test": "^3.0.2",
+    "zendframework/zend-test": "^3.1",
     "zendframework/zend-log": "^2.7",
     "zendframework/zend-i18n": "^2.6",
     "zendframework/zend-http": "^2.5.5",
