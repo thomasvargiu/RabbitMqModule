@@ -4,7 +4,7 @@ namespace RabbitMqModule;
 
 use Zend\Serializer\Serializer;
 
-class RpcServerTest extends \PHPUnit_Framework_TestCase
+class RpcServerTest extends \PHPUnit\Framework\TestCase
 {
     public function testProcessMessage()
     {

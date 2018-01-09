@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RabbitMqModule\Controller;
 
 use PhpAmqpLib\Exception\AMQPTimeoutException;
@@ -46,15 +48,15 @@ class ConsumerController extends AbstractConsoleController
         }
 
         // @codeCoverageIgnoreStart
-        if (!$withoutSignals && extension_loaded('pcntl')) {
-            if (!function_exists('pcntl_signal')) {
+        if (!$withoutSignals && \extension_loaded('pcntl')) {
+            if (! \function_exists('pcntl_signal')) {
                 throw new \BadFunctionCallException(
                     'Function \'pcntl_signal\' is referenced in the php.ini \'disable_functions\' and can\'t be called.'
                 );
             }
 
-            pcntl_signal(SIGTERM, [$this, 'stopConsumer']);
-            pcntl_signal(SIGINT, [$this, 'stopConsumer']);
+            \pcntl_signal(SIGTERM, [$this, 'stopConsumer']);
+            \pcntl_signal(SIGINT, [$this, 'stopConsumer']);
         }
         // @codeCoverageIgnoreEnd
 
@@ -65,8 +67,6 @@ class ConsumerController extends AbstractConsoleController
 
     /**
      * List available consumers.
-     *
-     * @return string
      */
     public function listAction()
     {
@@ -96,7 +96,7 @@ class ConsumerController extends AbstractConsoleController
     /**
      * Stop consumer.
      */
-    public function stopConsumer()
+    public function stopConsumer(): void
     {
         if ($this->consumer instanceof Consumer) {
             $this->consumer->forceStopConsumer();

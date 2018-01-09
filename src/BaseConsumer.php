@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RabbitMqModule;
 
 use PhpAmqpLib\Message\AMQPMessage;
@@ -11,7 +13,7 @@ abstract class BaseConsumer extends BaseAmqp implements EventManagerAwareInterfa
     use EventManagerAwareTrait;
 
     /**
-     * @var string
+     * @var null|string
      */
     protected $consumerTag;
     /**
@@ -34,29 +36,25 @@ abstract class BaseConsumer extends BaseAmqp implements EventManagerAwareInterfa
     /**
      * @return bool
      */
-    public function isSignalsEnabled()
+    public function isSignalsEnabled(): bool
     {
         return $this->signalsEnabled;
     }
 
     /**
      * @param bool $signalsEnabled
-     *
-     * @return $this
      */
-    public function setSignalsEnabled($signalsEnabled = true)
+    public function setSignalsEnabled(bool $signalsEnabled = true): void
     {
         $this->signalsEnabled = $signalsEnabled;
-
-        return $this;
     }
 
     /**
      * @return string
      */
-    public function getConsumerTag()
+    public function getConsumerTag(): string
     {
-        if (!$this->consumerTag) {
+        if (! $this->consumerTag) {
             $this->consumerTag = sprintf('PHPPROCESS_%s_%s', gethostname(), getmypid());
         }
 
@@ -65,71 +63,57 @@ abstract class BaseConsumer extends BaseAmqp implements EventManagerAwareInterfa
 
     /**
      * @param string $consumerTag
-     *
-     * @return $this
      */
-    public function setConsumerTag($consumerTag)
+    public function setConsumerTag(string $consumerTag): void
     {
         $this->consumerTag = $consumerTag;
-
-        return $this;
     }
 
     /**
      * @return callable
      */
-    public function getCallback()
+    public function getCallback(): callable
     {
         return $this->callback;
     }
 
     /**
      * @param callable $callback
-     *
-     * @return $this
      */
-    public function setCallback($callback)
+    public function setCallback(callable $callback): void
     {
-        if (!is_callable($callback)) {
-            throw new \InvalidArgumentException('Invalid callback provided');
-        }
         $this->callback = $callback;
-
-        return $this;
     }
 
     /**
      * @return int
      */
-    public function getIdleTimeout()
+    public function getIdleTimeout(): int
     {
         return $this->idleTimeout;
     }
 
     /**
      * @param int $idleTimeout
-     *
-     * @return $this
      */
-    public function setIdleTimeout($idleTimeout)
+    public function setIdleTimeout(int $idleTimeout): void
     {
         $this->idleTimeout = $idleTimeout;
-
-        return $this;
     }
 
     /**
      * Start consumer.
      */
-    public function start()
+    public function start(): void
     {
         $this->setupConsumer();
-        while (count($this->getChannel()->callbacks)) {
+
+        while (\count($this->getChannel()->callbacks)) {
             $this->getChannel()->wait();
         }
     }
 
-    protected function setupConsumer()
+    protected function setupConsumer(): void
     {
         if ($this->isAutoSetupFabricEnabled()) {
             $this->setupFabric();
@@ -153,21 +137,17 @@ abstract class BaseConsumer extends BaseAmqp implements EventManagerAwareInterfa
      * @param int  $prefetchSize
      * @param int  $prefetchCount
      * @param bool $global
-     *
-     * @return $this
      */
-    public function setQosOptions($prefetchSize = 0, $prefetchCount = 0, $global = false)
+    public function setQosOptions($prefetchSize = 0, $prefetchCount = 0, $global = false): void
     {
         $this->getChannel()->basic_qos($prefetchSize, $prefetchCount, $global);
-
-        return $this;
     }
 
-    protected function maybeStopConsumer()
+    protected function maybeStopConsumer(): void
     {
         // @codeCoverageIgnoreStart
-        if (extension_loaded('pcntl') && $this->isSignalsEnabled()) {
-            if (!function_exists('pcntl_signal_dispatch')) {
+        if (\extension_loaded('pcntl') && $this->isSignalsEnabled()) {
+            if (! \function_exists('pcntl_signal_dispatch')) {
                 throw new \BadFunctionCallException(
                     'Function \'pcntl_signal_dispatch\' is referenced in the php.ini'.
                     '\'disable_functions\' and can\'t be called.'
@@ -180,29 +160,20 @@ abstract class BaseConsumer extends BaseAmqp implements EventManagerAwareInterfa
         if ($this->forceStop) {
             $this->stopConsuming();
         }
-
-        return $this;
     }
 
-    public function forceStopConsumer()
+    public function forceStopConsumer(): void
     {
         $this->forceStop = true;
-
-        return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function stopConsuming()
+    public function stopConsuming(): void
     {
         $this->getChannel()->basic_cancel($this->getConsumerTag());
-
-        return $this;
     }
 
     /**
      * @param AMQPMessage $message
      */
-    abstract public function processMessage(AMQPMessage $message);
+    abstract public function processMessage(AMQPMessage $message): void;
 }

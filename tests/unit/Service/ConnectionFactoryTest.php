@@ -2,42 +2,43 @@
 
 namespace RabbitMqModule\Service;
 
+use PhpAmqpLib\Connection\AbstractConnection;
+use Prophecy\Argument;
+use RabbitMqModule\Service\Connection\ConnectionFactoryInterface;
 use Zend\ServiceManager\ServiceManager;
 
-class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase
+class ConnectionFactoryTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreateService()
     {
         $factory = new ConnectionFactory('foo');
-        $serviceManager = new ServiceManager();
-        $serviceManager->setService(
-            'config',
-            [
-                'rabbitmq' => [
-                    'connection' => [
-                        'foo' => [
-                            'type' => 'bar',
-                        ],
+
+        $factory->setFactoryMap(['foo' => 'FooConnectionFactory']);
+
+        $config = [
+            'rabbitmq' => [
+                'connection' => [
+                    'foo' => [
+                        'type' => 'foo',
                     ],
                 ],
-            ]
-        );
+            ],
+        ];
 
-        $factoryMock = $this->getMockBuilder('RabbitMqModule\\Service\\Connection\\ConnectionFactoryInterface')
-            ->getMock();
-        $factoryMock->expects(static::once())
-            ->method('createConnection')
-            ->will(static::returnValue('foo'));
+        $container = $this->prophesize(\Zend\ServiceManager\ServiceManager::class);
+        $connection = $this->prophesize(AbstractConnection::class);
+        $connectionFactory = $this->prophesize(ConnectionFactoryInterface::class);
 
-        $serviceManager->setService('barFactoryMock', $factoryMock);
+        $container->get('config')->willReturn($config);
+        $container->get('FooConnectionFactory')->willReturn($connectionFactory->reveal());
 
-        $factory->setFactoryMap([
-            'bar' => 'barFactoryMock',
-        ]);
+        $connectionFactory->createConnection(Argument::type(\RabbitMqModule\Options\Connection::class))
+            ->shouldBeCalled()
+            ->willReturn($connection->reveal());
 
-        $service = $factory($serviceManager, 'service-name');
+        $service = $factory($container->reveal(), 'service-name');
 
-        static::assertEquals('foo', $service);
+        static::assertSame($connection->reveal(), $service);
     }
 
     /**

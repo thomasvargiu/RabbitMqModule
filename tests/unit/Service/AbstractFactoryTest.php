@@ -2,7 +2,7 @@
 
 namespace RabbitMqModule\Service;
 
-class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
+class AbstractFactoryTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetOptions()
     {

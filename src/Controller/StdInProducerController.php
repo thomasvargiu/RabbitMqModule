@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RabbitMqModule\Controller;
 
 use Zend\Console\ColorInterface;
@@ -15,12 +17,12 @@ class StdInProducerController extends AbstractConsoleController
         $response = $this->getResponse();
 
         $producerName = $this->params('name');
-        $route = $this->params('route', '');
-        $msg = $this->params('msg');
+        $route = (string) $this->params('route', '');
+        $msg = (string) $this->params('msg');
 
         $serviceName = sprintf('rabbitmq.producer.%s', $producerName);
 
-        if (!$this->container->has($serviceName)) {
+        if (! $this->container->has($serviceName)) {
             $this->getConsole()->writeLine(
                 sprintf('No producer with name "%s" found', $producerName),
                 ColorInterface::RED

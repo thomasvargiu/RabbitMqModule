@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RabbitMqModule\Options;
 
 use Zend\Stdlib\AbstractOptions;
@@ -7,11 +9,11 @@ use Zend\Stdlib\AbstractOptions;
 class Exchange extends AbstractOptions
 {
     /**
-     * @var string
+     * @var null|string
      */
     protected $name;
     /**
-     * @var string
+     * @var null|string
      */
     protected $type;
     /**
@@ -52,234 +54,189 @@ class Exchange extends AbstractOptions
     protected $exchangeBinds = [];
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param string $name
-     *
-     * @return $this
+     * @param null|string $name
      */
-    public function setName($name)
+    public function setName(?string $name): void
     {
         $this->name = $name;
-
-        return $this;
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
 
     /**
-     * @param string $type
-     *
-     * @return $this
+     * @param null|string $type
      */
-    public function setType($type)
+    public function setType(?string $type): void
     {
         $this->type = $type;
-
-        return $this;
     }
 
     /**
      * @return bool
      */
-    public function isPassive()
+    public function isPassive(): bool
     {
         return $this->passive;
     }
 
     /**
      * @param bool $passive
-     *
-     * @return $this
      */
-    public function setPassive($passive)
+    public function setPassive(bool $passive): void
     {
         $this->passive = $passive;
-
-        return $this;
     }
 
     /**
      * @return bool
      */
-    public function isDurable()
+    public function isDurable(): bool
     {
         return $this->durable;
     }
 
     /**
      * @param bool $durable
-     *
-     * @return $this
      */
-    public function setDurable($durable)
+    public function setDurable(bool $durable): void
     {
         $this->durable = $durable;
-
-        return $this;
     }
 
     /**
      * @return bool
      */
-    public function isAutoDelete()
+    public function isAutoDelete(): bool
     {
         return $this->autoDelete;
     }
 
     /**
      * @param bool $autoDelete
-     *
-     * @return $this
      */
-    public function setAutoDelete($autoDelete)
+    public function setAutoDelete(bool $autoDelete): void
     {
         $this->autoDelete = $autoDelete;
-
-        return $this;
     }
 
     /**
      * @return bool
      */
-    public function isInternal()
+    public function isInternal(): bool
     {
         return $this->internal;
     }
 
     /**
      * @param bool $internal
-     *
-     * @return $this
      */
-    public function setInternal($internal)
+    public function setInternal($internal): void
     {
         $this->internal = $internal;
-
-        return $this;
     }
 
     /**
      * @return bool
      */
-    public function isNoWait()
+    public function isNoWait(): bool
     {
         return $this->noWait;
     }
 
     /**
      * @param bool $noWait
-     *
-     * @return $this
      */
-    public function setNoWait($noWait)
+    public function setNoWait(bool $noWait): void
     {
         $this->noWait = $noWait;
-
-        return $this;
     }
 
     /**
      * @return bool
      */
-    public function isDeclare()
+    public function isDeclare(): bool
     {
         return $this->declare;
     }
 
     /**
      * @param bool $declare
-     *
-     * @return $this
      */
-    public function setDeclare($declare)
+    public function setDeclare(bool $declare): void
     {
         $this->declare = $declare;
-
-        return $this;
     }
 
     /**
      * @return array
      */
-    public function getArguments()
+    public function getArguments(): array
     {
         return $this->arguments;
     }
 
     /**
      * @param array $arguments
-     *
-     * @return $this
      */
-    public function setArguments(array $arguments)
+    public function setArguments(array $arguments): void
     {
         $this->arguments = $arguments;
-
-        return $this;
     }
 
     /**
      * @return int
      */
-    public function getTicket()
+    public function getTicket(): int
     {
         return $this->ticket;
     }
 
     /**
      * @param int $ticket
-     *
-     * @return $this
      */
-    public function setTicket($ticket)
+    public function setTicket(int $ticket): void
     {
         $this->ticket = $ticket;
-
-        return $this;
     }
 
     /**
      * @return ExchangeBind[]
      */
-    public function getExchangeBinds()
+    public function getExchangeBinds(): array
     {
         return $this->exchangeBinds;
     }
 
     /**
      * @param array|ExchangeBind[] $exchangeBinds
-     *
-     * @return $this
      */
-    public function setExchangeBinds(array $exchangeBinds)
+    public function setExchangeBinds(array $exchangeBinds): void
     {
         $this->exchangeBinds = [];
         foreach ($exchangeBinds as $bind) {
             $this->addExchangeBind($bind);
         }
-
-        return $this;
     }
 
     /**
      * @param array|ExchangeBind $bind
-     *
-     * @return $this
+     * @throws \InvalidArgumentException
      */
-    public function addExchangeBind($bind)
+    public function addExchangeBind($bind): void
     {
         if (is_array($bind)) {
             $bind = new ExchangeBind($bind);
@@ -288,7 +245,5 @@ class Exchange extends AbstractOptions
             throw new \InvalidArgumentException('Invalid exchange bind options');
         }
         $this->exchangeBinds[] = $bind;
-
-        return $this;
     }
 }

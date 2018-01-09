@@ -6,7 +6,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 use RabbitMqModule\Options\Queue as QueueOptions;
 use RabbitMqModule\Options\Exchange as ExchangeOptions;
 
-class ProducerTest extends \PHPUnit_Framework_TestCase
+class ProducerTest extends \PHPUnit\Framework\TestCase
 {
     public function testProperties()
     {
@@ -59,7 +59,7 @@ class ProducerTest extends \PHPUnit_Framework_TestCase
         $channel->expects(static::once())
             ->method('queue_declare');
 
-        static::assertSame($producer, $producer->setupFabric());
+        $producer->setupFabric();
     }
 
     public function testPublish()
@@ -98,6 +98,6 @@ class ProducerTest extends \PHPUnit_Framework_TestCase
                 }
             ), 'foo', 'test-key');
 
-        static::assertSame($producer, $producer->publish('test-body', 'test-key', ['content_type' => 'foo/bar']));
+        $producer->publish('test-body', 'test-key', ['content_type' => 'foo/bar']);
     }
 }

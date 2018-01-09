@@ -2,10 +2,10 @@
 
 namespace RabbitMqModule\Service;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\ServiceManager\ServiceManager;
 
-class AbstractServiceFactoryTest extends PHPUnit_Framework_TestCase
+class AbstractServiceFactoryTest extends TestCase
 {
     /**
      * @var \Interop\Container\ContainerInterface

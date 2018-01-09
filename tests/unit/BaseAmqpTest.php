@@ -2,7 +2,7 @@
 
 namespace RabbitMqModule;
 
-class BaseAmqpTest extends \PHPUnit_Framework_TestCase
+class BaseAmqpTest extends \PHPUnit\Framework\TestCase
 {
     public function testConstructor()
     {
@@ -90,8 +90,7 @@ class BaseAmqpTest extends \PHPUnit_Framework_TestCase
         $connection->expects(static::once())->method('isConnected')->willReturn(true);
         $connection->expects(static::once())->method('reconnect');
 
-        /** @var \RabbitMqModule\BaseAmqp $baseAmqp */
-        static::assertEquals($baseAmqp, $baseAmqp->reconnect());
+        $baseAmqp->reconnect();
     }
 
     public function testReconnectWhenConnected()
@@ -107,7 +106,6 @@ class BaseAmqpTest extends \PHPUnit_Framework_TestCase
         $connection->expects(static::once())->method('isConnected')->willReturn(false);
         $connection->expects(static::never())->method('reconnect');
 
-        /** @var \RabbitMqModule\BaseAmqp $baseAmqp */
-        static::assertEquals($baseAmqp, $baseAmqp->reconnect());
+        $baseAmqp->reconnect();
     }
 }

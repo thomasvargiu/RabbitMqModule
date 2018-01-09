@@ -1,10 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RabbitMqModule\Controller;
 
 use RabbitMqModule\Service\SetupFabricAwareInterface;
 use Zend\Console\ColorInterface;
 
+/**
+ * Class SetupFabricController
+ */
 class SetupFabricController extends AbstractConsoleController
 {
     public function indexAction()
@@ -17,12 +22,12 @@ class SetupFabricController extends AbstractConsoleController
             $services = $this->getServiceParts();
 
             foreach ($services as $service) {
-                if (!$service instanceof SetupFabricAwareInterface) {
+                if (! $service instanceof SetupFabricAwareInterface) {
                     continue;
                 }
                 $service->setupFabric();
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $response->setErrorLevel(1);
             $this->getConsole()->writeText(sprintf('Exception: %s', $e->getMessage()), ColorInterface::LIGHT_RED);
 
@@ -32,8 +37,10 @@ class SetupFabricController extends AbstractConsoleController
 
     /**
      * @return array
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    protected function getServiceParts()
+    protected function getServiceParts(): array
     {
         $serviceKeys = [
             'consumer',
@@ -52,7 +59,14 @@ class SetupFabricController extends AbstractConsoleController
         return $parts;
     }
 
-    protected function getServiceKeys($service)
+    /**
+     * @param $service
+     * @return array
+     * @throws \RuntimeException
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    protected function getServiceKeys($service): array
     {
         /** @var array $config */
         $config = $this->container->get('Configuration');

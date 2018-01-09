@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RabbitMqModule;
 
 use PhpAmqpLib\Channel\AMQPChannel;
@@ -17,7 +19,7 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
     /**
      * @var AMQPChannel
      */
-    protected $channel;
+    private $channel;
     /**
      * @var QueueOptions
      */
@@ -52,7 +54,7 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
     /**
      * @return AbstractConnection
      */
-    public function getConnection()
+    public function getConnection(): AbstractConnection
     {
         return $this->connection;
     }
@@ -60,7 +62,7 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
     /**
      * @return AMQPChannel
      */
-    public function getChannel()
+    public function getChannel(): AMQPChannel
     {
         if (!$this->channel) {
             $this->channel = $this->getConnection()->channel();
@@ -71,89 +73,73 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
 
     /**
      * @param AMQPChannel $channel
-     *
-     * @return $this
      */
-    public function setChannel(AMQPChannel $channel)
+    public function setChannel(AMQPChannel $channel): void
     {
         $this->channel = $channel;
-
-        return $this;
     }
 
     /**
-     * @return QueueOptions
+     * @return null|QueueOptions
      */
-    public function getQueueOptions()
+    public function getQueueOptions(): ?QueueOptions
     {
         return $this->queueOptions;
     }
 
     /**
      * @param QueueOptions $queueOptions
-     *
-     * @return $this
      */
-    public function setQueueOptions(QueueOptions $queueOptions)
+    public function setQueueOptions(QueueOptions $queueOptions): void
     {
         $this->queueOptions = $queueOptions;
-
-        return $this;
     }
 
     /**
      * @return ExchangeOptions
      */
-    public function getExchangeOptions()
+    public function getExchangeOptions(): ExchangeOptions
     {
         return $this->exchangeOptions;
     }
 
     /**
      * @param ExchangeOptions $exchangeOptions
-     *
-     * @return $this
      */
-    public function setExchangeOptions(ExchangeOptions $exchangeOptions)
+    public function setExchangeOptions(ExchangeOptions $exchangeOptions): void
     {
         $this->exchangeOptions = $exchangeOptions;
-
-        return $this;
     }
 
     /**
      * @return bool
      */
-    public function isAutoSetupFabricEnabled()
+    public function isAutoSetupFabricEnabled(): bool
     {
         return $this->autoSetupFabricEnabled;
     }
 
     /**
      * @param bool $autoSetupFabricEnabled
-     *
-     * @return $this
      */
-    public function setAutoSetupFabricEnabled($autoSetupFabricEnabled)
+    public function setAutoSetupFabricEnabled(bool $autoSetupFabricEnabled): void
     {
         $this->autoSetupFabricEnabled = $autoSetupFabricEnabled;
-
-        return $this;
     }
 
     /**
-     * @param ExchangeOptions $options
+     * Declare Exchange
      *
-     * @return $this
+     * @param ExchangeOptions $options
      */
-    protected function declareExchange(ExchangeOptions $options = null)
+    protected function declareExchange(ExchangeOptions $options = null): void
     {
-        if (!$options) {
+        if (! $options) {
             $options = $this->getExchangeOptions();
         }
 
-        if (!$options->isDeclare()) {
-            return $this;
+        if (! $options->isDeclare()) {
+            return;
         }
 
         $this->getChannel()->exchange_declare(
@@ -172,7 +158,7 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
         foreach ($binds as $bind) {
             $this->declareExchange($bind->getExchange());
             $routingKeys = $bind->getRoutingKeys();
-            if (!count($routingKeys)) {
+            if (! \count($routingKeys)) {
                 $routingKeys = [''];
             }
             foreach ($routingKeys as $routingKey) {
@@ -185,24 +171,22 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
         }
 
         $this->exchangeDeclared = true;
-
-        return $this;
     }
 
     /**
-     * @return $this
+     * Declare queue
      */
-    protected function declareQueue()
+    protected function declareQueue(): void
     {
         $queueOptions = $this->getQueueOptions();
 
         if (!$queueOptions || null === $queueOptions->getName()) {
-            return $this;
+            return;
         }
 
         $exchangeOptions = $this->getExchangeOptions();
 
-        list($queueName) = $this->getChannel()->queue_declare(
+        [$queueName] = $this->getChannel()->queue_declare(
             $queueOptions->getName(),
             $queueOptions->isPassive(),
             $queueOptions->isDurable(),
@@ -214,7 +198,7 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
         );
 
         $routingKeys = $queueOptions->getRoutingKeys();
-        if (!count($routingKeys)) {
+        if (! \count($routingKeys)) {
             $routingKeys = [''];
         }
         foreach ($routingKeys as $routingKey) {
@@ -226,14 +210,12 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
         }
 
         $this->queueDeclared = true;
-
-        return $this;
     }
 
     /**
-     * @return $this
+     * Declare queues and exchanges
      */
-    public function setupFabric()
+    public function setupFabric(): void
     {
         if (!$this->exchangeDeclared) {
             $this->declareExchange();
@@ -244,22 +226,19 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
         if (!$this->queueDeclared && $queueOptions) {
             $this->declareQueue();
         }
-
-        return $this;
     }
 
     /**
-     * @return $this
+     * Reconnect
      */
-    public function reconnect()
+    public function reconnect(): void
     {
         if (!$this->getConnection()->isConnected()) {
-            return $this;
+            return;
         }
 
         $this->getConnection()->reconnect();
-
-        return $this;
+        $this->channel = null;
     }
 
     public function __destruct()

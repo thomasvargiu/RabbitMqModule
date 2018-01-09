@@ -1,50 +1,50 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RabbitMqModule;
 
+use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class Consumer extends BaseConsumer
 {
     /**
      * Purge the queue.
-     *
-     * @return $this
      */
-    public function purgeQueue()
+    public function purgeQueue(): void
     {
         $this->getChannel()->queue_purge($this->getQueueOptions()->getName(), true);
-
-        return $this;
     }
 
     /**
      * Consume the message.
      */
-    public function consume()
+    public function consume(): void
     {
         $this->setupConsumer();
-        while (count($this->getChannel()->callbacks)) {
+        while (\count($this->getChannel()->callbacks)) {
             $this->maybeStopConsumer();
             $this->getChannel()->wait(null, false, $this->getIdleTimeout());
         }
     }
 
     /**
-     * @param AMQPMessage $msg
+     * @param AMQPMessage $message
      */
-    public function processMessage(AMQPMessage $msg)
+    public function processMessage(AMQPMessage $message): void
     {
         $this->getEventManager()->trigger(__FUNCTION__.'.pre', $this, compact('message'));
 
-        $processFlag = call_user_func($this->getCallback(), $msg);
-        $this->handleProcessMessage($msg, $processFlag);
+        $processFlag = \call_user_func($this->getCallback(), $message);
+        $this->handleProcessMessage($message, $processFlag);
 
         $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, compact('message'));
     }
 
-    protected function handleProcessMessage(AMQPMessage $msg, $processFlag)
+    protected function handleProcessMessage(AMQPMessage $msg, $processFlag): void
     {
+        /** @var AMQPChannel $channel */
         $channel = $msg->delivery_info['channel'];
         /** @var string $deliveryTag */
         $deliveryTag = $msg->delivery_info['delivery_tag'];

@@ -2,7 +2,7 @@
 
 namespace RabbitMqModule\Options;
 
-class RpcClientTest extends \PHPUnit_Framework_TestCase
+class RpcClientTest extends \PHPUnit\Framework\TestCase
 {
     public function testSetConnection()
     {

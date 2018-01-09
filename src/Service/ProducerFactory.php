@@ -1,15 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RabbitMqModule\Service;
 
 use Interop\Container\ContainerInterface;
-use Interop\Container\Exception\ContainerException;
 use PhpAmqpLib\Connection\AbstractConnection;
 use RabbitMqModule\Producer;
-use Zend\ServiceManager\Exception\ServiceNotCreatedException;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use RabbitMqModule\Options\Producer as Options;
-use InvalidArgumentException;
 
 class ProducerFactory extends AbstractFactory
 {
@@ -18,7 +16,7 @@ class ProducerFactory extends AbstractFactory
      *
      * @return string
      */
-    public function getOptionsClass()
+    public function getOptionsClass(): string
     {
         return \RabbitMqModule\Options\Producer::class;
     }
@@ -27,33 +25,32 @@ class ProducerFactory extends AbstractFactory
      * Create an object.
      *
      * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param null|array         $options
+     * @param string $requestedName
+     * @param null|array $options
      *
      * @return Producer
      *
-     * @throws ServiceNotFoundException   if unable to resolve the service
-     * @throws ServiceNotCreatedException if an exception is raised when
-     *                                    creating a service
-     * @throws ContainerException         if any other error occurs
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        /* @var $options Options */
-        $options = $this->getOptions($container, 'producer');
+        /* @var $producerOptions Options */
+        $producerOptions = $this->getOptions($container, 'producer');
 
-        return $this->createProducer($container, $options);
+        return $this->createProducer($container, $producerOptions);
     }
 
     /**
      * @param ContainerInterface $container
-     * @param Options            $options
+     * @param Options $options
      *
      * @return Producer
      *
-     * @throws InvalidArgumentException
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    protected function createProducer(ContainerInterface $container, Options $options)
+    protected function createProducer(ContainerInterface $container, Options $options): Producer
     {
         /** @var AbstractConnection $connection */
         $connection = $container->get(sprintf('rabbitmq.connection.%s', $options->getConnection()));
@@ -63,6 +60,7 @@ class ProducerFactory extends AbstractFactory
             $producer->setQueueOptions($options->getQueue());
         }
         $producer->setAutoSetupFabricEnabled($options->isAutoSetupFabricEnabled());
+        $producer->setReconnectEnabled($options->isReconnectEnabled());
 
         return $producer;
     }

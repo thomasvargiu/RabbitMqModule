@@ -2,7 +2,7 @@
 
 namespace RabbitMqModule\Controller;
 
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Zend\Mvc\Console\Controller\AbstractConsoleController as BaseController;
 
 class AbstractConsoleController extends BaseController

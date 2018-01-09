@@ -4,7 +4,7 @@ namespace RabbitMqModule\Service;
 
 use Zend\ServiceManager\ServiceManager;
 
-class RpcServerFactoryTest extends \PHPUnit_Framework_TestCase
+class RpcServerFactoryTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreateService()
     {

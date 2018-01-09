@@ -1,14 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RabbitMqModule\Service;
 
 use Interop\Container\ContainerInterface;
-use Interop\Container\Exception\ContainerException;
 use InvalidArgumentException;
 use RabbitMqModule\Service\Connection\ConnectionFactoryInterface;
 use RuntimeException;
-use Zend\ServiceManager\Exception\ServiceNotCreatedException;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use RabbitMqModule\Options\Connection as ConnectionOptions;
 
 class ConnectionFactory extends AbstractFactory
@@ -48,7 +47,7 @@ class ConnectionFactory extends AbstractFactory
      *
      * @return string
      */
-    public function getOptionsClass()
+    public function getOptionsClass(): string
     {
         return \RabbitMqModule\Options\Connection::class;
     }
@@ -57,33 +56,31 @@ class ConnectionFactory extends AbstractFactory
      * Create an object.
      *
      * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param null|array         $options
+     * @param string $requestedName
+     * @param null|array $options
      *
      * @return object
      *
-     * @throws ServiceNotFoundException   if unable to resolve the service
-     * @throws ServiceNotCreatedException if an exception is raised when
-     *                                    creating a service
-     * @throws ContainerException         if any other error occurs
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        /* @var $options ConnectionOptions */
-        $options = $this->getOptions($container, 'connection');
-        $factory = $this->getFactory($container, $options->getType());
+        /* @var $connectionOptions ConnectionOptions */
+        $connectionOptions = $this->getOptions($container, 'connection');
+        $factory = $this->getFactory($container, $connectionOptions->getType());
 
-        return $factory->createConnection($options);
+        return $factory->createConnection($connectionOptions);
     }
 
     /**
      * @param ContainerInterface $container
-     * @param string             $type
+     * @param string $type
      *
      * @return ConnectionFactoryInterface
      *
-     * @throws InvalidArgumentException
-     * @throws RuntimeException
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     protected function getFactory(ContainerInterface $container, $type)
     {

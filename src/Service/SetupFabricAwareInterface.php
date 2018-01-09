@@ -4,8 +4,5 @@ namespace RabbitMqModule\Service;
 
 interface SetupFabricAwareInterface
 {
-    /**
-     * @return $this
-     */
-    public function setupFabric();
+    public function setupFabric(): void;
 }

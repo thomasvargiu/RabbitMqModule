@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RabbitMqModule\Options;
 
 use Zend\Stdlib\AbstractOptions;
@@ -21,36 +23,36 @@ class Producer extends AbstractOptions
     /**
      * @var string
      */
-    protected $class = 'RabbitMqModule\\Producer';
+    protected $class = \RabbitMqModule\Producer::class;
     /**
      * @var bool
      */
     protected $autoSetupFabricEnabled = true;
+    /**
+     * @var bool
+     */
+    protected $reconnectEnabled = false;
 
     /**
      * @return string
      */
-    public function getConnection()
+    public function getConnection(): string
     {
         return $this->connection;
     }
 
     /**
      * @param string $connection
-     *
-     * @return $this
      */
-    public function setConnection($connection)
+    public function setConnection(string $connection): void
     {
         $this->connection = $connection;
-
-        return $this;
     }
 
     /**
-     * @return Exchange
+     * @return null|Exchange
      */
-    public function getExchange()
+    public function getExchange(): ?Exchange
     {
         return $this->exchange;
     }
@@ -58,11 +60,9 @@ class Producer extends AbstractOptions
     /**
      * @param array|Exchange $exchange
      *
-     * @return $this
-     *
      * @throws \InvalidArgumentException
      */
-    public function setExchange($exchange)
+    public function setExchange($exchange): void
     {
         if (is_array($exchange)) {
             $exchange = new Exchange($exchange);
@@ -73,14 +73,12 @@ class Producer extends AbstractOptions
             );
         }
         $this->exchange = $exchange;
-
-        return $this;
     }
 
     /**
-     * @return Queue
+     * @return null|Queue
      */
-    public function getQueue()
+    public function getQueue(): ?Queue
     {
         return $this->queue;
     }
@@ -88,13 +86,11 @@ class Producer extends AbstractOptions
     /**
      * @param array|Queue $queue
      *
-     * @return $this
-     *
      * @throws \InvalidArgumentException
      */
-    public function setQueue($queue)
+    public function setQueue($queue): void
     {
-        if (is_array($queue)) {
+        if (\is_array($queue)) {
             $queue = new Queue($queue);
         }
         if (!$queue instanceof Queue) {
@@ -103,47 +99,53 @@ class Producer extends AbstractOptions
             );
         }
         $this->queue = $queue;
-
-        return $this;
     }
 
     /**
      * @return string
      */
-    public function getClass()
+    public function getClass(): string
     {
         return $this->class;
     }
 
     /**
      * @param string $class
-     *
-     * @return $this
      */
-    public function setClass($class)
+    public function setClass(string $class): void
     {
         $this->class = $class;
-
-        return $this;
     }
 
     /**
      * @return bool
      */
-    public function isAutoSetupFabricEnabled()
+    public function isAutoSetupFabricEnabled(): bool
     {
         return $this->autoSetupFabricEnabled;
     }
 
     /**
      * @param bool $autoSetupFabricEnabled
-     *
-     * @return $this
      */
-    public function setAutoSetupFabricEnabled($autoSetupFabricEnabled)
+    public function setAutoSetupFabricEnabled(bool $autoSetupFabricEnabled): void
     {
         $this->autoSetupFabricEnabled = $autoSetupFabricEnabled;
+    }
 
-        return $this;
+    /**
+     * @return bool
+     */
+    public function isReconnectEnabled(): bool
+    {
+        return $this->reconnectEnabled;
+    }
+
+    /**
+     * @param bool $reconnectEnabled
+     */
+    public function setReconnectEnabled(bool $reconnectEnabled): void
+    {
+        $this->reconnectEnabled = $reconnectEnabled;
     }
 }
