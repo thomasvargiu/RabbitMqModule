@@ -82,8 +82,8 @@ class Producer extends BaseAmqp implements ProducerInterface
         );
         $message = new AMQPMessage($body, $properties);
 
-        if ($this->reconnectEnabled && false === $this->getConnection()->select(1)) {
-            $this->reconnect();
+        if ($this->reconnectEnabled) {
+            $this->reconnectIfNecessary();
         }
 
         if ($this->isAutoSetupFabricEnabled()) {
@@ -95,5 +95,24 @@ class Producer extends BaseAmqp implements ProducerInterface
             $this->getExchangeOptions()->getName(),
             $routingKey
         );
+    }
+
+    /**
+     * Check connection an reconnect if necessary
+     */
+    private function reconnectIfNecessary(): void
+    {
+        // for lazy connections:
+        $this->getConnection()->getSocket();
+
+        try {
+            $connected = $this->getConnection()->select(1);
+        } catch (\ErrorException $e) {
+            $connected = false;
+        }
+
+        if (! $connected) {
+            $this->reconnect();
+        };
     }
 }
