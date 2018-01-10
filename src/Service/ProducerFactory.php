@@ -60,7 +60,6 @@ class ProducerFactory extends AbstractFactory
             $producer->setQueueOptions($options->getQueue());
         }
         $producer->setAutoSetupFabricEnabled($options->isAutoSetupFabricEnabled());
-        $producer->setReconnectEnabled($options->isReconnectEnabled());
 
         return $producer;
     }

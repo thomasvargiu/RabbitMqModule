@@ -28,10 +28,6 @@ class Producer extends AbstractOptions
      * @var bool
      */
     protected $autoSetupFabricEnabled = true;
-    /**
-     * @var bool
-     */
-    protected $reconnectEnabled = false;
 
     /**
      * @return string
@@ -131,21 +127,5 @@ class Producer extends AbstractOptions
     public function setAutoSetupFabricEnabled(bool $autoSetupFabricEnabled): void
     {
         $this->autoSetupFabricEnabled = $autoSetupFabricEnabled;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isReconnectEnabled(): bool
-    {
-        return $this->reconnectEnabled;
-    }
-
-    /**
-     * @param bool $reconnectEnabled
-     */
-    public function setReconnectEnabled(bool $reconnectEnabled): void
-    {
-        $this->reconnectEnabled = $reconnectEnabled;
     }
 }
