@@ -26,9 +26,9 @@ class Consumer extends AbstractOptions
      */
     protected $callback;
     /**
-     * @var null|int
+     * @var int
      */
-    protected $idleTimeout;
+    protected $idleTimeout = 0;
     /**
      * @var null|string
      */
@@ -132,17 +132,17 @@ class Consumer extends AbstractOptions
     }
 
     /**
-     * @return null|int
+     * @return int
      */
-    public function getIdleTimeout(): ?int
+    public function getIdleTimeout(): int
     {
         return $this->idleTimeout;
     }
 
     /**
-     * @param null|int $idleTimeout
+     * @param int $idleTimeout
      */
-    public function setIdleTimeout(?int $idleTimeout): void
+    public function setIdleTimeout(int $idleTimeout): void
     {
         $this->idleTimeout = $idleTimeout;
     }
