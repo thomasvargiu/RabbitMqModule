@@ -6,7 +6,7 @@ use RabbitMqModule\Options\ExchangeBind;
 use RabbitMqModule\Options\Queue as QueueOptions;
 use RabbitMqModule\Options\Exchange as ExchangeOptions;
 
-class ConsumerTest extends \PHPUnit_Framework_TestCase
+class ConsumerTest extends \PHPUnit\Framework\TestCase
 {
     public function testProperties()
     {
@@ -71,7 +71,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $channel->expects(static::once())
             ->method('queue_declare');
 
-        static::assertSame($consumer, $consumer->setupFabric());
+        $consumer->setupFabric();
     }
 
     public function testSetupFabricWithEmptyQueueName()
@@ -99,7 +99,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $channel->expects(static::never())
             ->method('queue_declare');
 
-        static::assertSame($consumer, $consumer->setupFabric());
+        $consumer->setupFabric();
     }
 
     public function testSetupFabricWithoutQueueOptions()
@@ -125,7 +125,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $channel->expects(static::never())
             ->method('queue_declare');
 
-        static::assertSame($consumer, $consumer->setupFabric());
+        $consumer->setupFabric();
     }
 
     public function testSetupFabricWithNoDeclareExchange()
@@ -151,7 +151,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $channel->expects(static::never())
             ->method('queue_declare');
 
-        static::assertSame($consumer, $consumer->setupFabric());
+        $consumer->setupFabric();
     }
 
     /**
@@ -320,24 +320,6 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $consumer->setExchangeOptions($exchangeOptions);
         $consumer->setQueueOptions($queueOptions);
         $consumer->consume();
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testSetCallbackWithInvalidValue()
-    {
-        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
-            ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
-        $channel = $this->getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
-        $consumer = new Consumer($connection, $channel);
-
-        $consumer->setCallback('string');
     }
 
     public function processMessageProvider()

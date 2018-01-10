@@ -4,7 +4,7 @@ namespace RabbitMqModule\Options;
 
 use RabbitMqModule\Options\Connection as Options;
 
-class ConnectionTest extends \PHPUnit_Framework_TestCase
+class ConnectionTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetterAndSetter()
     {

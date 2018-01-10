@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RabbitMqModule\Options;
 
 use Zend\Stdlib\AbstractOptions;
@@ -7,11 +9,11 @@ use Zend\Stdlib\AbstractOptions;
 class Queue extends AbstractOptions
 {
     /**
-     * @var string
+     * @var null|string
      */
     protected $name;
     /**
-     * @var string
+     * @var null|string
      */
     protected $type;
     /**
@@ -48,202 +50,162 @@ class Queue extends AbstractOptions
     protected $routingKeys = [];
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param string $name
-     *
-     * @return $this
+     * @param null|string $name
      */
-    public function setName($name)
+    public function setName(?string $name): void
     {
         $this->name = $name;
-
-        return $this;
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
 
     /**
-     * @param string $type
-     *
-     * @return $this
+     * @param null|string $type
      */
-    public function setType($type)
+    public function setType(?string $type): void
     {
         $this->type = $type;
-
-        return $this;
     }
 
     /**
      * @return bool
      */
-    public function isPassive()
+    public function isPassive(): bool
     {
         return $this->passive;
     }
 
     /**
      * @param bool $passive
-     *
-     * @return $this
      */
-    public function setPassive($passive)
+    public function setPassive(bool $passive): void
     {
         $this->passive = $passive;
-
-        return $this;
     }
 
     /**
      * @return bool
      */
-    public function isDurable()
+    public function isDurable(): bool
     {
         return $this->durable;
     }
 
     /**
      * @param bool $durable
-     *
-     * @return $this
      */
-    public function setDurable($durable)
+    public function setDurable(bool $durable): void
     {
         $this->durable = $durable;
-
-        return $this;
     }
 
     /**
      * @return bool
      */
-    public function isAutoDelete()
+    public function isAutoDelete(): bool
     {
         return $this->autoDelete;
     }
 
     /**
      * @param bool $autoDelete
-     *
-     * @return $this
      */
-    public function setAutoDelete($autoDelete)
+    public function setAutoDelete(bool $autoDelete): void
     {
         $this->autoDelete = $autoDelete;
-
-        return $this;
     }
 
     /**
      * @return bool
      */
-    public function isExclusive()
+    public function isExclusive(): bool
     {
         return $this->exclusive;
     }
 
     /**
      * @param bool $exclusive
-     *
-     * @return $this
      */
-    public function setExclusive($exclusive)
+    public function setExclusive(bool $exclusive): void
     {
         $this->exclusive = $exclusive;
-
-        return $this;
     }
 
     /**
      * @return bool
      */
-    public function isNoWait()
+    public function isNoWait(): bool
     {
         return $this->noWait;
     }
 
     /**
      * @param bool $noWait
-     *
-     * @return $this
      */
-    public function setNoWait($noWait)
+    public function setNoWait(bool $noWait): void
     {
         $this->noWait = $noWait;
-
-        return $this;
     }
 
     /**
      * @return array
      */
-    public function getArguments()
+    public function getArguments(): array
     {
         return $this->arguments;
     }
 
     /**
      * @param array $arguments
-     *
-     * @return $this
      */
-    public function setArguments(array $arguments)
+    public function setArguments(array $arguments): void
     {
         $this->arguments = $arguments;
-
-        return $this;
     }
 
     /**
      * @return int
      */
-    public function getTicket()
+    public function getTicket():int
     {
         return $this->ticket;
     }
 
     /**
      * @param int $ticket
-     *
-     * @return $this
      */
-    public function setTicket($ticket)
+    public function setTicket(int $ticket): void
     {
         $this->ticket = $ticket;
-
-        return $this;
     }
 
     /**
      * @return array
      */
-    public function getRoutingKeys()
+    public function getRoutingKeys(): array
     {
         return $this->routingKeys;
     }
 
     /**
      * @param array $routingKeys
-     *
-     * @return $this
      */
-    public function setRoutingKeys(array $routingKeys)
+    public function setRoutingKeys(array $routingKeys): void
     {
         $this->routingKeys = $routingKeys;
-
-        return $this;
     }
 }

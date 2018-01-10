@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RabbitMqModule\Options;
 
 use InvalidArgumentException;
@@ -12,27 +14,27 @@ class Consumer extends AbstractOptions
      */
     protected $connection = 'default';
     /**
-     * @var Exchange
+     * @var null|Exchange
      */
     protected $exchange;
     /**
-     * @var Queue
+     * @var null|Queue
      */
     protected $queue;
     /**
-     * @var string|callable
+     * @var null|string|callable
      */
     protected $callback;
     /**
-     * @var int
+     * @var null|int
      */
     protected $idleTimeout;
     /**
-     * @var string
+     * @var null|string
      */
     protected $consumerTag;
     /**
-     * @var Qos
+     * @var null|Qos
      */
     protected $qos;
     /**
@@ -46,32 +48,28 @@ class Consumer extends AbstractOptions
     /**
      * @var string
      */
-    protected $description;
+    protected $description = '';
 
     /**
      * @return string
      */
-    public function getConnection()
+    public function getConnection(): string
     {
         return $this->connection;
     }
 
     /**
      * @param string $connection
-     *
-     * @return $this
      */
-    public function setConnection($connection)
+    public function setConnection(string $connection): void
     {
         $this->connection = $connection;
-
-        return $this;
     }
 
     /**
      * @return Exchange
      */
-    public function getExchange()
+    public function getExchange(): ?Exchange
     {
         return $this->exchange;
     }
@@ -79,49 +77,42 @@ class Consumer extends AbstractOptions
     /**
      * @param array|Exchange $exchange
      *
-     * @return $this
-     *
      * @throws InvalidArgumentException
      */
-    public function setExchange($exchange)
+    public function setExchange($exchange): void
     {
-        if (is_array($exchange)) {
+        if (\is_array($exchange)) {
             $exchange = new Exchange($exchange);
         }
-        if (!$exchange instanceof Exchange) {
+        if (! $exchange instanceof Exchange) {
             throw new InvalidArgumentException(
                 'Parameter "exchange" should be array or an instance of Exchange options'
             );
         }
         $this->exchange = $exchange;
-
-        return $this;
     }
 
     /**
      * @return Queue
      */
-    public function getQueue()
+    public function getQueue(): ?Queue
     {
         return $this->queue;
     }
 
     /**
      * @param array|Queue $queue
-     *
-     * @return $this
+     * @throws \InvalidArgumentException
      */
-    public function setQueue($queue)
+    public function setQueue($queue): void
     {
-        if (is_array($queue)) {
+        if (\is_array($queue)) {
             $queue = new Queue($queue);
         }
-        if (!$queue instanceof Queue) {
+        if (! $queue instanceof Queue) {
             throw new InvalidArgumentException('Parameter "queue" should be array or an instance of Queue options');
         }
         $this->queue = $queue;
-
-        return $this;
     }
 
     /**
@@ -134,139 +125,112 @@ class Consumer extends AbstractOptions
 
     /**
      * @param string|callable $callback
-     *
-     * @return $this
      */
-    public function setCallback($callback)
+    public function setCallback($callback): void
     {
         $this->callback = $callback;
-
-        return $this;
     }
 
     /**
-     * @return int
+     * @return null|int
      */
-    public function getIdleTimeout()
+    public function getIdleTimeout(): ?int
     {
         return $this->idleTimeout;
     }
 
     /**
-     * @param int $idleTimeout
-     *
-     * @return $this
+     * @param null|int $idleTimeout
      */
-    public function setIdleTimeout($idleTimeout)
+    public function setIdleTimeout(?int $idleTimeout): void
     {
         $this->idleTimeout = $idleTimeout;
-
-        return $this;
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getConsumerTag()
+    public function getConsumerTag(): ?string
     {
         return $this->consumerTag;
     }
 
     /**
      * @param string $consumerTag
-     *
-     * @return $this
      */
-    public function setConsumerTag($consumerTag)
+    public function setConsumerTag(string $consumerTag): void
     {
         $this->consumerTag = $consumerTag;
-
-        return $this;
     }
 
     /**
-     * @return Qos
+     * @return null|Qos
      */
-    public function getQos()
+    public function getQos(): ?Qos
     {
         return $this->qos;
     }
 
     /**
      * @param array|Qos $qos
-     *
-     * @return $this
+     * @throws InvalidArgumentException
      */
-    public function setQos($qos)
+    public function setQos($qos): void
     {
-        if (is_array($qos)) {
+        if (\is_array($qos)) {
             $qos = new Qos($qos);
         }
-        if (!$qos instanceof Qos) {
+        if (! $qos instanceof Qos) {
             throw new InvalidArgumentException('Parameter "qos" should be array or an instance of Qos options');
         }
         $this->qos = $qos;
-
-        return $this;
     }
 
     /**
      * @return bool
      */
-    public function isAutoSetupFabricEnabled()
+    public function isAutoSetupFabricEnabled(): bool
     {
         return $this->autoSetupFabricEnabled;
     }
 
     /**
      * @param bool $autoSetupFabricEnabled
-     *
-     * @return $this
      */
-    public function setAutoSetupFabricEnabled($autoSetupFabricEnabled)
+    public function setAutoSetupFabricEnabled(bool $autoSetupFabricEnabled): void
     {
         $this->autoSetupFabricEnabled = $autoSetupFabricEnabled;
-
-        return $this;
     }
 
     /**
      * @return bool
      */
-    public function isSignalsEnabled()
+    public function isSignalsEnabled(): bool
     {
         return $this->signalsEnabled;
     }
 
     /**
      * @param bool $signalsEnabled
-     *
-     * @return $this
      */
-    public function setSignalsEnabled($signalsEnabled)
+    public function setSignalsEnabled($signalsEnabled): void
     {
         $this->signalsEnabled = $signalsEnabled;
-
-        return $this;
     }
 
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
     /**
      * @param string $description
-     *
-     * @return $this
      */
-    public function setDescription($description)
+    public function setDescription(string $description): void
     {
         $this->description = $description;
-
-        return $this;
     }
 }

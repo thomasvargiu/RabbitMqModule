@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RabbitMqModule\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
 use RuntimeException;
+use Zend\Stdlib\AbstractOptions;
 
-abstract class AbstractFactory implements FactoryInterface
+abstract class AbstractFactory
 {
     /**
      * @var string
@@ -14,14 +16,14 @@ abstract class AbstractFactory implements FactoryInterface
     protected $name;
 
     /**
-     * @var \Zend\Stdlib\AbstractOptions
+     * @var AbstractOptions
      */
     protected $options;
 
     /**
      * @param string $name
      */
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->name = $name;
     }
@@ -29,7 +31,7 @@ abstract class AbstractFactory implements FactoryInterface
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -38,14 +40,13 @@ abstract class AbstractFactory implements FactoryInterface
      * Gets options from configuration based on name.
      *
      * @param ContainerInterface $container
-     * @param string             $key
-     * @param null|string        $name
+     * @param string $key
+     * @param null|string $name
      *
-     * @return \Zend\Stdlib\AbstractOptions
-     *
-     * @throws \RuntimeException
+     * @return \ArrayObject
+     * @throws RuntimeException
      */
-    public function getOptions(ContainerInterface $container, $key, $name = null)
+    public function getOptions(ContainerInterface $container, string $key, ?string $name = null)
     {
         if ($name === null) {
             $name = $this->getName();
@@ -73,5 +74,5 @@ abstract class AbstractFactory implements FactoryInterface
      *
      * @return string
      */
-    abstract public function getOptionsClass();
+    abstract public function getOptionsClass(): string;
 }

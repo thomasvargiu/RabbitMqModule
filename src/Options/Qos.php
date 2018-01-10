@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RabbitMqModule\Options;
 
 use Zend\Stdlib\AbstractOptions;
@@ -22,60 +24,48 @@ class Qos extends AbstractOptions
     /**
      * @return int
      */
-    public function getPrefetchSize()
+    public function getPrefetchSize(): int
     {
         return $this->prefetchSize;
     }
 
     /**
      * @param int $prefetchSize
-     *
-     * @return $this
      */
-    public function setPrefetchSize($prefetchSize)
+    public function setPrefetchSize(int $prefetchSize): void
     {
         $this->prefetchSize = $prefetchSize;
-
-        return $this;
     }
 
     /**
      * @return int
      */
-    public function getPrefetchCount()
+    public function getPrefetchCount(): int
     {
         return $this->prefetchCount;
     }
 
     /**
      * @param int $prefetchCount
-     *
-     * @return $this
      */
-    public function setPrefetchCount($prefetchCount)
+    public function setPrefetchCount(int $prefetchCount): void
     {
         $this->prefetchCount = $prefetchCount;
-
-        return $this;
     }
 
     /**
      * @return bool
      */
-    public function isGlobal()
+    public function isGlobal(): bool
     {
         return $this->global;
     }
 
     /**
      * @param bool $global
-     *
-     * @return $this
      */
-    public function setGlobal($global)
+    public function setGlobal($global): void
     {
         $this->global = $global;
-
-        return $this;
     }
 }

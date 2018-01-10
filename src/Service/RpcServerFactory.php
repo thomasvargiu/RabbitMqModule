@@ -1,13 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RabbitMqModule\Service;
 
 use Interop\Container\ContainerInterface;
-use Interop\Container\Exception\ContainerException;
 use RabbitMqModule\ConsumerInterface;
 use RabbitMqModule\RpcServer;
-use Zend\ServiceManager\Exception\ServiceNotCreatedException;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use RabbitMqModule\Options\RpcServer as Options;
 use InvalidArgumentException;
 
@@ -18,7 +17,7 @@ class RpcServerFactory extends AbstractFactory
      *
      * @return string
      */
-    public function getOptionsClass()
+    public function getOptionsClass(): string
     {
         return \RabbitMqModule\Options\RpcServer::class;
     }
@@ -27,42 +26,40 @@ class RpcServerFactory extends AbstractFactory
      * Create an object.
      *
      * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param null|array         $options
+     * @param string $requestedName
+     * @param null|array $options
      *
      * @return object
      *
-     * @throws ServiceNotFoundException   if unable to resolve the service
-     * @throws ServiceNotCreatedException if an exception is raised when
-     *                                    creating a service
-     * @throws ContainerException         if any other error occurs
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        /* @var $options Options */
-        $options = $this->getOptions($container, 'rpc_server');
+        /* @var $rpcOptions Options */
+        $rpcOptions = $this->getOptions($container, 'rpc_server');
 
-        return $this->createServer($container, $options);
+        return $this->createServer($container, $rpcOptions);
     }
 
     /**
      * @param ContainerInterface $container
-     * @param Options            $options
-     *
-     * @throws InvalidArgumentException
+     * @param Options $options
      *
      * @return RpcServer
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    protected function createServer(ContainerInterface $container, Options $options)
+    protected function createServer(ContainerInterface $container, Options $options): RpcServer
     {
         $callback = $options->getCallback();
-        if (is_string($callback)) {
+        if (\is_string($callback)) {
             $callback = $container->get($callback);
         }
         if ($callback instanceof ConsumerInterface) {
             $callback = [$callback, 'execute'];
         }
-        if (!is_callable($callback)) {
+        if (! \is_callable($callback)) {
             throw new InvalidArgumentException('Invalid callback provided');
         }
 

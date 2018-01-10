@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RabbitMqModule\Service\Connection;
 
+use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Connection\AMQPLazyConnection;
 use RabbitMqModule\Options\Connection as ConnectionOptions;
 
@@ -17,7 +20,7 @@ class LazyConnectionFactory implements ConnectionFactoryInterface
      *
      * @return AMQPLazyConnection
      */
-    public function createConnection(ConnectionOptions $options)
+    public function createConnection(ConnectionOptions $options): AbstractConnection
     {
         return new AMQPLazyConnection(
             $options->getHost(),

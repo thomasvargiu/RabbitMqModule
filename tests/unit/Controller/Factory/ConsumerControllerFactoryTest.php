@@ -2,7 +2,7 @@
 
 namespace RabbitMqModule\Controller\Factory;
 
-class ConsumerControllerFactoryTest extends \PHPUnit_Framework_TestCase
+class ConsumerControllerFactoryTest extends \PHPUnit\Framework\TestCase
 {
     public function testFactory()
     {

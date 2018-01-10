@@ -1,20 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RabbitMqModule\Service;
 
 use Interop\Container\ContainerInterface;
-use Interop\Container\Exception\ContainerException;
 use Zend\ServiceManager\Factory\AbstractFactoryInterface;
-use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 
 class AbstractServiceFactory implements AbstractFactoryInterface
 {
     /**
      * @param ContainerInterface $container
-     * @param string             $name
+     * @param string $name
      *
      * @return bool|array
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     private function getFactoryMapping(ContainerInterface $container, $name)
     {
@@ -43,11 +45,13 @@ class AbstractServiceFactory implements AbstractFactoryInterface
      * Can the factory create an instance for the service?
      *
      * @param ContainerInterface $container
-     * @param string             $requestedName
+     * @param string $requestedName
      *
      * @return bool
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function canCreate(ContainerInterface $container, $requestedName)
+    public function canCreate(ContainerInterface $container, $requestedName): bool
     {
         return false !== $this->getFactoryMapping($container, $requestedName);
     }
@@ -56,15 +60,12 @@ class AbstractServiceFactory implements AbstractFactoryInterface
      * Create an object.
      *
      * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param null|array         $options
+     * @param string $requestedName
+     * @param null|array $options
      *
      * @return object
-     *
-     * @throws ServiceNotFoundException   if unable to resolve the service
-     * @throws ServiceNotCreatedException if an exception is raised when
-     *                                    creating a service
-     * @throws ContainerException         if any other error occurs
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
@@ -75,7 +76,7 @@ class AbstractServiceFactory implements AbstractFactoryInterface
         }
 
         $factoryClass = $mappings['factoryClass'];
-        /* @var $factory \RabbitMqModule\Service\AbstractFactory */
+        /* @var callable $factory */
         $factory = new $factoryClass($mappings['serviceName']);
 
         return $factory($container, $requestedName, $options);

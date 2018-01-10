@@ -2,7 +2,7 @@
 
 namespace RabbitMqModule\Options;
 
-class QosTest extends \PHPUnit_Framework_TestCase
+class QosTest extends \PHPUnit\Framework\TestCase
 {
     public function testOptions()
     {

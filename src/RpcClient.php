@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RabbitMqModule;
 
 use PhpAmqpLib\Message\AMQPMessage;
@@ -29,13 +31,14 @@ class RpcClient extends BaseAmqp
     protected $serializer;
 
     /**
-     * @param mixed  $body
+     * @param mixed $body
      * @param string $server
-     * @param mixed  $requestId
+     * @param mixed $requestId
      * @param string $routingKey
-     * @param int    $expiration
+     * @param int $expiration
+     * @throws \Zend\Serializer\Exception\ExceptionInterface
      */
-    public function addRequest($body, $server, $requestId, $routingKey = '', $expiration = 0)
+    public function addRequest($body, string $server, $requestId, string $routingKey = '', int $expiration = 0): void
     {
         if ($this->serializer) {
             $body = $this->serializer->serialize($body);
@@ -59,10 +62,10 @@ class RpcClient extends BaseAmqp
     /**
      * @return string
      */
-    protected function getQueueName()
+    protected function getQueueName(): string
     {
         if (null === $this->queueName) {
-            list($this->queueName) = $this->getChannel()->queue_declare('', false, false, true, false);
+            [$this->queueName] = $this->getChannel()->queue_declare('', false, false, true, false);
         }
 
         return $this->queueName;
@@ -71,12 +74,12 @@ class RpcClient extends BaseAmqp
     /**
      * @return array
      */
-    public function getReplies()
+    public function getReplies(): array
     {
         $this->replies = [];
         $consumer_tag = $this->getChannel()
             ->basic_consume($this->getQueueName(), '', false, true, false, false, [$this, 'processMessage']);
-        while (count($this->replies) < $this->requests) {
+        while (\count($this->replies) < $this->requests) {
             $this->getChannel()->wait(null, false, $this->timeout);
         }
         $this->getChannel()->basic_cancel($consumer_tag);
@@ -88,8 +91,9 @@ class RpcClient extends BaseAmqp
 
     /**
      * @param AMQPMessage $message
+     * @throws \Zend\Serializer\Exception\ExceptionInterface
      */
-    public function processMessage(AMQPMessage $message)
+    public function processMessage(AMQPMessage $message): void
     {
         $messageBody = $message->body;
         if ($this->serializer) {
@@ -101,15 +105,15 @@ class RpcClient extends BaseAmqp
     /**
      * @param SerializerInterface|null $serializer
      */
-    public function setSerializer(SerializerInterface $serializer = null)
+    public function setSerializer(SerializerInterface $serializer = null): void
     {
         $this->serializer = $serializer;
     }
 
     /**
-     * @return SerializerInterface
+     * @return null|SerializerInterface
      */
-    public function getSerializer()
+    public function getSerializer(): ?SerializerInterface
     {
         return $this->serializer;
     }

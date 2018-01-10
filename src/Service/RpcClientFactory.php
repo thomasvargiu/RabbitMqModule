@@ -1,15 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RabbitMqModule\Service;
 
 use Interop\Container\ContainerInterface;
-use Interop\Container\Exception\ContainerException;
 use PhpAmqpLib\Connection\AbstractConnection;
 use RabbitMqModule\RpcClient;
-use Zend\ServiceManager\Exception\ServiceNotCreatedException;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use RabbitMqModule\Options\RpcClient as Options;
-use InvalidArgumentException;
 
 class RpcClientFactory extends AbstractFactory
 {
@@ -18,7 +16,7 @@ class RpcClientFactory extends AbstractFactory
      *
      * @return string
      */
-    public function getOptionsClass()
+    public function getOptionsClass(): string
     {
         return \RabbitMqModule\Options\RpcClient::class;
     }
@@ -27,33 +25,32 @@ class RpcClientFactory extends AbstractFactory
      * Create an object.
      *
      * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param null|array         $options
+     * @param string $requestedName
+     * @param null|array $options
      *
      * @return object
      *
-     * @throws ServiceNotFoundException   if unable to resolve the service
-     * @throws ServiceNotCreatedException if an exception is raised when
-     *                                    creating a service
-     * @throws ContainerException         if any other error occurs
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        /* @var $options Options */
-        $options = $this->getOptions($container, 'rpc_client');
+        /* @var $rpcOptions Options */
+        $rpcOptions = $this->getOptions($container, 'rpc_client');
 
-        return $this->createClient($container, $options);
+        return $this->createClient($container, $rpcOptions);
     }
 
     /**
      * @param ContainerInterface $container
-     * @param Options            $options
+     * @param Options $options
      *
      * @return RpcClient
      *
-     * @throws InvalidArgumentException
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    protected function createClient(ContainerInterface $container, Options $options)
+    protected function createClient(ContainerInterface $container, Options $options): RpcClient
     {
         /** @var AbstractConnection $connection */
         $connection = $container->get(sprintf('rabbitmq.connection.%s', $options->getConnection()));

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RabbitMqModule;
 
 use PhpAmqpLib\Message\AMQPMessage;
@@ -14,17 +16,18 @@ class RpcServer extends Consumer
 
     /**
      * @param AMQPMessage $message
+     * @throws \Zend\Serializer\Exception\ExceptionInterface
      */
-    public function processMessage(AMQPMessage $message)
+    public function processMessage(AMQPMessage $message): void
     {
         /** @var \PhpAmqpLib\Channel\AMQPChannel $channel */
         $channel = $message->delivery_info['channel'];
         $channel->basic_ack($message->delivery_info['delivery_tag']);
-        $result = call_user_func($this->getCallback(), $message);
+        $result = \call_user_func($this->getCallback(), $message);
         if ($this->serializer) {
             $result = $this->serializer->serialize($result);
         }
-        $this->sendReply($result, $message->get('reply_to'), $message->get('correlation_id'));
+        $this->sendReply($result, (string) $message->get('reply_to'), $message->get('correlation_id'));
         $this->maybeStopConsumer();
     }
 
@@ -33,7 +36,7 @@ class RpcServer extends Consumer
      * @param string $client
      * @param string $correlationId
      */
-    protected function sendReply($result, $client, $correlationId)
+    protected function sendReply($result, string $client, $correlationId): void
     {
         $reply = new AMQPMessage($result, ['content_type' => 'text/plain', 'correlation_id' => $correlationId]);
         $this->getChannel()->basic_publish($reply, '', $client);
@@ -44,7 +47,7 @@ class RpcServer extends Consumer
      *
      * @return SerializerInterface
      */
-    public function getSerializer()
+    public function getSerializer(): ?SerializerInterface
     {
         return $this->serializer;
     }
@@ -53,13 +56,9 @@ class RpcServer extends Consumer
      * Set the serializer.
      *
      * @param SerializerInterface $serializer
-     *
-     * @return $this
      */
-    public function setSerializer(SerializerInterface $serializer = null)
+    public function setSerializer(SerializerInterface $serializer = null): void
     {
         $this->serializer = $serializer;
-
-        return $this;
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RabbitMqModule\Options;
 
 use Zend\Stdlib\AbstractOptions;
@@ -15,17 +17,17 @@ class Connection extends AbstractOptions
      */
     protected $host = 'localhost';
     /**
-     * @var string
+     * @var int
      */
     protected $port = 5672;
     /**
      * @var string
      */
-    protected $username;
+    protected $username = 'guest';
     /**
      * @var string
      */
-    protected $password;
+    protected $password = 'guest';
     /**
      * @var string
      */
@@ -61,285 +63,229 @@ class Connection extends AbstractOptions
     /**
      * @var array
      */
-    protected $sslOptions;
+    protected $sslOptions = [];
 
     /**
      * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
     /**
      * @param string $type
-     *
-     * @return $this
      */
-    public function setType($type)
+    public function setType(string $type): void
     {
         $this->type = $type;
-
-        return $this;
     }
 
     /**
      * @return string
      */
-    public function getHost()
+    public function getHost(): string
     {
         return $this->host;
     }
 
     /**
      * @param string $host
-     *
-     * @return $this
      */
-    public function setHost($host)
+    public function setHost(string $host): void
     {
         $this->host = $host;
-
-        return $this;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getPort()
+    public function getPort(): int
     {
         return $this->port;
     }
 
     /**
-     * @param string $port
-     *
-     * @return $this
+     * @param int $port
      */
-    public function setPort($port)
+    public function setPort(int $port): void
     {
         $this->port = $port;
-
-        return $this;
     }
 
     /**
      * @return string
      */
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->username;
     }
 
     /**
      * @param string $username
-     *
-     * @return $this
      */
-    public function setUsername($username)
+    public function setUsername(string $username): void
     {
         $this->username = $username;
-
-        return $this;
     }
 
     /**
      * @return string
      */
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->password;
     }
 
     /**
      * @param string $password
-     *
-     * @return $this
      */
-    public function setPassword($password)
+    public function setPassword(string $password): void
     {
         $this->password = $password;
-
-        return $this;
     }
 
     /**
      * @return string
      */
-    public function getVhost()
+    public function getVhost(): string
     {
         return $this->vhost;
     }
 
     /**
      * @param string $vhost
-     *
-     * @return $this
      */
-    public function setVhost($vhost)
+    public function setVhost(string $vhost): void
     {
         $this->vhost = $vhost;
-
-        return $this;
     }
 
     /**
      * @return bool
      */
-    public function isInsist()
+    public function isInsist(): bool
     {
         return $this->insist;
     }
 
     /**
      * @param bool $insist
-     *
-     * @return $this
      */
-    public function setInsist($insist)
+    public function setInsist(bool $insist): void
     {
         $this->insist = $insist;
-
-        return $this;
     }
 
     /**
      * @return string
      */
-    public function getLoginMethod()
+    public function getLoginMethod(): string
     {
         return $this->loginMethod;
     }
 
     /**
      * @param string $loginMethod
-     *
-     * @return $this
      */
-    public function setLoginMethod($loginMethod)
+    public function setLoginMethod(string $loginMethod): void
     {
         $this->loginMethod = $loginMethod;
-
-        return $this;
     }
 
     /**
      * @return string
      */
-    public function getLocale()
+    public function getLocale(): string
     {
         return $this->locale;
     }
 
     /**
      * @param string $locale
-     *
-     * @return $this
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale): void
     {
         $this->locale = $locale;
-
-        return $this;
     }
 
     /**
      * @return int
      */
-    public function getReadWriteTimeout()
+    public function getReadWriteTimeout(): int
     {
         return $this->readWriteTimeout;
     }
 
     /**
      * @param int $readWriteTimeout
-     *
-     * @return $this
      */
-    public function setReadWriteTimeout($readWriteTimeout)
+    public function setReadWriteTimeout(int $readWriteTimeout): void
     {
         $this->readWriteTimeout = $readWriteTimeout;
-
-        return $this;
     }
 
     /**
      * @return bool
      */
-    public function isKeepAlive()
+    public function isKeepAlive(): bool
     {
         return $this->keepAlive;
     }
 
     /**
      * @param bool $keepAlive
-     *
-     * @return $this
      */
-    public function setKeepAlive($keepAlive)
+    public function setKeepAlive(bool $keepAlive): void
     {
         $this->keepAlive = $keepAlive;
-
-        return $this;
     }
 
     /**
      * @return int
      */
-    public function getConnectionTimeout()
+    public function getConnectionTimeout(): int
     {
         return $this->connectionTimeout;
     }
 
     /**
      * @param int $connectionTimeout
-     *
-     * @return $this
      */
-    public function setConnectionTimeout($connectionTimeout)
+    public function setConnectionTimeout(int $connectionTimeout): void
     {
         $this->connectionTimeout = $connectionTimeout;
-
-        return $this;
     }
 
     /**
      * @return int
      */
-    public function getHeartbeat()
+    public function getHeartbeat(): int
     {
         return $this->heartbeat;
     }
 
     /**
      * @param int $heartbeat
-     *
-     * @return $this
      */
-    public function setHeartbeat($heartbeat)
+    public function setHeartbeat(int $heartbeat): void
     {
         $this->heartbeat = $heartbeat;
-
-        return $this;
     }
 
     /**
      * @return array
      */
-    public function getSslOptions()
+    public function getSslOptions(): array
     {
         return $this->sslOptions;
     }
 
     /**
      * @param array $sslOptions
-     *
-     * @return $this
      */
-    public function setSslOptions(array $sslOptions)
+    public function setSslOptions(array $sslOptions): void
     {
         $this->sslOptions = $sslOptions;
-
-        return $this;
     }
 }
