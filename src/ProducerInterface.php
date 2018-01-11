@@ -2,15 +2,8 @@
 
 namespace RabbitMqModule;
 
-use PhpAmqpLib\Channel\AMQPChannel;
-
 interface ProducerInterface
 {
-    /**
-     * @return AMQPChannel
-     */
-    public function getChannel(): AMQPChannel;
-
     /**
      * @param string $body
      * @param string $routingKey
