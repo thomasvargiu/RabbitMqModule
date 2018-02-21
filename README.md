@@ -79,7 +79,7 @@ return [
                     'exchange_binds' => []  // (default)
                 ],
                 'queue' => [ // optional queue
-                    'name' => 'queue-name' // can be an empty string,
+                    'name' => 'queue-name', // can be an empty string,
                     'type' => null,         // (default)
                     'passive' => false,     // (default)
                     'durable' => true,      // (default)
