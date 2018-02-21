@@ -136,7 +136,7 @@ return [
                     'name' => 'exchange-name'
                 ],
                 'queue' => [
-                    'name' => 'queue-name' // can be an empty string,
+                    'name' => 'queue-name', // can be an empty string,
                     'routing_keys' => [
                         // optional routing keys
                     ]
