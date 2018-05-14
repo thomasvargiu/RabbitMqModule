@@ -34,6 +34,9 @@ class AbstractServiceFactoryTest extends TestCase
                         'bar' => [
 
                         ],
+                        'ab3_-' => [
+
+                        ]
                     ],
                 ],
                 'rabbitmq_factories' => [
@@ -49,6 +52,7 @@ class AbstractServiceFactoryTest extends TestCase
         $sm = $this->serviceManager;
         $factory = new AbstractServiceFactory();
         static::assertTrue($factory->canCreate($sm, 'rabbitmq.foo.bar'));
+        static::assertTrue($factory->canCreate($sm, 'rabbitmq.foo.ab3_-'));
         static::assertFalse($factory->canCreate($sm, 'rabbitmq.foo.bar2'));
     }
 
