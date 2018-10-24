@@ -38,9 +38,6 @@ matrix:
       env:
       - DEPS=latest
 
-  allow_failures:
-  - php: 7.3
-
 before_install:
   - if [[ $EXECUTE_TEST_SCRUTINIZER != 'true' ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
   - composer self-update
