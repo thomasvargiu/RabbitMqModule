@@ -38,6 +38,9 @@ matrix:
       env:
       - DEPS=latest
 
+  allow_failures:
+  - php: 7.3
+
 before_install:
   - if [[ $EXECUTE_TEST_SCRUTINIZER != 'true' ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
   - composer self-update
@@ -45,7 +48,7 @@ before_install:
 install:
   - if [[ "$DEPS" == 'latest' ]]; then travis_retry composer update $COMPOSER_ARGS ; fi
   - if [[ "$DEPS" == 'lowest' ]]; then travis_retry composer update --prefer-lowest --prefer-stable $COMPOSER_ARGS ; fi
-  - if [[ "EXECUTE_CS_CHECK" == 'tue' ]]; then composer require --dev $COMPOSER_ARGS $CS_CHECK_DEPS; fi
+  - if [[ "$EXECUTE_CS_CHECK" == 'tue' ]]; then composer require --dev $COMPOSER_ARGS $CS_CHECK_DEPS; fi
   - travis_retry composer install $COMPOSER_ARGS
 
 script:
