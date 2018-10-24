@@ -23,7 +23,7 @@ matrix:
     - php: 7.2
       env:
         - DEPS=lowest
-    - php: 7.1
+    - php: 7.2
       env:
       - DEPS=locked
       - EXECUTE_CS_CHECK=true
