@@ -49,7 +49,8 @@ install:
   - travis_retry composer install $COMPOSER_ARGS
   - if [[ "$DEPS" == 'latest' ]]; then travis_retry composer update $COMPOSER_ARGS ; fi
   - if [[ "$DEPS" == 'lowest' ]]; then travis_retry composer update --prefer-lowest --prefer-stable $COMPOSER_ARGS ; fi
-  - if [[ "$EXECUTE_CS_CHECK" == 'tue' ]]; then composer require --dev $COMPOSER_ARGS $CS_CHECK_DEPS; fi
+  - if [[ "$EXECUTE_TEST_SCRUTINIZER" == 'true' ]]; then composer require --dev $COMPOSER_ARGS $CS_CHECK_DEPS; fi
+  - stty cols 120 && composer show
 
 script:
   - if [[ "$EXECUTE_TEST_SCRUTINIZER" == 'true' ]]; then ./vendor/bin/phpunit --coverage-clover coverage.clover ; fi
