@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Service;
 
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use RabbitMqModule\ConsumerInterface;
 use RabbitMqModule\RpcServer;
 use RabbitMqModule\Options\RpcServer as Options;
@@ -19,22 +19,20 @@ class RpcServerFactory extends AbstractFactory
      */
     public function getOptionsClass(): string
     {
-        return \RabbitMqModule\Options\RpcServer::class;
+        return Options::class;
     }
 
     /**
      * Create an object.
      *
      * @param ContainerInterface $container
-     * @param string $requestedName
-     * @param null|array $options
      *
      * @return object
      *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container)
     {
         /* @var $rpcOptions Options */
         $rpcOptions = $this->getOptions($container, 'rpc_server');

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Service;
 
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use RuntimeException;
 use Zend\Stdlib\AbstractOptions;
 
@@ -53,8 +53,7 @@ abstract class AbstractFactory
         }
 
         $options = $container->get('config');
-        $options = $options['rabbitmq'];
-        $options = isset($options[$key][$name]) ? $options[$key][$name] : null;
+        $options = $options['rabbitmq'][$key][$name] ?? null;
 
         if (null === $options) {
             throw new RuntimeException(

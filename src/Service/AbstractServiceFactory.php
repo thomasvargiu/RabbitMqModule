@@ -18,7 +18,7 @@ class AbstractServiceFactory implements AbstractFactoryInterface
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    private function getFactoryMapping(ContainerInterface $container, $name)
+    private function getFactoryMapping(ContainerInterface $container, string $name)
     {
         $matches = [];
 

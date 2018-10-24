@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Service;
 
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use PhpAmqpLib\Connection\AbstractConnection;
 use RabbitMqModule\Producer;
 use RabbitMqModule\Options\Producer as Options;
@@ -18,22 +18,20 @@ class ProducerFactory extends AbstractFactory
      */
     public function getOptionsClass(): string
     {
-        return \RabbitMqModule\Options\Producer::class;
+        return Options::class;
     }
 
     /**
      * Create an object.
      *
      * @param ContainerInterface $container
-     * @param string $requestedName
-     * @param null|array $options
      *
      * @return Producer
      *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container)
     {
         /* @var $producerOptions Options */
         $producerOptions = $this->getOptions($container, 'producer');

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Service;
 
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use InvalidArgumentException;
 use RabbitMqModule\Service\Connection\ConnectionFactoryInterface;
 use RuntimeException;
@@ -49,7 +49,7 @@ class ConnectionFactory extends AbstractFactory
      */
     public function getOptionsClass(): string
     {
-        return \RabbitMqModule\Options\Connection::class;
+        return ConnectionOptions::class;
     }
 
     /**
