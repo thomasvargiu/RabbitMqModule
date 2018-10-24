@@ -9,6 +9,7 @@ cache:
 env:
   global:
     - COMPOSER_ARGS="--no-interaction"
+    - CS_CHECK_DEPS="friendsofphp/php-cs-fixer:^2.9"
 
 matrix:
   fast_finish: true
@@ -44,8 +45,8 @@ before_install:
 install:
   - if [[ $DEPS == 'latest' ]]; then travis_retry composer update $COMPOSER_ARGS ; fi
   - if [[ $DEPS == 'lowest' ]]; then travis_retry composer update --prefer-lowest --prefer-stable $COMPOSER_ARGS ; fi
+  - if [[ $CS_CHECK_DEPS != "" ]]; then composer require --dev $COMPOSER_ARGS $CS_CHECK_DEPS; fi
   - travis_retry composer install $COMPOSER_ARGS
-  - composer show --installed
 
 script:
   - if [[ $EXECUTE_TEST_SCRUTINIZER == 'true' ]]; then ./vendor/bin/phpunit --coverage-clover coverage.clover ; fi
