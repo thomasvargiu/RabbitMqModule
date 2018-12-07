@@ -9,6 +9,7 @@ use PhpAmqpLib\Connection\AbstractConnection;
 use RabbitMqModule\Options\Exchange as ExchangeOptions;
 use RabbitMqModule\Options\Queue as QueueOptions;
 use RabbitMqModule\Service\SetupFabricAwareInterface;
+use AMQPTable;
 
 abstract class BaseAmqp implements SetupFabricAwareInterface
 {
@@ -199,7 +200,7 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
         );
 
         $routingKeys = $queueOptions->getRoutingKeys();
-        if (empty($routingKeys)) {
+        if (! \count($routingKeys)) {
             $routingKeys = [''];
         }
         foreach ($routingKeys as $routingKey) {
