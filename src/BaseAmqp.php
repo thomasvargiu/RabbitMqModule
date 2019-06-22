@@ -9,7 +9,7 @@ use PhpAmqpLib\Connection\AbstractConnection;
 use RabbitMqModule\Options\Exchange as ExchangeOptions;
 use RabbitMqModule\Options\Queue as QueueOptions;
 use RabbitMqModule\Service\SetupFabricAwareInterface;
-use AMQPTable;
+use PhpAmqpLib\Wire\AMQPTable;
 
 abstract class BaseAmqp implements SetupFabricAwareInterface
 {
@@ -159,7 +159,7 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
         foreach ($binds as $bind) {
             $this->declareExchange($bind->getExchange());
             $routingKeys = $bind->getRoutingKeys();
-            if (! \count($routingKeys)) {
+            if (empty($routingKeys)) {
                 $routingKeys = [''];
             }
             foreach ($routingKeys as $routingKey) {
@@ -200,7 +200,7 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
         );
 
         $routingKeys = $queueOptions->getRoutingKeys();
-        if (! \count($routingKeys)) {
+        if (empty($routingKeys)) {
             $routingKeys = [''];
         }
         foreach ($routingKeys as $routingKey) {
