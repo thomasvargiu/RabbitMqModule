@@ -16,6 +16,6 @@ class NullProducer implements ProducerInterface
      */
     public function publish(string $body, string $routingKey = '', array $properties = []): void
     {
-
+        // do nothing
     }
 }
