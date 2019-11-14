@@ -17,6 +17,9 @@ class Producer extends BaseAmqp implements ProducerInterface
      */
     protected $deliveryMode = 2;
 
+    /** @var bool  */
+    private $alreadySetup = false;
+
     /**
      * @return string
      */
@@ -56,14 +59,19 @@ class Producer extends BaseAmqp implements ProducerInterface
      */
     public function publish(string $body, string $routingKey = '', array $properties = []): void
     {
+        if (false === $this->getConnection()->isConnected()) {
+            $this->reconnect();
+        }
+
         $properties = array_merge(
             ['content_type' => $this->getContentType(), 'delivery_mode' => $this->getDeliveryMode()],
             $properties
         );
         $message = new AMQPMessage($body, $properties);
 
-        if ($this->isAutoSetupFabricEnabled()) {
+        if (false === $this->alreadySetup && $this->isAutoSetupFabricEnabled()) {
             $this->setupFabric();
+            $this->alreadySetup  = true;
         }
 
         $this->getChannel()->basic_publish(
