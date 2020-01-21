@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Options;
 
-use Zend\Serializer\Serializer;
-use Zend\Serializer\Adapter\AdapterInterface as SerializerInterface;
+use Laminas\Serializer\Serializer;
+use Laminas\Serializer\Adapter\AdapterInterface as SerializerInterface;
 
 class RpcServer extends Consumer
 {

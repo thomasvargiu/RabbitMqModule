@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace RabbitMqModule;
 
 use PhpAmqpLib\Message\AMQPMessage;
-use Zend\Serializer\Adapter\AdapterInterface as SerializerInterface;
+use Laminas\Serializer\Adapter\AdapterInterface as SerializerInterface;
 
 class RpcClient extends BaseAmqp
 {
@@ -36,7 +36,7 @@ class RpcClient extends BaseAmqp
      * @param mixed $requestId
      * @param string $routingKey
      * @param int $expiration
-     * @throws \Zend\Serializer\Exception\ExceptionInterface
+     * @throws \Laminas\Serializer\Exception\ExceptionInterface
      */
     public function addRequest($body, string $server, $requestId, string $routingKey = '', int $expiration = 0): void
     {
@@ -91,7 +91,7 @@ class RpcClient extends BaseAmqp
 
     /**
      * @param AMQPMessage $message
-     * @throws \Zend\Serializer\Exception\ExceptionInterface
+     * @throws \Laminas\Serializer\Exception\ExceptionInterface
      */
     public function processMessage(AMQPMessage $message): void
     {

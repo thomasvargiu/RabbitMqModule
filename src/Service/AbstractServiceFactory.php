@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace RabbitMqModule\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\AbstractFactoryInterface;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 
 class AbstractServiceFactory implements AbstractFactoryInterface
 {

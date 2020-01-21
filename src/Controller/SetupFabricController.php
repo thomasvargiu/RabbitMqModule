@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace RabbitMqModule\Controller;
 
 use RabbitMqModule\Service\SetupFabricAwareInterface;
-use Zend\Console\ColorInterface;
+use Laminas\Console\ColorInterface;
 
 /**
  * Class SetupFabricController
@@ -14,7 +14,7 @@ class SetupFabricController extends AbstractConsoleController
 {
     public function indexAction()
     {
-        /** @var \Zend\Console\Response $response */
+        /** @var \Laminas\Console\Response $response */
         $response = $this->getResponse();
         $this->getConsole()->writeLine('Setting up the AMQP fabric');
 

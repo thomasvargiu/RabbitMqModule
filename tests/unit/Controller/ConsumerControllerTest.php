@@ -2,7 +2,7 @@
 
 namespace RabbitMqModule\Controller;
 
-use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
+use Laminas\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
 
 class ConsumerControllerTest extends AbstractConsoleControllerTestCase
 {
@@ -59,7 +59,7 @@ class ConsumerControllerTest extends AbstractConsoleControllerTestCase
         $consumer->expects(static::once())
             ->method('stopConsuming');
 
-        $container = $this->getMockBuilder('Zend\ServiceManager\ServiceManager')
+        $container = $this->getMockBuilder('Laminas\ServiceManager\ServiceManager')
             ->getMock();
 
         $stub = $this->getMockBuilder('RabbitMqModule\\Controller\\ConsumerController')

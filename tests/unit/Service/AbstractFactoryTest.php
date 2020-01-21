@@ -19,7 +19,7 @@ class AbstractFactoryTest extends \PHPUnit\Framework\TestCase
             ],
         ];
 
-        $serviceLocator = $this->getMockBuilder('Zend\\ServiceManager\\ServiceManager')
+        $serviceLocator = $this->getMockBuilder('Laminas\\ServiceManager\\ServiceManager')
             ->disableOriginalConstructor()
             ->setMethods(['get', 'has'])
             ->getMock();
@@ -57,7 +57,7 @@ class AbstractFactoryTest extends \PHPUnit\Framework\TestCase
             ],
         ];
 
-        $serviceLocator = $this->getMockBuilder('Zend\\ServiceManager\\ServiceManager')
+        $serviceLocator = $this->getMockBuilder('Laminas\\ServiceManager\\ServiceManager')
             ->setMethods(['get', 'has'])
             ->getMock();
         $factory = $this->getMockBuilder('RabbitMqModule\\Service\\AbstractFactory')

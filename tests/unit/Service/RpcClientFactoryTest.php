@@ -2,7 +2,7 @@
 
 namespace RabbitMqModule\Service;
 
-use Zend\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\ServiceManager;
 
 class RpcClientFactoryTest extends \PHPUnit\Framework\TestCase
 {
@@ -32,6 +32,6 @@ class RpcClientFactoryTest extends \PHPUnit\Framework\TestCase
         $service = $factory($serviceManager, 'service-name');
 
         static::assertInstanceOf('RabbitMqModule\\RpcClient', $service);
-        static::assertInstanceOf('Zend\\Serializer\\Adapter\\AdapterInterface', $service->getSerializer());
+        static::assertInstanceOf('Laminas\\Serializer\\Adapter\\AdapterInterface', $service->getSerializer());
     }
 }

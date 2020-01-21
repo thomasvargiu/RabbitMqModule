@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace RabbitMqModule\Service;
 
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use RabbitMqModule\NullProducer;
 
 class NullProducerFactory
@@ -18,7 +18,7 @@ class NullProducerFactory
      *
      * @return NullProducer
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): NullProducer
     {
         return new NullProducer();
     }

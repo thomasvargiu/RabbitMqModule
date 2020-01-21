@@ -2,7 +2,7 @@
 
 namespace RabbitMqModule\Controller;
 
-use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
+use Laminas\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
 
 class SetupFabricControllerTest extends AbstractConsoleControllerTestCase
 {

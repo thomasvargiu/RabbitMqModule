@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace RabbitMqModule\Controller;
 
 use PhpAmqpLib\Exception\AMQPTimeoutException;
-use Zend\Console\ColorInterface;
+use Laminas\Console\ColorInterface;
 use RabbitMqModule\Consumer;
 
 /**
@@ -20,7 +20,7 @@ class ConsumerController extends AbstractConsoleController
 
     public function indexAction()
     {
-        /** @var \Zend\Console\Response $response */
+        /** @var \Laminas\Console\Response $response */
         $response = $this->getResponse();
 
         $this->getConsole()->writeLine(sprintf('Starting consumer %s', $this->params('name')));

@@ -6,7 +6,7 @@ namespace RabbitMqModule\Service;
 
 use Psr\Container\ContainerInterface;
 use RuntimeException;
-use Zend\Stdlib\AbstractOptions;
+use Laminas\Stdlib\AbstractOptions;
 
 abstract class AbstractFactory
 {
