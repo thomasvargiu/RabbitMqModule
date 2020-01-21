@@ -42,7 +42,8 @@
         "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan": "^0.12.7",
         "phpstan/phpstan-phpunit": "^0.12.6",
-        "jangregor/phpstan-prophecy": "^0.6.0"
+        "jangregor/phpstan-prophecy": "^0.6.0",
+        "phpspec/prophecy": ">= 1.10.2"
     },
     "autoload": {
         "psr-4": {
