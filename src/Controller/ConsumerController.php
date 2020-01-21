@@ -88,7 +88,6 @@ class ConsumerController extends AbstractConsoleController
         $consumers = $config['rabbitmq']['consumer'];
 
         if (! is_array($consumers) || count($consumers) === 0) {
-            $response->setErrorLevel(1);
             $this->getConsole()->writeText('No consumers defined!', ColorInterface::LIGHT_RED);
 
             return $response;

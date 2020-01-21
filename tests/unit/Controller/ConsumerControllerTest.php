@@ -3,6 +3,7 @@
 namespace RabbitMqModule\Controller;
 
 use Laminas\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
+use function ob_get_clean;
 
 class ConsumerControllerTest extends AbstractConsoleControllerTestCase
 {
@@ -105,9 +106,9 @@ class ConsumerControllerTest extends AbstractConsoleControllerTestCase
     {
         ob_start();
         $this->dispatch('rabbitmq list consumers');
-        ob_end_clean();
+        $output = ob_get_clean();
 
-        $this->assertConsoleOutputContains('No consumers defined!');
+        $this->assertStringContainsString('No consumers defined!', $output);
 
         $this->assertResponseStatusCode(0);
     }
@@ -123,11 +124,11 @@ class ConsumerControllerTest extends AbstractConsoleControllerTestCase
 
         ob_start();
         $this->dispatch('rabbitmq list consumers');
-        ob_end_clean();
+        $output = ob_get_clean();
 
-        $this->assertConsoleOutputContains('No \'rabbitmq.consumer\' configuration key found!');
+        $this->assertStringContainsString('No "rabbitmq.consumer" configuration key found!', $output);
 
-        $this->assertResponseStatusCode(0);
+        $this->assertResponseStatusCode(1);
     }
 
     public function testListConsumers(): void

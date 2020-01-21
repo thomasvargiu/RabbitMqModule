@@ -2,6 +2,8 @@
 
 namespace RabbitMqModule;
 
+use PhpAmqpLib\Channel\AMQPChannel;
+use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use RabbitMqModule\Options\Exchange as ExchangeOptions;
 use RabbitMqModule\Options\Queue as QueueOptions;
@@ -64,10 +66,8 @@ class ProducerTest extends \PHPUnit\Framework\TestCase
 
     public function testPublish(): void
     {
-        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
-            ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
-        $channel = $this->getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+        $connection = $this->prophesize(AbstractConnection::class);
+        $channel = $this->getMockBuilder(AMQPChannel::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -76,7 +76,10 @@ class ProducerTest extends \PHPUnit\Framework\TestCase
         $exchangeOptions = new ExchangeOptions();
         $exchangeOptions->setName('foo');
 
-        $producer = new Producer($connection, $channel);
+        $connection->isConnected()->willReturn(true);
+        $connection->reconnect()->shouldNotBeCalled();
+
+        $producer = new Producer($connection->reveal(), $channel);
         $producer->setQueueOptions($queueOptions);
         $producer->setExchangeOptions($exchangeOptions);
 
@@ -95,6 +98,47 @@ class ProducerTest extends \PHPUnit\Framework\TestCase
                         'content_type' => 'foo/bar',
                         'delivery_mode' => 2,
                     ];
+                }
+            ), 'foo', 'test-key');
+
+        $producer->publish('test-body', 'test-key', ['content_type' => 'foo/bar']);
+    }
+
+    public function testShouldReconnectOnPublishWhenDisconnected(): void
+    {
+        $connection = $this->prophesize(AbstractConnection::class);
+        $channel = $this->getMockBuilder(AMQPChannel::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $queueOptions = new QueueOptions();
+        $queueOptions->setName('foo');
+        $exchangeOptions = new ExchangeOptions();
+        $exchangeOptions->setName('foo');
+
+        $connection->isConnected()->willReturn(false);
+        $connection->reconnect()->shouldBeCalled();
+        $connection->channel()->willReturn($channel);
+
+        $producer = new Producer($connection->reveal(), $channel);
+        $producer->setQueueOptions($queueOptions);
+        $producer->setExchangeOptions($exchangeOptions);
+
+        $channel->expects(static::once())
+            ->method('exchange_declare');
+        $channel->expects(static::once())
+            ->method('queue_declare');
+
+        $channel->expects(static::once())
+            ->method('basic_publish')
+            ->with(static::callback(
+                function ($subject) {
+                    return $subject instanceof AMQPMessage
+                        && $subject->body === 'test-body'
+                        && $subject->get_properties() === [
+                            'content_type' => 'foo/bar',
+                            'delivery_mode' => 2,
+                        ];
                 }
             ), 'foo', 'test-key');
 
