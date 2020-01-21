@@ -3,7 +3,7 @@
 namespace RabbitMqModule;
 
 use PhpAmqpLib\Message\AMQPMessage;
-use Zend\Serializer\Serializer;
+use Laminas\Serializer\Serializer;
 
 class RpcClientTest extends \PHPUnit\Framework\TestCase
 {

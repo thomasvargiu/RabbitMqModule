@@ -2,7 +2,7 @@
 
 namespace RabbitMqModule;
 
-use Zend\Serializer\Serializer;
+use Laminas\Serializer\Serializer;
 
 class RpcServerTest extends \PHPUnit\Framework\TestCase
 {

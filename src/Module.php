@@ -6,10 +6,10 @@
 
 namespace RabbitMqModule;
 
-use Zend\Console\Adapter\AdapterInterface;
-use Zend\ModuleManager\Feature\ConfigProviderInterface;
-use Zend\ModuleManager\Feature\ConsoleBannerProviderInterface;
-use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface;
+use Laminas\Console\Adapter\AdapterInterface;
+use Laminas\ModuleManager\Feature\ConfigProviderInterface;
+use Laminas\ModuleManager\Feature\ConsoleBannerProviderInterface;
+use Laminas\ModuleManager\Feature\ConsoleUsageProviderInterface;
 
 /**
  * Class Module.

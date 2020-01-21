@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Controller;
 
-use Zend\Console\ColorInterface;
+use Laminas\Console\ColorInterface;
 
 /**
  * Class StdInProducerController.
@@ -13,7 +13,7 @@ class StdInProducerController extends AbstractConsoleController
 {
     public function indexAction()
     {
-        /** @var \Zend\Console\Response $response */
+        /** @var \Laminas\Console\Response $response */
         $response = $this->getResponse();
 
         $producerName = $this->params('name');

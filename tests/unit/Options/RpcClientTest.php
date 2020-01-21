@@ -17,13 +17,13 @@ class RpcClientTest extends \PHPUnit\Framework\TestCase
         $options = new RpcClient();
 
         $options->setSerializer('PhpSerialize');
-        static::assertInstanceOf('Zend\\Serializer\\Adapter\\AdapterInterface', $options->getSerializer());
+        static::assertInstanceOf('Laminas\\Serializer\\Adapter\\AdapterInterface', $options->getSerializer());
 
         $options->setSerializer(null);
         static::assertNull($options->getSerializer());
 
         $options->setSerializer(['name' => 'PhpSerialize']);
-        static::assertInstanceOf('Zend\\Serializer\\Adapter\\AdapterInterface', $options->getSerializer());
+        static::assertInstanceOf('Laminas\\Serializer\\Adapter\\AdapterInterface', $options->getSerializer());
     }
 
     /**

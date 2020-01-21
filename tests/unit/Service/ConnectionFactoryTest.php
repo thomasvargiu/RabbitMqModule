@@ -5,7 +5,7 @@ namespace RabbitMqModule\Service;
 use PhpAmqpLib\Connection\AbstractConnection;
 use Prophecy\Argument;
 use RabbitMqModule\Service\Connection\ConnectionFactoryInterface;
-use Zend\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\ServiceManager;
 
 class ConnectionFactoryTest extends \PHPUnit\Framework\TestCase
 {
@@ -25,7 +25,7 @@ class ConnectionFactoryTest extends \PHPUnit\Framework\TestCase
             ],
         ];
 
-        $container = $this->prophesize(\Zend\ServiceManager\ServiceManager::class);
+        $container = $this->prophesize(\Laminas\ServiceManager\ServiceManager::class);
         $connection = $this->prophesize(AbstractConnection::class);
         $connectionFactory = $this->prophesize(ConnectionFactoryInterface::class);
 

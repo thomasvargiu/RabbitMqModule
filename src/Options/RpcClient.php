@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Options;
 
-use Zend\Serializer\Serializer;
-use Zend\Stdlib\AbstractOptions;
-use Zend\Serializer\Adapter\AdapterInterface as SerializerInterface;
+use Laminas\Serializer\Serializer;
+use Laminas\Stdlib\AbstractOptions;
+use Laminas\Serializer\Adapter\AdapterInterface as SerializerInterface;
 
 class RpcClient extends AbstractOptions
 {

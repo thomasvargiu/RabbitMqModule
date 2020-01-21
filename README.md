@@ -5,7 +5,7 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/thomasvargiu/RabbitMqModule/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/thomasvargiu/RabbitMqModule/?branch=master)
 [![Dependency Status](https://www.versioneye.com/user/projects/55300c0a10e7141211000b7d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55300c0a10e7141211000b7d)
 
-Integrates php-amqplib with Zend Framework and RabbitMq.
+Integrates php-amqplib with Laminas/Mezzio Framework and RabbitMq.
 
 Inspired from [RabbitMqBundle](https://github.com/videlalvaro/RabbitMqBundle/) for Symfony 2
 
@@ -51,7 +51,7 @@ You can retrieve the connection from service locator:
 
 ```php
 // Getting the 'default' connection
-/** @var \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator **/
+/** @var \Laminas\ServiceManager\ServiceLocatorInterface $serviceLocator **/
 $connection = $serviceLocator->get('rabbitmq.connection.default');
 ```
 
@@ -111,7 +111,7 @@ You can retrieve the producer from service locator:
 
 ```php
 // Getting a producer
-/** @var \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator **/
+/** @var \Laminas\ServiceManager\ServiceLocatorInterface $serviceLocator **/
 /** @var \RabbitMqModule\ProducerInterface $producer **/
 $producer = $serviceLocator->get('rabbitmq.producer.producer_name');
 
@@ -184,7 +184,7 @@ You can retrieve the consumer from service locator:
 
 ```php
 // Getting a consumer
-/** @var \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator **/
+/** @var \Laminas\ServiceManager\ServiceLocatorInterface $serviceLocator **/
 /** @var \RabbitMqModule\Consumer $consumer **/
 $consumer = $serviceLocator->get('rabbitmq.consumer.consumer_name');
 

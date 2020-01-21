@@ -2,7 +2,7 @@
 
 namespace RabbitMqModule\Service;
 
-use Zend\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\ServiceManager;
 
 class ConsumerFactoryTest extends \PHPUnit\Framework\TestCase
 {

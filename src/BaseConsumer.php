@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace RabbitMqModule;
 
 use PhpAmqpLib\Message\AMQPMessage;
-use Zend\EventManager\EventManagerAwareInterface;
-use Zend\EventManager\EventManagerAwareTrait;
+use Laminas\EventManager\EventManagerAwareInterface;
+use Laminas\EventManager\EventManagerAwareTrait;
 
 abstract class BaseConsumer extends BaseAmqp implements EventManagerAwareInterface
 {

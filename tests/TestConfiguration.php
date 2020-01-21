@@ -2,8 +2,8 @@
 
 return [
     'modules' => [
-        'Zend\\Router',
-        'Zend\\Mvc\\Console',
+        'Laminas\\Router',
+        'Laminas\\Mvc\\Console',
         'RabbitMqModule',
     ],
     'module_listener_options' => [

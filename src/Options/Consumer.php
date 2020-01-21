@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace RabbitMqModule\Options;
 
 use InvalidArgumentException;
-use Zend\Stdlib\AbstractOptions;
+use Laminas\Stdlib\AbstractOptions;
 
 class Consumer extends AbstractOptions
 {

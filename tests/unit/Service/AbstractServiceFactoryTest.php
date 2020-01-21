@@ -3,7 +3,7 @@
 namespace RabbitMqModule\Service;
 
 use PHPUnit\Framework\TestCase;
-use Zend\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\ServiceManager;
 
 class AbstractServiceFactoryTest extends TestCase
 {
