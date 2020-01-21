@@ -8,14 +8,10 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class Producer extends BaseAmqp implements ProducerInterface
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $contentType = 'text/plain';
 
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $deliveryMode = 2;
 
     /** @var bool */
@@ -56,7 +52,7 @@ class Producer extends BaseAmqp implements ProducerInterface
     /**
      * @param string $body
      * @param string $routingKey
-     * @param array  $properties
+     * @param array<string, mixed>  $properties
      */
     public function publish(string $body, string $routingKey = '', array $properties = []): void
     {

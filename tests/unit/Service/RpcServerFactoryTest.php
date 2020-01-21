@@ -2,11 +2,12 @@
 
 namespace RabbitMqModule\Service;
 
+use InvalidArgumentException;
 use Laminas\ServiceManager\ServiceManager;
 
 class RpcServerFactoryTest extends \PHPUnit\Framework\TestCase
 {
-    public function testCreateService()
+    public function testCreateService(): void
     {
         $factory = new RpcServerFactory('foo');
         $serviceManager = new ServiceManager();
@@ -59,22 +60,20 @@ class RpcServerFactoryTest extends \PHPUnit\Framework\TestCase
         $serviceManager->setService('rabbitmq.connection.foo', $connection);
         $serviceManager->setService('callback-service', $callback);
 
-        $service = $factory($serviceManager, 'service-name');
+        $service = $factory($serviceManager);
 
         static::assertInstanceOf('RabbitMqModule\\RpcServer', $service);
         static::assertInstanceOf('RabbitMqModule\\Options\\Queue', $service->getQueueOptions());
         static::assertInstanceOf('RabbitMqModule\\Options\\Exchange', $service->getExchangeOptions());
         static::assertNotEmpty($service->getConsumerTag());
-        static::assertTrue(is_callable($service->getCallback()));
+        static::assertIsCallable($service->getCallback());
         static::assertEquals(5, $service->getIdleTimeout());
         static::assertInstanceOf('Laminas\\Serializer\\Adapter\\AdapterInterface', $service->getSerializer());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testCreateServiceWithInvalidCallback()
+    public function testCreateServiceWithInvalidCallback(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         $factory = new RpcServerFactory('foo');
         $serviceManager = new ServiceManager();
         $serviceManager->setService(
@@ -100,6 +99,6 @@ class RpcServerFactoryTest extends \PHPUnit\Framework\TestCase
             ]
         );
 
-        $factory($serviceManager, 'service-name');
+        $factory($serviceManager);
     }
 }

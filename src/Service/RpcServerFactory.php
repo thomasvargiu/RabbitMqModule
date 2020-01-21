@@ -5,17 +5,24 @@ declare(strict_types=1);
 namespace RabbitMqModule\Service;
 
 use InvalidArgumentException;
+use function is_callable;
+use function is_string;
 use Psr\Container\ContainerInterface;
 use RabbitMqModule\ConsumerInterface;
 use RabbitMqModule\Options\RpcServer as Options;
 use RabbitMqModule\RpcServer;
 
-class RpcServerFactory extends AbstractFactory
+/**
+ * @extends AbstractFactory<Options>
+ */
+final class RpcServerFactory extends AbstractFactory
 {
     /**
      * Get the class name of the options associated with this factory.
      *
      * @return string
+     * @phpstan-return class-string<Options>
+     * @psalm-return class-string<Options>
      */
     public function getOptionsClass(): string
     {
@@ -30,9 +37,9 @@ class RpcServerFactory extends AbstractFactory
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      *
-     * @return object
+     * @return RpcServer
      */
-    public function __invoke(ContainerInterface $container)
+    public function __invoke(ContainerInterface $container): RpcServer
     {
         /* @var $rpcOptions Options */
         $rpcOptions = $this->getOptions($container, 'rpc_server');
@@ -52,13 +59,13 @@ class RpcServerFactory extends AbstractFactory
     protected function createServer(ContainerInterface $container, Options $options): RpcServer
     {
         $callback = $options->getCallback();
-        if (\is_string($callback)) {
+        if (is_string($callback)) {
             $callback = $container->get($callback);
         }
         if ($callback instanceof ConsumerInterface) {
             $callback = [$callback, 'execute'];
         }
-        if (! \is_callable($callback)) {
+        if (! is_callable($callback)) {
             throw new InvalidArgumentException('Invalid callback provided');
         }
 

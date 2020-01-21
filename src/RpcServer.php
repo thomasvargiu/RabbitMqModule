@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace RabbitMqModule;
 
+use function call_user_func;
 use Laminas\Serializer\Adapter\AdapterInterface as SerializerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class RpcServer extends Consumer
 {
     /**
-     * @var SerializerInterface
+     * @var SerializerInterface|null
      */
     protected $serializer;
 
@@ -24,7 +25,7 @@ class RpcServer extends Consumer
         /** @var \PhpAmqpLib\Channel\AMQPChannel $channel */
         $channel = $message->delivery_info['channel'];
         $channel->basic_ack($message->delivery_info['delivery_tag']);
-        $result = \call_user_func($this->getCallback(), $message);
+        $result = call_user_func($this->getCallback(), $message);
         if ($this->serializer) {
             $result = $this->serializer->serialize($result);
         }
@@ -56,7 +57,7 @@ class RpcServer extends Consumer
     /**
      * Set the serializer.
      *
-     * @param SerializerInterface $serializer
+     * @param SerializerInterface|null $serializer
      */
     public function setSerializer(SerializerInterface $serializer = null): void
     {

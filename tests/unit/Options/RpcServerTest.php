@@ -2,9 +2,11 @@
 
 namespace RabbitMqModule\Options;
 
+use InvalidArgumentException;
+
 class RpcServerTest extends \PHPUnit\Framework\TestCase
 {
-    public function testSetSerializer()
+    public function testSetSerializer(): void
     {
         $options = new RpcServer();
 
@@ -18,21 +20,9 @@ class RpcServerTest extends \PHPUnit\Framework\TestCase
         static::assertInstanceOf('Laminas\\Serializer\\Adapter\\AdapterInterface', $options->getSerializer());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testSetSerializerWithInvalidValue()
+    public function testSetSerializerWithEmptyArray(): void
     {
-        $options = new RpcServer();
-
-        $options->setSerializer(true);
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testSetSerializerWithEmptyArray()
-    {
+        $this->expectException(InvalidArgumentException::class);
         $options = new RpcServer();
 
         $options->setSerializer([]);

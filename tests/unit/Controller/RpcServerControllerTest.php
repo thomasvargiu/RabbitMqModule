@@ -6,14 +6,14 @@ use Laminas\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
 
 class RpcServerControllerTest extends AbstractConsoleControllerTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $config = include __DIR__ . '/../../TestConfiguration.php';
         $this->setApplicationConfig($config);
         parent::setUp();
     }
 
-    public function testDispatchWithTestConsumer()
+    public function testDispatchWithTestConsumer(): void
     {
         $consumer = $this->getMockBuilder('RabbitMqModule\Consumer')
             ->setMethods(['consume'])
@@ -34,7 +34,7 @@ class RpcServerControllerTest extends AbstractConsoleControllerTestCase
         $this->assertResponseStatusCode(0);
     }
 
-    public function testDispatchWithInvalidTestConsumer()
+    public function testDispatchWithInvalidTestConsumer(): void
     {
         ob_start();
         $this->dispatch('rabbitmq rpc_server foo');

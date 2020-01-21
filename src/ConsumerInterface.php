@@ -32,7 +32,7 @@ interface ConsumerInterface
     /**
      * @param AMQPMessage $message
      *
-     * @return mixed
+     * @return int|null
      */
-    public function execute(AMQPMessage $message);
+    public function execute(AMQPMessage $message): ?int;
 }

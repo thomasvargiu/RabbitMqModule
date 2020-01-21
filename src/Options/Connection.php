@@ -74,7 +74,7 @@ class Connection extends AbstractOptions
     protected $heartbeat = 0;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     protected $sslOptions = [];
 
@@ -287,7 +287,7 @@ class Connection extends AbstractOptions
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     public function getSslOptions(): array
     {
@@ -295,7 +295,7 @@ class Connection extends AbstractOptions
     }
 
     /**
-     * @param array $sslOptions
+     * @param array<string, mixed> $sslOptions
      */
     public function setSslOptions(array $sslOptions): void
     {

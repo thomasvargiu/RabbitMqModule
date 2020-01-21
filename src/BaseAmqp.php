@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace RabbitMqModule;
 
+use function count;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AbstractConnection;
+use PhpAmqpLib\Wire\AMQPTable;
 use RabbitMqModule\Options\Exchange as ExchangeOptions;
 use RabbitMqModule\Options\Queue as QueueOptions;
 use RabbitMqModule\Service\SetupFabricAwareInterface;
@@ -18,7 +20,7 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
     protected $connection;
 
     /**
-     * @var AMQPChannel
+     * @var AMQPChannel|null
      */
     private $channel;
 
@@ -148,6 +150,8 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
             return;
         }
 
+        $arguments = $options->getArguments();
+
         $this->getChannel()->exchange_declare(
             $options->getName(),
             $options->getType(),
@@ -156,7 +160,7 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
             $options->isAutoDelete(),
             $options->isInternal(),
             $options->isNoWait(),
-            $options->getArguments(),
+            $arguments ? new AMQPTable($arguments) : [],
             $options->getTicket()
         );
 
@@ -164,7 +168,7 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
         foreach ($binds as $bind) {
             $this->declareExchange($bind->getExchange());
             $routingKeys = $bind->getRoutingKeys();
-            if (! \count($routingKeys)) {
+            if (! count($routingKeys)) {
                 $routingKeys = [''];
             }
             foreach ($routingKeys as $routingKey) {
@@ -191,6 +195,7 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
         }
 
         $exchangeOptions = $this->getExchangeOptions();
+        $arguments = $queueOptions->getArguments();
 
         [$queueName] = $this->getChannel()->queue_declare(
             $queueOptions->getName(),
@@ -199,12 +204,12 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
             $queueOptions->isExclusive(),
             $queueOptions->isAutoDelete(),
             $queueOptions->isNoWait(),
-            $queueOptions->getArguments(),
+            $arguments ? new AMQPTable($arguments) : [],
             $queueOptions->getTicket()
         );
 
         $routingKeys = $queueOptions->getRoutingKeys();
-        if (! \count($routingKeys)) {
+        if (! count($routingKeys)) {
             $routingKeys = [''];
         }
         foreach ($routingKeys as $routingKey) {
@@ -239,11 +244,7 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
      */
     public function reconnect(): void
     {
-        if (! $this->getConnection()->isConnected()) {
-            return;
-        }
-
-        $this->getConnection()->reconnect();
         $this->channel = null;
+        $this->getConnection()->reconnect();
     }
 }

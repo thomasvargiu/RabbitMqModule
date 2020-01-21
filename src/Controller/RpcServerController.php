@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace RabbitMqModule\Controller;
 
 use Laminas\Console\ColorInterface;
+use Laminas\Console\Response;
 
 /**
  * Class RpcServerController.
  */
 class RpcServerController extends AbstractConsoleController
 {
-    public function indexAction()
+    public function indexAction(): Response
     {
-        /** @var \Laminas\Console\Response $response */
+        /** @var Response $response */
         $response = $this->getResponse();
 
         $this->getConsole()->writeLine(sprintf('Starting rpc server %s', $this->params('name')));

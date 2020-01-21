@@ -4,6 +4,7 @@ namespace RabbitMqModule\Service;
 
 use Laminas\ServiceManager\ServiceManager;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\NotFoundExceptionInterface;
 
 class AbstractServiceFactoryTest extends TestCase
 {
@@ -15,7 +16,7 @@ class AbstractServiceFactoryTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->serviceManager = new ServiceManager();
         $this->serviceManager->setService(
@@ -45,7 +46,7 @@ class AbstractServiceFactoryTest extends TestCase
         );
     }
 
-    public function testCanCreateServiceWithName()
+    public function testCanCreateServiceWithName(): void
     {
         $sm = $this->serviceManager;
         $factory = new AbstractServiceFactory();
@@ -54,11 +55,9 @@ class AbstractServiceFactoryTest extends TestCase
         static::assertFalse($factory->canCreate($sm, 'rabbitmq.foo.bar2'));
     }
 
-    /**
-     * @expectedException \Interop\Container\Exception\ContainerException
-     */
-    public function testCreateServiceUnknown()
+    public function testCreateServiceUnknown(): void
     {
+        $this->expectException(NotFoundExceptionInterface::class);
         $sm = $this->serviceManager;
         $factory = new AbstractServiceFactory();
         $factory($sm, 'rabbitmq.unknown-key.foo');

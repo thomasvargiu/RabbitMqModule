@@ -5,17 +5,23 @@ declare(strict_types=1);
 namespace RabbitMqModule\Service;
 
 use InvalidArgumentException;
+use PhpAmqpLib\Connection\AbstractConnection;
 use Psr\Container\ContainerInterface;
 use RabbitMqModule\Options\Connection as ConnectionOptions;
 use RabbitMqModule\Service\Connection\ConnectionFactoryInterface;
 use RuntimeException;
 
-class ConnectionFactory extends AbstractFactory
+/**
+ * @extends AbstractFactory<ConnectionOptions>
+ */
+final class ConnectionFactory extends AbstractFactory
 {
     /**
-     * @var array
+     * @var array<string, string>
+     * @phpstan-var array<string, class-string<Connection\ConnectionFactoryInterface>>
+     * @psalm-var array<string, class-string<Connection\ConnectionFactoryInterface>>
      */
-    protected $factoryMap = [
+    private $factoryMap = [
         'stream' => Connection\StreamConnectionFactory::class,
         'socket' => Connection\SocketConnectionFactory::class,
         'ssl' => Connection\SSLConnectionFactory::class,
@@ -23,19 +29,23 @@ class ConnectionFactory extends AbstractFactory
     ];
 
     /**
-     * @return array
+     * @return array<string, string>
+     * @phpstan-return array<string, class-string<Connection\ConnectionFactoryInterface>>
+     * @psalm-return array<string, class-string<Connection\ConnectionFactoryInterface>>
      */
-    public function getFactoryMap()
+    public function getFactoryMap(): array
     {
         return $this->factoryMap;
     }
 
     /**
-     * @param array $factoryMap
+     * @param array<string, string> $factoryMap
+     * @phpstan-param array<string, class-string<Connection\ConnectionFactoryInterface>> $factoryMap
+     * @psalm-param array<string, class-string<Connection\ConnectionFactoryInterface>> $factoryMap
      *
      * @return $this
      */
-    public function setFactoryMap(array $factoryMap)
+    public function setFactoryMap(array $factoryMap): self
     {
         $this->factoryMap = $factoryMap;
 
@@ -46,6 +56,8 @@ class ConnectionFactory extends AbstractFactory
      * Get the class name of the options associated with this factory.
      *
      * @return string
+     * @phpstan-return class-string<ConnectionOptions>
+     * @psalm-return class-string<ConnectionOptions>
      */
     public function getOptionsClass(): string
     {
@@ -56,15 +68,13 @@ class ConnectionFactory extends AbstractFactory
      * Create an object.
      *
      * @param ContainerInterface $container
-     * @param string $requestedName
-     * @param null|array $options
      *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      *
-     * @return object
+     * @return AbstractConnection
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container): AbstractConnection
     {
         /* @var $connectionOptions ConnectionOptions */
         $connectionOptions = $this->getOptions($container, 'connection');
@@ -82,7 +92,7 @@ class ConnectionFactory extends AbstractFactory
      *
      * @return ConnectionFactoryInterface
      */
-    protected function getFactory(ContainerInterface $container, $type)
+    protected function getFactory(ContainerInterface $container, string $type): ConnectionFactoryInterface
     {
         $map = $this->getFactoryMap();
         if (! array_key_exists($type, $map)) {

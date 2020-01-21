@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Controller;
 
+use BadFunctionCallException;
+use function extension_loaded;
+use function function_exists;
 use Laminas\Console\ColorInterface;
+use Laminas\Console\Response;
+use function pcntl_signal;
 use PhpAmqpLib\Exception\AMQPTimeoutException;
 use RabbitMqModule\Consumer;
 
@@ -18,9 +23,9 @@ class ConsumerController extends AbstractConsoleController
      */
     protected $consumer;
 
-    public function indexAction()
+    public function indexAction(): Response
     {
-        /** @var \Laminas\Console\Response $response */
+        /** @var Response $response */
         $response = $this->getResponse();
 
         $this->getConsole()->writeLine(sprintf('Starting consumer %s', $this->params('name')));
@@ -48,15 +53,15 @@ class ConsumerController extends AbstractConsoleController
         }
 
         // @codeCoverageIgnoreStart
-        if (! $withoutSignals && \extension_loaded('pcntl')) {
-            if (! \function_exists('pcntl_signal')) {
-                throw new \BadFunctionCallException(
+        if (! $withoutSignals && extension_loaded('pcntl')) {
+            if (! function_exists('pcntl_signal')) {
+                throw new BadFunctionCallException(
                     'Function \'pcntl_signal\' is referenced in the php.ini \'disable_functions\' and can\'t be called.'
                 );
             }
 
-            \pcntl_signal(SIGTERM, [$this, 'stopConsumer']);
-            \pcntl_signal(SIGINT, [$this, 'stopConsumer']);
+            pcntl_signal(SIGTERM, [$this, 'stopConsumer']);
+            pcntl_signal(SIGINT, [$this, 'stopConsumer']);
         }
         // @codeCoverageIgnoreEnd
 
@@ -68,19 +73,27 @@ class ConsumerController extends AbstractConsoleController
     /**
      * List available consumers.
      */
-    public function listAction()
+    public function listAction(): Response
     {
-        /** @var array $config */
-        $config = $this->container->get('Configuration');
+        /** @var array<string, mixed> $config */
+        $config = $this->container->get('config');
+        /** @var Response $response */
+        $response = $this->getResponse();
 
         if (! array_key_exists('rabbitmq', $config) || ! array_key_exists('consumer', $config['rabbitmq'])) {
-            return 'No \'rabbitmq.consumer\' configuration key found!';
+            $response->setErrorLevel(1);
+            $this->getConsole()->writeText('No "rabbitmq.consumer" configuration key found!', ColorInterface::LIGHT_RED);
+
+            return $response;
         }
 
         $consumers = $config['rabbitmq']['consumer'];
 
         if (! is_array($consumers) || count($consumers) === 0) {
-            return 'No consumers defined!';
+            $response->setErrorLevel(1);
+            $this->getConsole()->writeText('No consumers defined!', ColorInterface::LIGHT_RED);
+
+            return $response;
         }
 
         foreach ($consumers as $name => $configuration) {
@@ -91,6 +104,8 @@ class ConsumerController extends AbstractConsoleController
                 $this->getConsole()->colorize($description, ColorInterface::LIGHT_YELLOW)
             ));
         }
+
+        return $response;
     }
 
     /**
@@ -125,7 +140,7 @@ class ConsumerController extends AbstractConsoleController
      * @param int $code
      * @codeCoverageIgnore
      */
-    protected function callExit($code)
+    protected function callExit($code): void
     {
         exit($code);
     }

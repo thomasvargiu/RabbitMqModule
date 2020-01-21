@@ -17,7 +17,7 @@ class AbstractServiceFactory implements AbstractFactoryInterface
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      *
-     * @return bool|array
+     * @return bool|array<string, string>
      */
     private function getFactoryMapping(ContainerInterface $container, string $name)
     {
@@ -63,7 +63,7 @@ class AbstractServiceFactory implements AbstractFactoryInterface
      *
      * @param ContainerInterface $container
      * @param string $requestedName
-     * @param null|array $options
+     * @param null|array<mixed> $options
      *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface

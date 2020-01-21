@@ -2,19 +2,21 @@
 
 namespace RabbitMqModule;
 
+use PhpAmqpLib\Connection\AbstractConnection;
+use PHPUnit\Framework\TestCase;
 use RabbitMqModule\Options\Exchange as ExchangeOptions;
 use RabbitMqModule\Options\ExchangeBind;
 use RabbitMqModule\Options\Queue as QueueOptions;
 
-class ConsumerTest extends \PHPUnit\Framework\TestCase
+class ConsumerTest extends TestCase
 {
-    public function testProperties()
+    public function testProperties(): void
     {
-        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+        $connection = $this->getMockBuilder(AbstractConnection::class)
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
 
-        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
+        /* @var AbstractConnection $connection */
         $consumer = new Consumer($connection);
 
         static::assertTrue($consumer->isAutoSetupFabricEnabled());
@@ -23,7 +25,7 @@ class ConsumerTest extends \PHPUnit\Framework\TestCase
         $queueOptions = new QueueOptions();
         $exchangeOptions = new ExchangeOptions();
 
-        $callback = function () {
+        $callback = function (): void {
         };
 
         $consumer->setConsumerTag('consumer-tag-test');
@@ -41,7 +43,7 @@ class ConsumerTest extends \PHPUnit\Framework\TestCase
         static::assertEquals(5, $consumer->getIdleTimeout());
     }
 
-    public function testSetupFabric()
+    public function testSetupFabric(): void
     {
         $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
@@ -59,7 +61,7 @@ class ConsumerTest extends \PHPUnit\Framework\TestCase
         $exchangeBind->setExchange($exchangeBindOptions);
         $exchangeOptions->setExchangeBinds([$exchangeBind]);
 
-        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
+        /* @var AbstractConnection $connection */
         $consumer = new Consumer($connection, $channel);
         $consumer->setQueueOptions($queueOptions);
         $consumer->setExchangeOptions($exchangeOptions);
@@ -74,7 +76,7 @@ class ConsumerTest extends \PHPUnit\Framework\TestCase
         $consumer->setupFabric();
     }
 
-    public function testSetupFabricWithEmptyQueueName()
+    public function testSetupFabricWithEmptyQueueName(): void
     {
         $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
@@ -87,7 +89,7 @@ class ConsumerTest extends \PHPUnit\Framework\TestCase
         $exchangeOptions = new ExchangeOptions();
         $exchangeOptions->setDeclare(false);
 
-        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
+        /* @var AbstractConnection $connection */
         $consumer = new Consumer($connection, $channel);
         $consumer->setQueueOptions($queueOptions);
         $consumer->setExchangeOptions($exchangeOptions);
@@ -102,7 +104,7 @@ class ConsumerTest extends \PHPUnit\Framework\TestCase
         $consumer->setupFabric();
     }
 
-    public function testSetupFabricWithoutQueueOptions()
+    public function testSetupFabricWithoutQueueOptions(): void
     {
         $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
@@ -114,7 +116,7 @@ class ConsumerTest extends \PHPUnit\Framework\TestCase
         $exchangeOptions = new ExchangeOptions();
         $exchangeOptions->setDeclare(false);
 
-        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
+        /* @var AbstractConnection $connection */
         $consumer = new Consumer($connection, $channel);
         $consumer->setExchangeOptions($exchangeOptions);
 
@@ -128,7 +130,7 @@ class ConsumerTest extends \PHPUnit\Framework\TestCase
         $consumer->setupFabric();
     }
 
-    public function testSetupFabricWithNoDeclareExchange()
+    public function testSetupFabricWithNoDeclareExchange(): void
     {
         $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
@@ -140,7 +142,7 @@ class ConsumerTest extends \PHPUnit\Framework\TestCase
         $exchangeOptions = new ExchangeOptions();
         $exchangeOptions->setDeclare(false);
 
-        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
+        /* @var AbstractConnection $connection */
         $consumer = new Consumer($connection, $channel);
         $consumer->setExchangeOptions($exchangeOptions);
 
@@ -157,7 +159,7 @@ class ConsumerTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider processMessageProvider
      */
-    public function testProcessMessage($response, $method, $paramsExpects)
+    public function testProcessMessage($response, $method, $paramsExpects): void
     {
         $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
@@ -173,7 +175,7 @@ class ConsumerTest extends \PHPUnit\Framework\TestCase
             'delivery_tag' => 'foo',
         ];
 
-        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
+        /* @var AbstractConnection $connection */
         $consumer = new Consumer($connection, $channel);
         $consumer->setCallback(function () use ($response) {
             return $response;
@@ -186,7 +188,7 @@ class ConsumerTest extends \PHPUnit\Framework\TestCase
         $consumer->processMessage($message);
     }
 
-    public function testPurge()
+    public function testPurge(): void
     {
         $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
@@ -201,13 +203,13 @@ class ConsumerTest extends \PHPUnit\Framework\TestCase
             ->method('queue_purge')
             ->with(static::equalTo('foo'), static::equalTo(true));
 
-        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
+        /* @var AbstractConnection $connection */
         $consumer = new Consumer($connection, $channel);
         $consumer->setQueueOptions($queueOptions);
         $consumer->purgeQueue();
     }
 
-    public function testStart()
+    public function testStart(): void
     {
         $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
@@ -220,7 +222,14 @@ class ConsumerTest extends \PHPUnit\Framework\TestCase
         $queueOptions = new QueueOptions();
         $queueOptions->setName('foo');
 
-        $callbacks = range(0, 2);
+        $callbacks = [
+            static function (): void {
+            },
+            static function (): void {
+            },
+            static function (): void {
+            },
+        ];
         $channel->callbacks = $callbacks;
         $channel->expects(static::exactly(count($callbacks)))
             ->method('wait')
@@ -235,14 +244,14 @@ class ConsumerTest extends \PHPUnit\Framework\TestCase
         $channel->expects(static::exactly(count($callbacks)))
             ->method('wait');
 
-        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
+        /* @var AbstractConnection $connection */
         $consumer = new Consumer($connection, $channel);
         $consumer->setExchangeOptions($exchangeOptions);
         $consumer->setQueueOptions($queueOptions);
         $consumer->start();
     }
 
-    public function testConsume()
+    public function testConsume(): void
     {
         $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
@@ -255,7 +264,14 @@ class ConsumerTest extends \PHPUnit\Framework\TestCase
         $queueOptions = new QueueOptions();
         $queueOptions->setName('foo');
 
-        $callbacks = range(0, 2);
+        $callbacks = [
+            static function (): void {
+            },
+            static function (): void {
+            },
+            static function (): void {
+            },
+        ];
         $channel->callbacks = $callbacks;
         $channel->expects(static::exactly(count($callbacks)))
             ->method('wait')
@@ -270,14 +286,14 @@ class ConsumerTest extends \PHPUnit\Framework\TestCase
         $channel->expects(static::exactly(count($callbacks)))
             ->method('wait');
 
-        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
+        /* @var AbstractConnection $connection */
         $consumer = new Consumer($connection, $channel);
         $consumer->setExchangeOptions($exchangeOptions);
         $consumer->setQueueOptions($queueOptions);
         $consumer->consume();
     }
 
-    public function testConsumeWithStop()
+    public function testConsumeWithStop(): void
     {
         $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
@@ -286,7 +302,7 @@ class ConsumerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
+        /* @var AbstractConnection $connection */
         $consumer = new Consumer($connection, $channel);
 
         $exchangeOptions = new ExchangeOptions();
@@ -294,7 +310,14 @@ class ConsumerTest extends \PHPUnit\Framework\TestCase
         $queueOptions = new QueueOptions();
         $queueOptions->setName('foo');
 
-        $callbacks = range(0, 2);
+        $callbacks = [
+            static function (): void {
+            },
+            static function (): void {
+            },
+            static function (): void {
+            },
+        ];
         $channel->callbacks = $callbacks;
         $channel->expects(static::atLeast(1))
             ->method('wait')

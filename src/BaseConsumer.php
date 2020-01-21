@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace RabbitMqModule;
 
+use BadFunctionCallException;
+use function count;
+use function extension_loaded;
+use function function_exists;
 use Laminas\EventManager\EventManagerAwareInterface;
 use Laminas\EventManager\EventManagerAwareTrait;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -112,7 +116,7 @@ abstract class BaseConsumer extends BaseAmqp implements EventManagerAwareInterfa
     {
         $this->setupConsumer();
 
-        while (\count($this->getChannel()->callbacks)) {
+        while (count($this->getChannel()->callbacks)) {
             $this->getChannel()->wait();
         }
     }
@@ -150,9 +154,9 @@ abstract class BaseConsumer extends BaseAmqp implements EventManagerAwareInterfa
     protected function maybeStopConsumer(): void
     {
         // @codeCoverageIgnoreStart
-        if (\extension_loaded('pcntl') && $this->isSignalsEnabled()) {
-            if (! \function_exists('pcntl_signal_dispatch')) {
-                throw new \BadFunctionCallException(
+        if (extension_loaded('pcntl') && $this->isSignalsEnabled()) {
+            if (! function_exists('pcntl_signal_dispatch')) {
+                throw new BadFunctionCallException(
                     'Function \'pcntl_signal_dispatch\' is referenced in the php.ini' .
                     '\'disable_functions\' and can\'t be called.'
                 );

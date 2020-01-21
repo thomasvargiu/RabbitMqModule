@@ -6,7 +6,7 @@ use Laminas\ServiceManager\ServiceManager;
 
 class RpcClientFactoryTest extends \PHPUnit\Framework\TestCase
 {
-    public function testCreateService()
+    public function testCreateService(): void
     {
         $factory = new RpcClientFactory('foo');
         $serviceManager = new ServiceManager();
@@ -29,7 +29,7 @@ class RpcClientFactoryTest extends \PHPUnit\Framework\TestCase
             ->getMockForAbstractClass();
         $serviceManager->setService('rabbitmq.connection.foo', $connection);
 
-        $service = $factory($serviceManager, 'service-name');
+        $service = $factory($serviceManager);
 
         static::assertInstanceOf('RabbitMqModule\\RpcClient', $service);
         static::assertInstanceOf('Laminas\\Serializer\\Adapter\\AdapterInterface', $service->getSerializer());

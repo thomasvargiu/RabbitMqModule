@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace RabbitMqModule;
 
+use function count;
 use Laminas\Serializer\Adapter\AdapterInterface as SerializerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -15,7 +16,7 @@ class RpcClient extends BaseAmqp
     protected $requests = 0;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     protected $replies = [];
 
@@ -30,7 +31,7 @@ class RpcClient extends BaseAmqp
     protected $queueName;
 
     /**
-     * @var SerializerInterface
+     * @var SerializerInterface|null
      */
     protected $serializer;
 
@@ -77,14 +78,14 @@ class RpcClient extends BaseAmqp
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     public function getReplies(): array
     {
         $this->replies = [];
         $consumer_tag = $this->getChannel()
             ->basic_consume($this->getQueueName(), '', false, true, false, false, [$this, 'processMessage']);
-        while (\count($this->replies) < $this->requests) {
+        while (count($this->replies) < $this->requests) {
             $this->getChannel()->wait(null, false, $this->timeout);
         }
         $this->getChannel()->basic_cancel($consumer_tag);

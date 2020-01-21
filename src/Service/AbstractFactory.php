@@ -8,6 +8,9 @@ use Laminas\Stdlib\AbstractOptions;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
 
+/**
+ * @template TOptionsClass as AbstractOptions
+ */
 abstract class AbstractFactory
 {
     /**
@@ -45,7 +48,9 @@ abstract class AbstractFactory
      *
      * @throws RuntimeException
      *
-     * @return \ArrayObject
+     * @return AbstractOptions
+     * @phpstan-return TOptionsClass
+     * @psalm-return TOptionsClass
      */
     public function getOptions(ContainerInterface $container, string $key, ?string $name = null)
     {
@@ -70,9 +75,9 @@ abstract class AbstractFactory
     /**
      * Get the class name of the options associated with this factory.
      *
-     * @abstract
-     *
      * @return string
+     * @phpstan-return class-string<TOptionsClass>
+     * @psalm-return class-string<TOptionsClass>
      */
     abstract public function getOptionsClass(): string;
 }

@@ -2,18 +2,19 @@
 
 namespace RabbitMqModule\Controller;
 
+use ArrayObject;
 use Laminas\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
 
 class SetupFabricControllerTest extends AbstractConsoleControllerTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $config = include __DIR__ . '/../../TestConfiguration.php';
         $this->setApplicationConfig($config);
         parent::setUp();
     }
 
-    public function testDispatch()
+    public function testDispatch(): void
     {
         $serviceManager = $this->getApplicationServiceLocator();
         $serviceManager->setAllowOverride(true);
@@ -22,7 +23,7 @@ class SetupFabricControllerTest extends AbstractConsoleControllerTestCase
             ->getMockForAbstractClass();
         $service->expects(static::exactly(4))
             ->method('setupFabric');
-        $someOtherService = new \ArrayObject();
+        $someOtherService = new ArrayObject();
         $serviceManager->setService('rabbitmq.consumer.foo-consumer1', $service);
         $serviceManager->setService('rabbitmq.consumer.foo-consumer2', $service);
         $serviceManager->setService('rabbitmq.producer.bar-producer1', $service);
@@ -30,7 +31,7 @@ class SetupFabricControllerTest extends AbstractConsoleControllerTestCase
         $serviceManager->setService('rabbitmq.producer.bar-producer-fake', $someOtherService);
 
         /** @var array $configuration */
-        $configuration = $serviceManager->get('Configuration');
+        $configuration = $serviceManager->get('config');
         $configuration['rabbitmq']['consumer'] = [
             'foo-consumer1' => [],
             'foo-consumer2' => [],
@@ -40,7 +41,7 @@ class SetupFabricControllerTest extends AbstractConsoleControllerTestCase
             'bar-producer2' => [],
             'bar-producer-fake' => [],
         ];
-        $serviceManager->setService('Configuration', $configuration);
+        $serviceManager->setService('config', $configuration);
 
         ob_start();
         $this->dispatch('rabbitmq setup-fabric');
@@ -49,15 +50,15 @@ class SetupFabricControllerTest extends AbstractConsoleControllerTestCase
         $this->assertResponseStatusCode(0);
     }
 
-    public function testDispatchWithInvalidConfigKeys()
+    public function testDispatchWithInvalidConfigKeys(): void
     {
         $serviceManager = $this->getApplicationServiceLocator();
         $serviceManager->setAllowOverride(true);
 
         /** @var array $configuration */
-        $configuration = $serviceManager->get('Configuration');
+        $configuration = $serviceManager->get('config');
         $configuration['rabbitmq'] = null;
-        $serviceManager->setService('Configuration', $configuration);
+        $serviceManager->setService('config', $configuration);
 
         ob_start();
         $this->dispatch('rabbitmq setup-fabric');

@@ -2,16 +2,19 @@
 
 namespace RabbitMqModule\Controller\Factory;
 
+use Psr\Container\ContainerInterface;
+use RabbitMqModule\Controller\StdInProducerController;
+
 class StdInProducerControllerFactoryTest extends \PHPUnit\Framework\TestCase
 {
-    public function testFactory()
+    public function testFactory(): void
     {
-        $container = $this->getMockBuilder('Interop\Container\ContainerInterface')
+        $container = $this->getMockBuilder(ContainerInterface::class)
             ->getMock();
 
         $factory = new StdInProducerControllerFactory();
-        $controller = $factory($container, 'service-name');
+        $controller = $factory($container);
 
-        static::assertInstanceOf('RabbitMqModule\Controller\StdInProducerController', $controller);
+        static::assertInstanceOf(StdInProducerController::class, $controller);
     }
 }

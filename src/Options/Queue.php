@@ -44,7 +44,7 @@ class Queue extends AbstractOptions
     protected $noWait = false;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     protected $arguments = [];
 
@@ -54,7 +54,7 @@ class Queue extends AbstractOptions
     protected $ticket = 0;
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $routingKeys = [];
 
@@ -171,7 +171,7 @@ class Queue extends AbstractOptions
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     public function getArguments(): array
     {
@@ -179,7 +179,7 @@ class Queue extends AbstractOptions
     }
 
     /**
-     * @param array $arguments
+     * @param array<string, mixed> $arguments
      */
     public function setArguments(array $arguments): void
     {
@@ -203,7 +203,7 @@ class Queue extends AbstractOptions
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getRoutingKeys(): array
     {
@@ -211,7 +211,7 @@ class Queue extends AbstractOptions
     }
 
     /**
-     * @param array $routingKeys
+     * @param string[] $routingKeys
      */
     public function setRoutingKeys(array $routingKeys): void
     {

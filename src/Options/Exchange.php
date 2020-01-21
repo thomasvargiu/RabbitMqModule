@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Options;
 
+use InvalidArgumentException;
 use Laminas\Stdlib\AbstractOptions;
 
 class Exchange extends AbstractOptions
@@ -49,7 +50,7 @@ class Exchange extends AbstractOptions
     protected $declare = true;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     protected $arguments = [];
 
@@ -192,7 +193,7 @@ class Exchange extends AbstractOptions
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     public function getArguments(): array
     {
@@ -200,7 +201,7 @@ class Exchange extends AbstractOptions
     }
 
     /**
-     * @param array $arguments
+     * @param array<string, mixed> $arguments
      */
     public function setArguments(array $arguments): void
     {
@@ -232,7 +233,7 @@ class Exchange extends AbstractOptions
     }
 
     /**
-     * @param array|ExchangeBind[] $exchangeBinds
+     * @param array<string, mixed>|ExchangeBind[] $exchangeBinds
      */
     public function setExchangeBinds(array $exchangeBinds): void
     {
@@ -243,9 +244,9 @@ class Exchange extends AbstractOptions
     }
 
     /**
-     * @param array|ExchangeBind $bind
+     * @param array<string, mixed>|ExchangeBind $bind
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function addExchangeBind($bind): void
     {
@@ -253,7 +254,7 @@ class Exchange extends AbstractOptions
             $bind = new ExchangeBind($bind);
         }
         if (! $bind instanceof ExchangeBind) {
-            throw new \InvalidArgumentException('Invalid exchange bind options');
+            throw new InvalidArgumentException('Invalid exchange bind options');
         }
         $this->exchangeBinds[] = $bind;
     }

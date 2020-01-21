@@ -5,16 +5,19 @@ declare(strict_types=1);
 namespace RabbitMqModule\Controller;
 
 use Laminas\Console\ColorInterface;
+use Laminas\Console\Response;
 use RabbitMqModule\Service\SetupFabricAwareInterface;
+use RuntimeException;
+use Throwable;
 
 /**
  * Class SetupFabricController
  */
 class SetupFabricController extends AbstractConsoleController
 {
-    public function indexAction()
+    public function indexAction(): Response
     {
-        /** @var \Laminas\Console\Response $response */
+        /** @var Response $response */
         $response = $this->getResponse();
         $this->getConsole()->writeLine('Setting up the AMQP fabric');
 
@@ -27,19 +30,19 @@ class SetupFabricController extends AbstractConsoleController
                 }
                 $service->setupFabric();
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $response->setErrorLevel(1);
             $this->getConsole()->writeText(sprintf('Exception: %s', $e->getMessage()), ColorInterface::LIGHT_RED);
-
-            return $response;
         }
+
+        return $response;
     }
 
     /**
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      *
-     * @return array
+     * @return array<int, mixed>
      */
     protected function getServiceParts(): array
     {
@@ -61,20 +64,20 @@ class SetupFabricController extends AbstractConsoleController
     }
 
     /**
-     * @param $service
+     * @param string $service
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      *
-     * @return array
+     * @return array<int, string>
      */
-    protected function getServiceKeys($service): array
+    protected function getServiceKeys(string $service): array
     {
-        /** @var array $config */
-        $config = $this->container->get('Configuration');
+        /** @var array<string, mixed> $config */
+        $config = $this->container->get('config');
         if (! isset($config['rabbitmq'][$service])) {
-            throw new \RuntimeException(sprintf('No service "rabbitmq.%s" found in configuration', $service));
+            throw new RuntimeException(sprintf('No service "rabbitmq.%s" found in configuration', $service));
         }
 
         return array_keys($config['rabbitmq'][$service]);

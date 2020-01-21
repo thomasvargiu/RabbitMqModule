@@ -13,12 +13,10 @@ class NullProducerFactory
      * Create NullProducer.
      *
      * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
      *
      * @return NullProducer
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): NullProducer
+    public function __invoke(ContainerInterface $container): NullProducer
     {
         return new NullProducer();
     }

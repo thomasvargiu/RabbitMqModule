@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Options;
 
+use InvalidArgumentException;
 use Laminas\Stdlib\AbstractOptions;
 
 class Producer extends AbstractOptions
@@ -14,12 +15,12 @@ class Producer extends AbstractOptions
     protected $connection = 'default';
 
     /**
-     * @var Exchange
+     * @var Exchange|null
      */
     protected $exchange;
 
     /**
-     * @var Queue
+     * @var Queue|null
      */
     protected $queue;
 
@@ -58,9 +59,9 @@ class Producer extends AbstractOptions
     }
 
     /**
-     * @param array|Exchange $exchange
+     * @param array<string, mixed>|Exchange $exchange
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function setExchange($exchange): void
     {
@@ -68,7 +69,7 @@ class Producer extends AbstractOptions
             $exchange = new Exchange($exchange);
         }
         if (! $exchange instanceof Exchange) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Parameter "exchange" should be array or an instance of Exchange options'
             );
         }
@@ -84,9 +85,9 @@ class Producer extends AbstractOptions
     }
 
     /**
-     * @param array|Queue $queue
+     * @param array<string, mixed>|Queue $queue
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function setQueue($queue): void
     {
@@ -94,7 +95,7 @@ class Producer extends AbstractOptions
             $queue = new Queue($queue);
         }
         if (! $queue instanceof Queue) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Parameter "queue" should be array or an instance of Queue options'
             );
         }

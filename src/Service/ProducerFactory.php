@@ -9,12 +9,17 @@ use Psr\Container\ContainerInterface;
 use RabbitMqModule\Options\Producer as Options;
 use RabbitMqModule\Producer;
 
-class ProducerFactory extends AbstractFactory
+/**
+ * @extends AbstractFactory<Options>
+ */
+final class ProducerFactory extends AbstractFactory
 {
     /**
      * Get the class name of the options associated with this factory.
      *
      * @return string
+     * @phpstan-return class-string<Options>
+     * @psalm-return class-string<Options>
      */
     public function getOptionsClass(): string
     {

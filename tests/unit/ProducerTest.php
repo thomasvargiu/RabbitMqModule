@@ -8,7 +8,7 @@ use RabbitMqModule\Options\Queue as QueueOptions;
 
 class ProducerTest extends \PHPUnit\Framework\TestCase
 {
-    public function testProperties()
+    public function testProperties(): void
     {
         $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
@@ -37,7 +37,7 @@ class ProducerTest extends \PHPUnit\Framework\TestCase
         static::assertFalse($producer->isAutoSetupFabricEnabled());
     }
 
-    public function testSetupFabric()
+    public function testSetupFabric(): void
     {
         $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()
@@ -62,7 +62,7 @@ class ProducerTest extends \PHPUnit\Framework\TestCase
         $producer->setupFabric();
     }
 
-    public function testPublish()
+    public function testPublish(): void
     {
         $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
             ->disableOriginalConstructor()

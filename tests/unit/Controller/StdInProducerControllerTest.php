@@ -6,14 +6,14 @@ use Laminas\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
 
 class StdInProducerControllerTest extends AbstractConsoleControllerTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $config = include __DIR__ . '/../../TestConfiguration.php';
         $this->setApplicationConfig($config);
         parent::setUp();
     }
 
-    public function testDispatchWithTestProducer()
+    public function testDispatchWithTestProducer(): void
     {
         $producer = $this->getMockBuilder('RabbitMqModule\Producer')
             ->setMethods(['publish'])
@@ -38,7 +38,7 @@ class StdInProducerControllerTest extends AbstractConsoleControllerTestCase
         $this->assertResponseStatusCode(0);
     }
 
-    public function testDispatchWithInvalidTestProducer()
+    public function testDispatchWithInvalidTestProducer(): void
     {
         ob_start();
         $this->dispatch('rabbitmq stdin-producer foo --route=bar msg');

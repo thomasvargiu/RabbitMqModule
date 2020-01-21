@@ -1,3 +1,5 @@
+includes:
+    - phpstan-baseline.neon
 parameters:
     level: max
     paths:
@@ -5,3 +7,8 @@ parameters:
         - %currentWorkingDirectory%/tests
     fileExtensions:
         - php
+
+    ignoreErrors:
+        - '#PHPDoc tag @throws with type ([\w\\\|]+\|)?Psr\\Container\\ContainerExceptionInterface(\|[\w\\\|]+)? is not subtype of Throwable#'
+        - '#PHPDoc tag @throws with type ([\w\\\|]+\|)?Laminas\\Serializer\\Exception\\ExceptionInterface(\|[\w\\\|]+)? is not subtype of Throwable#'
+        - '#Return type \(Laminas\\Console\\Response\) of method .*Controller::indexAction\(\) should be compatible with return type \(Laminas\\View\\Model\\ViewModel\) of method .*Controller::indexAction\(\)#'

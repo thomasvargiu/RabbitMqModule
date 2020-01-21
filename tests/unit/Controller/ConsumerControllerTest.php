@@ -6,14 +6,14 @@ use Laminas\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
 
 class ConsumerControllerTest extends AbstractConsoleControllerTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $config = include __DIR__ . '/../../TestConfiguration.php';
         $this->setApplicationConfig($config);
         parent::setUp();
     }
 
-    public function testDispatchWithTestConsumer()
+    public function testDispatchWithTestConsumer(): void
     {
         $consumer = $this->getMockBuilder('RabbitMqModule\Consumer')
             ->setMethods(['consume'])
@@ -35,7 +35,7 @@ class ConsumerControllerTest extends AbstractConsoleControllerTestCase
         $this->assertResponseStatusCode(0);
     }
 
-    public function testDispatchWithInvalidTestConsumer()
+    public function testDispatchWithInvalidTestConsumer(): void
     {
         ob_start();
         $this->dispatch('rabbitmq consumer foo');
@@ -46,7 +46,7 @@ class ConsumerControllerTest extends AbstractConsoleControllerTestCase
         $this->assertResponseStatusCode(1);
     }
 
-    public function testStopConsumerController()
+    public function testStopConsumerController(): void
     {
         $consumer = $this->getMockBuilder('RabbitMqModule\Consumer')
             ->setMethods(['forceStopConsumer', 'stopConsuming'])
@@ -78,7 +78,7 @@ class ConsumerControllerTest extends AbstractConsoleControllerTestCase
         $controller->stopConsumer();
     }
 
-    public function testDispatchWithoutSignals()
+    public function testDispatchWithoutSignals(): void
     {
         $consumer = $this->getMockBuilder('RabbitMqModule\Consumer')
             ->setMethods(['consume'])
@@ -101,7 +101,7 @@ class ConsumerControllerTest extends AbstractConsoleControllerTestCase
         $this->assertResponseStatusCode(0);
     }
 
-    public function testListConsumersWithNoConsumers()
+    public function testListConsumersWithNoConsumers(): void
     {
         ob_start();
         $this->dispatch('rabbitmq list consumers');
@@ -112,14 +112,14 @@ class ConsumerControllerTest extends AbstractConsoleControllerTestCase
         $this->assertResponseStatusCode(0);
     }
 
-    public function testListConsumersWithNoConfigKey()
+    public function testListConsumersWithNoConfigKey(): void
     {
         $serviceManager = $this->getApplicationServiceLocator();
         $serviceManager->setAllowOverride(true);
         /** @var array $configuration */
-        $configuration = $serviceManager->get('Configuration');
+        $configuration = $serviceManager->get('config');
         unset($configuration['rabbitmq']);
-        $serviceManager->setService('Configuration', $configuration);
+        $serviceManager->setService('config', $configuration);
 
         ob_start();
         $this->dispatch('rabbitmq list consumers');
@@ -130,17 +130,17 @@ class ConsumerControllerTest extends AbstractConsoleControllerTestCase
         $this->assertResponseStatusCode(0);
     }
 
-    public function testListConsumers()
+    public function testListConsumers(): void
     {
         $serviceManager = $this->getApplicationServiceLocator();
         $serviceManager->setAllowOverride(true);
         /** @var array $configuration */
-        $configuration = $serviceManager->get('Configuration');
+        $configuration = $serviceManager->get('config');
         $configuration['rabbitmq']['consumer'] = [
             'consumer_key1' => [],
             'consumer_key2' => ['description' => 'foo description'],
         ];
-        $serviceManager->setService('Configuration', $configuration);
+        $serviceManager->setService('config', $configuration);
 
         ob_start();
         $this->dispatch('rabbitmq list consumers');

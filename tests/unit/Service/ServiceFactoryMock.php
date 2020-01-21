@@ -2,19 +2,18 @@
 
 namespace RabbitMqModule\Service;
 
-use Laminas\ServiceManager\FactoryInterface;
-use Laminas\ServiceManager\ServiceLocatorInterface;
+use Psr\Container\ContainerInterface;
 
-class ServiceFactoryMock implements FactoryInterface
+class ServiceFactoryMock
 {
     /**
      * Create service.
      *
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
      *
      * @return mixed
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container)
     {
         return true;
     }

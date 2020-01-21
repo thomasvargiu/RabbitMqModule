@@ -2,11 +2,17 @@
 
 namespace RabbitMqModule\Service;
 
+use InvalidArgumentException;
 use Laminas\ServiceManager\ServiceManager;
+use PhpAmqpLib\Channel\AMQPChannel;
+use PhpAmqpLib\Connection\AbstractConnection;
+use RabbitMqModule\Consumer;
+use RabbitMqModule\ConsumerInterface;
+use RabbitMqModule\Options;
 
 class ConsumerFactoryTest extends \PHPUnit\Framework\TestCase
 {
-    public function testCreateService()
+    public function testCreateService(): void
     {
         $factory = new ConsumerFactory('foo');
         $serviceManager = new ServiceManager();
@@ -34,14 +40,14 @@ class ConsumerFactoryTest extends \PHPUnit\Framework\TestCase
             ]
         );
 
-        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+        $connection = $this->getMockBuilder(AbstractConnection::class)
             ->disableOriginalConstructor()
             ->setMethods(['channel'])
             ->getMockForAbstractClass();
-        $channel = $this->getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+        $channel = $this->getMockBuilder(AMQPChannel::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $callback = $this->getMockBuilder('RabbitMqModule\\ConsumerInterface')
+        $callback = $this->getMockBuilder(ConsumerInterface::class)
             ->disableOriginalConstructor()
             ->setMethods(['execute'])
             ->getMockForAbstractClass();
@@ -58,21 +64,19 @@ class ConsumerFactoryTest extends \PHPUnit\Framework\TestCase
         $serviceManager->setService('rabbitmq.connection.foo', $connection);
         $serviceManager->setService('callback-service', $callback);
 
-        $service = $factory($serviceManager, 'service-name');
+        $service = $factory($serviceManager);
 
-        static::assertInstanceOf('RabbitMqModule\\Consumer', $service);
-        static::assertInstanceOf('RabbitMqModule\\Options\\Queue', $service->getQueueOptions());
-        static::assertInstanceOf('RabbitMqModule\\Options\\Exchange', $service->getExchangeOptions());
+        static::assertInstanceOf(Consumer::class, $service);
+        static::assertInstanceOf(Options\Queue::class, $service->getQueueOptions());
+        static::assertInstanceOf(Options\Exchange::class, $service->getExchangeOptions());
         static::assertNotEmpty($service->getConsumerTag());
-        static::assertTrue(is_callable($service->getCallback()));
+        static::assertIsCallable($service->getCallback());
         static::assertEquals(5, $service->getIdleTimeout());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testCreateServiceWithInvalidCallback()
+    public function testCreateServiceWithInvalidCallback(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         $factory = new ConsumerFactory('foo');
         $serviceManager = new ServiceManager();
         $serviceManager->setService(
@@ -98,6 +102,6 @@ class ConsumerFactoryTest extends \PHPUnit\Framework\TestCase
             ]
         );
 
-        $factory($serviceManager, 'service-name');
+        $factory($serviceManager);
     }
 }

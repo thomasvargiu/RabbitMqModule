@@ -24,7 +24,7 @@ class Module implements
     /**
      * Returns configuration to merge with application configuration.
      *
-     * @return array|\Traversable
+     * @return array<mixed, mixed>
      */
     public function getConfig(): array
     {
@@ -34,7 +34,7 @@ class Module implements
     /**
      * @param AdapterInterface $console
      *
-     * @return array|string|null
+     * @return array<string, string>
      */
     public function getConsoleUsage(AdapterInterface $console): array
     {
@@ -50,7 +50,7 @@ class Module implements
     /**
      * @param AdapterInterface $console
      *
-     * @return string|null
+     * @return string
      */
     public function getConsoleBanner(AdapterInterface $console): string
     {

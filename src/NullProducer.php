@@ -12,7 +12,7 @@ class NullProducer implements ProducerInterface
     /**
      * @param string $body
      * @param string $routingKey
-     * @param array  $properties
+     * @param array<string, mixed> $properties
      */
     public function publish(string $body, string $routingKey = '', array $properties = []): void
     {

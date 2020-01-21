@@ -2,9 +2,11 @@
 
 namespace RabbitMqModule\Options;
 
+use InvalidArgumentException;
+
 class ProducerTest extends \PHPUnit\Framework\TestCase
 {
-    public function testOptions()
+    public function testOptions(): void
     {
         $configuration = [
             'connection' => 'connection-name',
@@ -27,20 +29,16 @@ class ProducerTest extends \PHPUnit\Framework\TestCase
         static::assertFalse($options->isAutoSetupFabricEnabled());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testSetQueueInvalidValue()
+    public function testSetQueueInvalidValue(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         $options = new Producer();
         $options->setQueue('');
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testSetExchangeInvalidValue()
+    public function testSetExchangeInvalidValue(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         $options = new Producer();
         $options->setExchange('');
     }
