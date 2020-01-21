@@ -2,9 +2,11 @@
 
 namespace RabbitMqModule\Options;
 
+use InvalidArgumentException;
+
 class ConsumerTest extends \PHPUnit\Framework\TestCase
 {
-    public function testOptions()
+    public function testOptions(): void
     {
         $configuration = [
             'connection' => 'connection-name',
@@ -17,7 +19,6 @@ class ConsumerTest extends \PHPUnit\Framework\TestCase
             'callback' => 'callback-name',
             'idle_timeout' => 6,
             'qos' => [
-
             ],
             'auto_setup_fabric_enabled' => false,
             'consumer_tag' => 'test-tag',
@@ -38,29 +39,23 @@ class ConsumerTest extends \PHPUnit\Framework\TestCase
         static::assertEquals($configuration['signals_enabled'], $options->isSignalsEnabled());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testSetQueueInvalidValue()
+    public function testSetQueueInvalidValue(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         $options = new Consumer();
         $options->setQueue('');
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testSetExchangeInvalidValue()
+    public function testSetExchangeInvalidValue(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         $options = new Consumer();
         $options->setExchange('');
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testSetWosInvalidValue()
+    public function testSetWosInvalidValue(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         $options = new Consumer();
         $options->setQos('');
     }

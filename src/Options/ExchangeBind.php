@@ -4,39 +4,35 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Options;
 
-use Zend\Stdlib\AbstractOptions;
+use InvalidArgumentException;
+use function is_array;
+use Laminas\Stdlib\AbstractOptions;
 
 class ExchangeBind extends AbstractOptions
 {
-    /**
-     * @var Exchange
-     */
+    /** @var Exchange */
     protected $exchange;
-    /**
-     * @var array
-     */
+
+    /** @var string[] */
     protected $routingKeys = [];
 
-    /**
-     * @return Exchange
-     */
     public function getExchange(): Exchange
     {
         return $this->exchange;
     }
 
     /**
-     * @param array|Exchange $exchange
+     * @param array<string, mixed>|Exchange $exchange
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function setExchange($exchange): void
     {
-        if (\is_array($exchange)) {
+        if (is_array($exchange)) {
             $exchange = new Exchange($exchange);
         }
         if (! $exchange instanceof Exchange) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Parameter "exchange" should be array or an instance of Exchange options'
             );
         }
@@ -44,7 +40,7 @@ class ExchangeBind extends AbstractOptions
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getRoutingKeys(): array
     {
@@ -52,7 +48,7 @@ class ExchangeBind extends AbstractOptions
     }
 
     /**
-     * @param array $routingKeys
+     * @param string[] $routingKeys
      */
     public function setRoutingKeys(array $routingKeys): void
     {

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace RabbitMqModule\Service\Connection;
 
 use PhpAmqpLib\Connection\AbstractConnection;
-use RabbitMqModule\Options\Connection as ConnectionOptions;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
+use RabbitMqModule\Options\Connection as ConnectionOptions;
 
 /**
  * Class SSLConnectionFactory.
@@ -15,8 +15,6 @@ class SSLConnectionFactory implements ConnectionFactoryInterface
 {
     /**
      * @codeCoverageIgnore
-     *
-     * @param ConnectionOptions $options
      *
      * @return AMQPStreamConnection
      */

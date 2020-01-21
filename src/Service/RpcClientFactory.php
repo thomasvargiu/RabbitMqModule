@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Service;
 
-use Psr\Container\ContainerInterface;
 use PhpAmqpLib\Connection\AbstractConnection;
-use RabbitMqModule\RpcClient;
+use Psr\Container\ContainerInterface;
 use RabbitMqModule\Options\RpcClient as Options;
+use RabbitMqModule\RpcClient;
 
-class RpcClientFactory extends AbstractFactory
+/**
+ * @extends AbstractFactory<Options>
+ */
+final class RpcClientFactory extends AbstractFactory
 {
     /**
      * Get the class name of the options associated with this factory.
      *
-     * @return string
+     * @phpstan-return class-string<Options>
+     * @psalm-return class-string<Options>
      */
     public function getOptionsClass(): string
     {
@@ -24,14 +28,11 @@ class RpcClientFactory extends AbstractFactory
     /**
      * Create an object.
      *
-     * @param ContainerInterface $container
-     *
-     * @return object
      *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function __invoke(ContainerInterface $container)
+    public function __invoke(ContainerInterface $container): RpcClient
     {
         /* @var $rpcOptions Options */
         $rpcOptions = $this->getOptions($container, 'rpc_client');
@@ -40,11 +41,6 @@ class RpcClientFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface $container
-     * @param Options $options
-     *
-     * @return RpcClient
-     *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */

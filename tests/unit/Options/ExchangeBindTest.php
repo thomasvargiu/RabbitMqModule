@@ -2,9 +2,11 @@
 
 namespace RabbitMqModule\Options;
 
+use InvalidArgumentException;
+
 class ExchangeBindTest extends \PHPUnit\Framework\TestCase
 {
-    public function testOptions()
+    public function testOptions(): void
     {
         $configuration = [
             'exchange' => ['name' => 'foo'],
@@ -18,11 +20,9 @@ class ExchangeBindTest extends \PHPUnit\Framework\TestCase
         static::assertEquals(['routing.1', 'routing.2'], $options->getRoutingKeys());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testSetExchangeInvalidValue()
+    public function testSetExchangeInvalidValue(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         $options = new ExchangeBind();
         $options->setExchange('');
     }

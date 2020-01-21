@@ -2,20 +2,16 @@
 
 namespace RabbitMqModule\Controller;
 
+use Laminas\Mvc\Console\Controller\AbstractConsoleController as BaseController;
 use Psr\Container\ContainerInterface;
-use Zend\Mvc\Console\Controller\AbstractConsoleController as BaseController;
 
 class AbstractConsoleController extends BaseController
 {
-    /**
-     * @var ContainerInterface
-     */
+    /** @var ContainerInterface */
     protected $container;
 
     /**
      * ConsumerController constructor.
-     *
-     * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
     {

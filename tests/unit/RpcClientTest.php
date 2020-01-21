@@ -2,12 +2,14 @@
 
 namespace RabbitMqModule;
 
+use Laminas\Serializer\Serializer;
+use PhpAmqpLib\Channel\AMQPChannel;
+use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Message\AMQPMessage;
-use Zend\Serializer\Serializer;
 
 class RpcClientTest extends \PHPUnit\Framework\TestCase
 {
-    public function testAddRequestAndGetReplies()
+    public function testAddRequestAndGetReplies(): void
     {
         $body = 'body';
         $server = 'server';
@@ -17,10 +19,10 @@ class RpcClientTest extends \PHPUnit\Framework\TestCase
 
         $serializer = Serializer::factory('json');
 
-        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
+        $connection = $this->getMockBuilder(AbstractConnection::class)
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
-        $channel = $this->getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
+        $channel = $this->getMockBuilder(AMQPChannel::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -43,7 +45,7 @@ class RpcClientTest extends \PHPUnit\Framework\TestCase
                 $routingKey
             );
 
-        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
+        /* @var AbstractConnection $connection */
         $rpcClient = new RpcClient($connection, $channel);
         $rpcClient->setSerializer($serializer);
 
@@ -66,7 +68,7 @@ class RpcClientTest extends \PHPUnit\Framework\TestCase
                 static::callback(function ($a) use ($rpcClient, $message) {
                     $rpcClient->processMessage($message);
 
-                    return is_null($a);
+                    return null === $a;
                 }),
                 false,
                 2
@@ -78,7 +80,7 @@ class RpcClientTest extends \PHPUnit\Framework\TestCase
 
         $replies = $rpcClient->getReplies();
 
-        static::assertInternalType('array', $replies);
+        static::assertIsArray($replies);
         static::assertCount(1, $replies);
         static::assertArrayHasKey($requestId, $replies);
         static::assertEquals('response', $replies[$requestId]);

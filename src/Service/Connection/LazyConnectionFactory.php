@@ -16,8 +16,6 @@ use RabbitMqModule\Options\Connection as ConnectionOptions;
 class LazyConnectionFactory implements ConnectionFactoryInterface
 {
     /**
-     * @param ConnectionOptions $options
-     *
      * @return AMQPLazyConnection
      */
     public function createConnection(ConnectionOptions $options): AbstractConnection

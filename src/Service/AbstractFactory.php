@@ -4,33 +4,26 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Service;
 
+use Laminas\Stdlib\AbstractOptions;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
-use Zend\Stdlib\AbstractOptions;
 
+/**
+ * @template TOptionsClass as AbstractOptions
+ */
 abstract class AbstractFactory
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $name;
 
-    /**
-     * @var AbstractOptions
-     */
+    /** @var AbstractOptions */
     protected $options;
 
-    /**
-     * @param string $name
-     */
     public function __construct(string $name)
     {
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
@@ -39,12 +32,12 @@ abstract class AbstractFactory
     /**
      * Gets options from configuration based on name.
      *
-     * @param ContainerInterface $container
-     * @param string $key
-     * @param null|string $name
      *
-     * @return \ArrayObject
      * @throws RuntimeException
+     *
+     * @return AbstractOptions
+     * @phpstan-return TOptionsClass
+     * @psalm-return TOptionsClass
      */
     public function getOptions(ContainerInterface $container, string $key, ?string $name = null)
     {
@@ -69,9 +62,8 @@ abstract class AbstractFactory
     /**
      * Get the class name of the options associated with this factory.
      *
-     * @abstract
-     *
-     * @return string
+     * @phpstan-return class-string<TOptionsClass>
+     * @psalm-return class-string<TOptionsClass>
      */
     abstract public function getOptionsClass(): string;
 }

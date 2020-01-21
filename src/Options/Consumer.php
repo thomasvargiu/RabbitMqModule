@@ -5,62 +5,47 @@ declare(strict_types=1);
 namespace RabbitMqModule\Options;
 
 use InvalidArgumentException;
-use Zend\Stdlib\AbstractOptions;
+use function is_array;
+use Laminas\Stdlib\AbstractOptions;
+use RabbitMqModule\ConsumerInterface;
 
 class Consumer extends AbstractOptions
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $connection = 'default';
-    /**
-     * @var null|Exchange
-     */
+
+    /** @var null|Exchange */
     protected $exchange;
-    /**
-     * @var null|Queue
-     */
+
+    /** @var null|Queue */
     protected $queue;
-    /**
-     * @var null|string|callable
-     */
+
+    /** @var null|string|ConsumerInterface|callable(\PhpAmqpLib\Message\AMQPMessage): int|null */
     protected $callback;
-    /**
-     * @var int
-     */
+
+    /** @var int */
     protected $idleTimeout = 0;
-    /**
-     * @var null|string
-     */
+
+    /** @var null|string */
     protected $consumerTag;
-    /**
-     * @var null|Qos
-     */
+
+    /** @var null|Qos */
     protected $qos;
-    /**
-     * @var bool
-     */
+
+    /** @var bool */
     protected $autoSetupFabricEnabled = true;
-    /**
-     * @var bool
-     */
+
+    /** @var bool */
     protected $signalsEnabled = true;
-    /**
-     * @var string
-     */
+
+    /** @var string */
     protected $description = '';
 
-    /**
-     * @return string
-     */
     public function getConnection(): string
     {
         return $this->connection;
     }
 
-    /**
-     * @param string $connection
-     */
     public function setConnection(string $connection): void
     {
         $this->connection = $connection;
@@ -75,13 +60,13 @@ class Consumer extends AbstractOptions
     }
 
     /**
-     * @param array|Exchange $exchange
+     * @param array<string, mixed>|Exchange $exchange
      *
      * @throws InvalidArgumentException
      */
     public function setExchange($exchange): void
     {
-        if (\is_array($exchange)) {
+        if (is_array($exchange)) {
             $exchange = new Exchange($exchange);
         }
         if (! $exchange instanceof Exchange) {
@@ -101,12 +86,13 @@ class Consumer extends AbstractOptions
     }
 
     /**
-     * @param array|Queue $queue
+     * @param array<string, mixed>|Queue $queue
+     *
      * @throws \InvalidArgumentException
      */
     public function setQueue($queue): void
     {
-        if (\is_array($queue)) {
+        if (is_array($queue)) {
             $queue = new Queue($queue);
         }
         if (! $queue instanceof Queue) {
@@ -116,7 +102,7 @@ class Consumer extends AbstractOptions
     }
 
     /**
-     * @return string|callable
+     * @return null|string|ConsumerInterface|callable(\PhpAmqpLib\Message\AMQPMessage): int|null
      */
     public function getCallback()
     {
@@ -124,60 +110,46 @@ class Consumer extends AbstractOptions
     }
 
     /**
-     * @param string|callable $callback
+     * @param null|string|ConsumerInterface|callable(\PhpAmqpLib\Message\AMQPMessage): int|null $callback
      */
     public function setCallback($callback): void
     {
         $this->callback = $callback;
     }
 
-    /**
-     * @return int
-     */
     public function getIdleTimeout(): int
     {
         return $this->idleTimeout;
     }
 
-    /**
-     * @param int $idleTimeout
-     */
     public function setIdleTimeout(int $idleTimeout): void
     {
         $this->idleTimeout = $idleTimeout;
     }
 
-    /**
-     * @return null|string
-     */
     public function getConsumerTag(): ?string
     {
         return $this->consumerTag;
     }
 
-    /**
-     * @param string $consumerTag
-     */
     public function setConsumerTag(string $consumerTag): void
     {
         $this->consumerTag = $consumerTag;
     }
 
-    /**
-     * @return null|Qos
-     */
     public function getQos(): ?Qos
     {
         return $this->qos;
     }
 
     /**
-     * @param array|Qos $qos
+     * @param Qos|array<string, mixed> $qos
+     *
      * @throws InvalidArgumentException
      */
     public function setQos($qos): void
     {
-        if (\is_array($qos)) {
+        if (is_array($qos)) {
             $qos = new Qos($qos);
         }
         if (! $qos instanceof Qos) {
@@ -186,25 +158,16 @@ class Consumer extends AbstractOptions
         $this->qos = $qos;
     }
 
-    /**
-     * @return bool
-     */
     public function isAutoSetupFabricEnabled(): bool
     {
         return $this->autoSetupFabricEnabled;
     }
 
-    /**
-     * @param bool $autoSetupFabricEnabled
-     */
     public function setAutoSetupFabricEnabled(bool $autoSetupFabricEnabled): void
     {
         $this->autoSetupFabricEnabled = $autoSetupFabricEnabled;
     }
 
-    /**
-     * @return bool
-     */
     public function isSignalsEnabled(): bool
     {
         return $this->signalsEnabled;
@@ -218,17 +181,11 @@ class Consumer extends AbstractOptions
         $this->signalsEnabled = $signalsEnabled;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     */
     public function setDescription(string $description): void
     {
         $this->description = $description;

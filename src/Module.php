@@ -6,10 +6,10 @@
 
 namespace RabbitMqModule;
 
-use Zend\Console\Adapter\AdapterInterface;
-use Zend\ModuleManager\Feature\ConfigProviderInterface;
-use Zend\ModuleManager\Feature\ConsoleBannerProviderInterface;
-use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface;
+use Laminas\Console\Adapter\AdapterInterface;
+use Laminas\ModuleManager\Feature\ConfigProviderInterface;
+use Laminas\ModuleManager\Feature\ConsoleBannerProviderInterface;
+use Laminas\ModuleManager\Feature\ConsoleUsageProviderInterface;
 
 /**
  * Class Module.
@@ -24,17 +24,15 @@ class Module implements
     /**
      * Returns configuration to merge with application configuration.
      *
-     * @return array|\Traversable
+     * @return array<mixed, mixed>
      */
     public function getConfig(): array
     {
-        return include __DIR__.'/../config/module.config.php';
+        return include __DIR__ . '/../config/module.config.php';
     }
 
     /**
-     * @param AdapterInterface $console
-     *
-     * @return array|string|null
+     * @return array<string, string>
      */
     public function getConsoleUsage(AdapterInterface $console): array
     {
@@ -47,11 +45,6 @@ class Module implements
         ];
     }
 
-    /**
-     * @param AdapterInterface $console
-     *
-     * @return string|null
-     */
     public function getConsoleBanner(AdapterInterface $console): string
     {
         return 'RabbitMQ Module';

@@ -6,7 +6,7 @@ use RabbitMqModule\Options\Connection as Options;
 
 class ConnectionTest extends \PHPUnit\Framework\TestCase
 {
-    public function testGetterAndSetter()
+    public function testGetterAndSetter(): void
     {
         $configuration = [
             'type' => 'test-type',

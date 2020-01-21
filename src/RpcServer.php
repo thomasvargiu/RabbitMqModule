@@ -4,26 +4,24 @@ declare(strict_types=1);
 
 namespace RabbitMqModule;
 
+use function call_user_func;
+use Laminas\Serializer\Adapter\AdapterInterface as SerializerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
-use Zend\Serializer\Adapter\AdapterInterface as SerializerInterface;
 
 class RpcServer extends Consumer
 {
-    /**
-     * @var SerializerInterface
-     */
+    /** @var SerializerInterface|null */
     protected $serializer;
 
     /**
-     * @param AMQPMessage $message
-     * @throws \Zend\Serializer\Exception\ExceptionInterface
+     * @throws \Laminas\Serializer\Exception\ExceptionInterface
      */
     public function processMessage(AMQPMessage $message): void
     {
         /** @var \PhpAmqpLib\Channel\AMQPChannel $channel */
         $channel = $message->delivery_info['channel'];
         $channel->basic_ack($message->delivery_info['delivery_tag']);
-        $result = \call_user_func($this->getCallback(), $message);
+        $result = call_user_func($this->getCallback(), $message);
         if ($this->serializer) {
             $result = $this->serializer->serialize($result);
         }
@@ -32,8 +30,6 @@ class RpcServer extends Consumer
     }
 
     /**
-     * @param mixed  $result
-     * @param string $client
      * @param string $correlationId
      */
     protected function sendReply($result, string $client, $correlationId): void
@@ -54,8 +50,6 @@ class RpcServer extends Consumer
 
     /**
      * Set the serializer.
-     *
-     * @param SerializerInterface $serializer
      */
     public function setSerializer(SerializerInterface $serializer = null): void
     {

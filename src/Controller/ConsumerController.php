@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Controller;
 
+use BadFunctionCallException;
+use function extension_loaded;
+use function function_exists;
+use Laminas\Console\ColorInterface;
+use Laminas\Console\Response;
+use function pcntl_signal;
 use PhpAmqpLib\Exception\AMQPTimeoutException;
-use Zend\Console\ColorInterface;
 use RabbitMqModule\Consumer;
 
 /**
@@ -13,14 +18,12 @@ use RabbitMqModule\Consumer;
  */
 class ConsumerController extends AbstractConsoleController
 {
-    /**
-     * @var Consumer
-     */
+    /** @var Consumer */
     protected $consumer;
 
-    public function indexAction()
+    public function indexAction(): Response
     {
-        /** @var \Zend\Console\Response $response */
+        /** @var Response $response */
         $response = $this->getResponse();
 
         $this->getConsole()->writeLine(sprintf('Starting consumer %s', $this->params('name')));
@@ -29,7 +32,7 @@ class ConsumerController extends AbstractConsoleController
 
         $serviceName = sprintf('rabbitmq.consumer.%s', $this->params('name'));
 
-        if (!$this->container->has($serviceName)) {
+        if (! $this->container->has($serviceName)) {
             $this->getConsole()->writeLine(
                 sprintf('No consumer with name "%s" found', $this->params('name')),
                 ColorInterface::RED
@@ -41,22 +44,22 @@ class ConsumerController extends AbstractConsoleController
 
         /* @var \RabbitMqModule\Consumer $consumer */
         $this->consumer = $this->container->get($serviceName);
-        $this->consumer->setSignalsEnabled(!$withoutSignals);
+        $this->consumer->setSignalsEnabled(! $withoutSignals);
 
         if ($withoutSignals) {
             define('AMQP_WITHOUT_SIGNALS', true);
         }
 
         // @codeCoverageIgnoreStart
-        if (!$withoutSignals && \extension_loaded('pcntl')) {
-            if (! \function_exists('pcntl_signal')) {
-                throw new \BadFunctionCallException(
+        if (! $withoutSignals && extension_loaded('pcntl')) {
+            if (! function_exists('pcntl_signal')) {
+                throw new BadFunctionCallException(
                     'Function \'pcntl_signal\' is referenced in the php.ini \'disable_functions\' and can\'t be called.'
                 );
             }
 
-            \pcntl_signal(SIGTERM, [$this, 'stopConsumer']);
-            \pcntl_signal(SIGINT, [$this, 'stopConsumer']);
+            pcntl_signal(SIGTERM, [$this, 'stopConsumer']);
+            pcntl_signal(SIGINT, [$this, 'stopConsumer']);
         }
         // @codeCoverageIgnoreEnd
 
@@ -68,19 +71,26 @@ class ConsumerController extends AbstractConsoleController
     /**
      * List available consumers.
      */
-    public function listAction()
+    public function listAction(): Response
     {
-        /** @var array $config */
-        $config = $this->container->get('Configuration');
+        /** @var array<string, mixed> $config */
+        $config = $this->container->get('config');
+        /** @var Response $response */
+        $response = $this->getResponse();
 
-        if (!array_key_exists('rabbitmq', $config) || !array_key_exists('consumer', $config['rabbitmq'])) {
-            return 'No \'rabbitmq.consumer\' configuration key found!';
+        if (! array_key_exists('rabbitmq', $config) || ! array_key_exists('consumer', $config['rabbitmq'])) {
+            $response->setErrorLevel(1);
+            $this->getConsole()->writeText('No "rabbitmq.consumer" configuration key found!', ColorInterface::LIGHT_RED);
+
+            return $response;
         }
 
         $consumers = $config['rabbitmq']['consumer'];
 
-        if (!is_array($consumers) || count($consumers) === 0) {
-            return 'No consumers defined!';
+        if (! is_array($consumers) || count($consumers) === 0) {
+            $this->getConsole()->writeText('No consumers defined!', ColorInterface::LIGHT_RED);
+
+            return $response;
         }
 
         foreach ($consumers as $name => $configuration) {
@@ -91,6 +101,8 @@ class ConsumerController extends AbstractConsoleController
                 $this->getConsole()->colorize($description, ColorInterface::LIGHT_YELLOW)
             ));
         }
+
+        return $response;
     }
 
     /**
@@ -110,11 +122,9 @@ class ConsumerController extends AbstractConsoleController
     }
 
     /**
-     * @param Consumer $consumer
-     *
      * @return $this
      */
-    public function setConsumer(Consumer $consumer)
+    public function setConsumer(Consumer $consumer): self
     {
         $this->consumer = $consumer;
 
@@ -122,10 +132,9 @@ class ConsumerController extends AbstractConsoleController
     }
 
     /**
-     * @param int $code
      * @codeCoverageIgnore
      */
-    protected function callExit($code)
+    protected function callExit(int $code): void
     {
         exit($code);
     }

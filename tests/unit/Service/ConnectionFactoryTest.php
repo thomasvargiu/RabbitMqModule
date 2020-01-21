@@ -2,18 +2,21 @@
 
 namespace RabbitMqModule\Service;
 
+use InvalidArgumentException;
+use Laminas\ServiceManager\ServiceManager;
 use PhpAmqpLib\Connection\AbstractConnection;
 use Prophecy\Argument;
 use RabbitMqModule\Service\Connection\ConnectionFactoryInterface;
-use Zend\ServiceManager\ServiceManager;
+use RabbitMqModule\Service\Connection\LazyConnectionFactory;
+use RuntimeException;
 
 class ConnectionFactoryTest extends \PHPUnit\Framework\TestCase
 {
-    public function testCreateService()
+    public function testCreateService(): void
     {
         $factory = new ConnectionFactory('foo');
 
-        $factory->setFactoryMap(['foo' => 'FooConnectionFactory']);
+        $factory->setFactoryMap(['foo' => LazyConnectionFactory::class]);
 
         $config = [
             'rabbitmq' => [
@@ -25,12 +28,12 @@ class ConnectionFactoryTest extends \PHPUnit\Framework\TestCase
             ],
         ];
 
-        $container = $this->prophesize(\Zend\ServiceManager\ServiceManager::class);
+        $container = $this->prophesize(\Laminas\ServiceManager\ServiceManager::class);
         $connection = $this->prophesize(AbstractConnection::class);
         $connectionFactory = $this->prophesize(ConnectionFactoryInterface::class);
 
         $container->get('config')->willReturn($config);
-        $container->get('FooConnectionFactory')->willReturn($connectionFactory->reveal());
+        $container->get(LazyConnectionFactory::class)->willReturn($connectionFactory->reveal());
 
         $connectionFactory->createConnection(Argument::type(\RabbitMqModule\Options\Connection::class))
             ->shouldBeCalled()
@@ -41,11 +44,9 @@ class ConnectionFactoryTest extends \PHPUnit\Framework\TestCase
         static::assertSame($connection->reveal(), $service);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testCreateServiceWithInvalidType()
+    public function testCreateServiceWithInvalidType(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         $factory = new ConnectionFactory('foo');
         $serviceManager = new ServiceManager();
         $serviceManager->setService(
@@ -64,11 +65,9 @@ class ConnectionFactoryTest extends \PHPUnit\Framework\TestCase
         $factory($serviceManager, 'service-name');
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
-    public function testCreateServiceWithInvalidFactory()
+    public function testCreateServiceWithInvalidFactory(): void
     {
+        $this->expectException(RuntimeException::class);
         $factory = new ConnectionFactory('foo');
         $serviceManager = new ServiceManager();
         $serviceManager->setService(

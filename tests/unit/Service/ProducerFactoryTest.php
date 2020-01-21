@@ -2,11 +2,11 @@
 
 namespace RabbitMqModule\Service;
 
-use Zend\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\ServiceManager;
 
 class ProducerFactoryTest extends \PHPUnit\Framework\TestCase
 {
-    public function testCreateService()
+    public function testCreateService(): void
     {
         $factory = new ProducerFactory('foo');
         $serviceManager = new ServiceManager();
@@ -38,7 +38,7 @@ class ProducerFactoryTest extends \PHPUnit\Framework\TestCase
             $connection
         );
 
-        $service = $factory($serviceManager, 'service-name');
+        $service = $factory($serviceManager);
 
         static::assertInstanceOf('RabbitMqModule\\Producer', $service);
         static::assertSame($connection, $service->getConnection());

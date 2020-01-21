@@ -4,3 +4,4 @@ vendor/
 build/
 *.test.php
 .php_cs.cache
+.phpunit.result.cache

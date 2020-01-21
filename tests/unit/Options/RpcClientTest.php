@@ -2,9 +2,11 @@
 
 namespace RabbitMqModule\Options;
 
+use InvalidArgumentException;
+
 class RpcClientTest extends \PHPUnit\Framework\TestCase
 {
-    public function testSetConnection()
+    public function testSetConnection(): void
     {
         $options = new RpcClient();
         $options->setConnection('connection-name');
@@ -12,35 +14,23 @@ class RpcClientTest extends \PHPUnit\Framework\TestCase
         static::assertEquals('connection-name', $options->getConnection());
     }
 
-    public function testSetSerializer()
+    public function testSetSerializer(): void
     {
         $options = new RpcClient();
 
         $options->setSerializer('PhpSerialize');
-        static::assertInstanceOf('Zend\\Serializer\\Adapter\\AdapterInterface', $options->getSerializer());
+        static::assertInstanceOf('Laminas\\Serializer\\Adapter\\AdapterInterface', $options->getSerializer());
 
         $options->setSerializer(null);
         static::assertNull($options->getSerializer());
 
         $options->setSerializer(['name' => 'PhpSerialize']);
-        static::assertInstanceOf('Zend\\Serializer\\Adapter\\AdapterInterface', $options->getSerializer());
+        static::assertInstanceOf('Laminas\\Serializer\\Adapter\\AdapterInterface', $options->getSerializer());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testSetSerializerWithInvalidValue()
+    public function testSetSerializerWithEmptyArray(): void
     {
-        $options = new RpcClient();
-
-        $options->setSerializer(true);
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testSetSerializerWithEmptyArray()
-    {
+        $this->expectException(InvalidArgumentException::class);
         $options = new RpcClient();
 
         $options->setSerializer([]);

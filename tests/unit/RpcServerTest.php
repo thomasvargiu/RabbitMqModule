@@ -2,11 +2,11 @@
 
 namespace RabbitMqModule;
 
-use Zend\Serializer\Serializer;
+use Laminas\Serializer\Serializer;
 
 class RpcServerTest extends \PHPUnit\Framework\TestCase
 {
-    public function testProcessMessage()
+    public function testProcessMessage(): void
     {
         $response = 'ciao';
 
@@ -48,7 +48,7 @@ class RpcServerTest extends \PHPUnit\Framework\TestCase
         $rpcServer->processMessage($message);
     }
 
-    public function testProcessMessageWithSerializer()
+    public function testProcessMessageWithSerializer(): void
     {
         $response = ['response' => 'ciao'];
 
@@ -80,7 +80,7 @@ class RpcServerTest extends \PHPUnit\Framework\TestCase
 
         $channel->expects(static::once())->method('basic_publish')
             ->with(
-                static::callback(function ($a) use ($response) {
+                static::callback(function ($a) {
                     return $a instanceof \PhpAmqpLib\Message\AMQPMessage
                     && $a->body === '{"response":"ciao"}'
                     && $a->get('correlation_id') === 'bar'

@@ -1,72 +1,78 @@
 {
-  "name": "thomasvargiu/rabbitmq-module",
-  "description": "Integrates php-amqplib with Zend Framework 2 and RabbitMq",
-  "type": "library",
-  "minimum-stability": "stable",
-  "license": "MIT",
-  "homepage": "https://github.com/thomasvargiu/RabbitMqModule",
-  "keywords": [
-    "zf2",
-    "zend framework",
-    "rabbitmq",
-    "amqp"
-  ],
-  "authors": [
-    {
-      "name": "Thomas Vargiu",
-      "email": "tommy@ttech.it"
-    }
-  ],
-  "require": {
-    "php": "^7.1",
-    "psr/container": "^1.0",
-    "container-interop/container-interop": "^1.2",
-    "php-amqplib/php-amqplib": "^2.7",
-    "zendframework/zend-stdlib": "^3.2.1",
-    "zendframework/zend-servicemanager": "^3.3",
-    "zendframework/zend-modulemanager": "^2.7.1 || ^3.0",
-    "zendframework/zend-mvc": "^3.0.3",
-    "zendframework/zend-mvc-console": "^1.1.11",
-    "zendframework/zend-console": "^2.6",
-    "zendframework/zend-serializer": "^2.6.1"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "^6.0 || ^7.0",
-    "zendframework/zend-test": "^3.1",
-    "zendframework/zend-log": "^2.7",
-    "zendframework/zend-i18n": "^2.6",
-    "zendframework/zend-http": "^2.5.5"
-  },
-  "autoload": {
-    "psr-4": {
-      "RabbitMqModule\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "RabbitMqModule\\": "tests/unit/"
-    }
-  },
-  "extra": {
-    "zf": {
-      "module": "RabbitMqModule"
-    }
-  },
-  "scripts": {
-    "test": ["@phpunit", "@phpcs"],
-    "ci-test": [
-      "@ci-phpunit",
-      "@phpcs"
+    "name": "thomasvargiu/rabbitmq-module",
+    "description": "Integrates php-amqplib with Zend Framework 2 and RabbitMq",
+    "type": "library",
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "homepage": "https://github.com/thomasvargiu/RabbitMqModule",
+    "keywords": [
+        "zf2",
+        "zend framework",
+        "laminas",
+        "mezzio",
+        "rabbitmq",
+        "amqp"
     ],
-    "phpunit": "phpunit",
-    "ci-phpunit": "phpunit --coverage-clover=coverage.clover",
-    "phpcs": [
-      "php-cs-fixer fix -v --diff --dry-run src/",
-      "php-cs-fixer fix -v --diff --dry-run tests/"
+    "authors": [
+        {
+            "name": "Thomas Vargiu",
+            "email": "tommy@ttech.it"
+        }
     ],
-    "phpcs-fix": [
-      "php-cs-fixer fix -v --diff src/",
-      "php-cs-fixer fix -v --diff tests/"
-    ]
-  }
+    "require": {
+        "php": "^7.2",
+        "psr/container": "^1.0",
+        "container-interop/container-interop": "^1.2",
+        "php-amqplib/php-amqplib": "^2.7",
+        "laminas/laminas-stdlib": "^3.2.1",
+        "laminas/laminas-servicemanager": "^3.3",
+        "laminas/laminas-modulemanager": "^2.7.1 || ^3.0",
+        "laminas/laminas-mvc": "^3.0.3",
+        "laminas/laminas-mvc-console": "^1.1.11",
+        "laminas/laminas-console": "^2.6",
+        "laminas/laminas-serializer": "^2.6.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.5.2",
+        "laminas/laminas-test": "^3.1",
+        "laminas/laminas-log": "^2.7",
+        "laminas/laminas-i18n": "^2.6",
+        "laminas/laminas-http": "^2.5.5",
+        "friendsofphp/php-cs-fixer": "^2.9",
+        "phpstan/extension-installer": "^1.0",
+        "phpstan/phpstan": "^0.12.7",
+        "phpstan/phpstan-phpunit": "^0.12.6",
+        "jangregor/phpstan-prophecy": "^0.6.0",
+        "phpspec/prophecy": ">= 1.10.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "RabbitMqModule\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "RabbitMqModule\\": "tests/unit/"
+        }
+    },
+    "extra": {
+        "laminas": {
+            "module": "RabbitMqModule"
+        }
+    },
+    "scripts": {
+        "test": [
+            "@phpunit",
+            "@cs-check"
+        ],
+        "ci-test": [
+            "@ci-phpunit",
+            "@cs-check"
+        ],
+        "phpstan": "phpstan analyze",
+        "phpunit": "phpunit",
+        "ci-phpunit": "phpunit --coverage-clover=coverage.clover",
+        "cs-check": "php-cs-fixer fix --dry-run --diff --allow-risky yes",
+        "cs-fix": "php-cs-fixer fix --diff"
+    }
 }

@@ -4,44 +4,41 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Options;
 
-use Zend\Serializer\Serializer;
-use Zend\Serializer\Adapter\AdapterInterface as SerializerInterface;
+use function array_key_exists;
+use InvalidArgumentException;
+use function is_array;
+use function is_string;
+use Laminas\Serializer\Adapter\AdapterInterface as SerializerInterface;
+use Laminas\Serializer\Serializer;
 
 class RpcServer extends Consumer
 {
-    /**
-     * @var SerializerInterface
-     */
+    /** @var SerializerInterface|null */
     protected $serializer;
 
-    /**
-     * @return mixed
-     */
-    public function getSerializer()
+    public function getSerializer(): ?SerializerInterface
     {
         return $this->serializer;
     }
 
     /**
-     * @param null|string|array|SerializerInterface $serializer
+     * @param null|SerializerInterface|string|array{name: string, options: null|array<string,mixed>} $serializer
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function setSerializer($serializer = null): void
     {
-        if (\is_array($serializer)) {
-            if (! \array_key_exists('name', $serializer)) {
-                throw new \InvalidArgumentException('A serializer name should be provided');
+        if (is_array($serializer)) {
+            if (! array_key_exists('name', $serializer)) {
+                throw new InvalidArgumentException('A serializer name should be provided');
             }
             $name = $serializer['name'];
-            $options = \array_key_exists('options', $serializer) ? $serializer['options'] : null;
+            $options = $serializer['options'] ?? null;
             $serializer = Serializer::factory($name, $options);
-        } elseif (\is_string($serializer)) {
+        } elseif (is_string($serializer)) {
             $serializer = Serializer::factory($serializer);
         }
-        if (null !== $serializer && !$serializer instanceof SerializerInterface) {
-            throw new \InvalidArgumentException('Invalid serializer instance or options');
-        }
+
         $this->serializer = $serializer;
     }
 }

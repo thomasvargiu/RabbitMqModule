@@ -4,39 +4,29 @@ declare(strict_types=1);
 
 namespace RabbitMqModule;
 
+use function count;
+use Laminas\Serializer\Adapter\AdapterInterface as SerializerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
-use Zend\Serializer\Adapter\AdapterInterface as SerializerInterface;
 
 class RpcClient extends BaseAmqp
 {
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $requests = 0;
-    /**
-     * @var array
-     */
+
+    /** @var array<string, mixed> */
     protected $replies = [];
-    /**
-     * @var int
-     */
+
+    /** @var int */
     protected $timeout = 0;
-    /**
-     * @var string
-     */
+
+    /** @var string */
     protected $queueName;
-    /**
-     * @var SerializerInterface
-     */
+
+    /** @var SerializerInterface|null */
     protected $serializer;
 
     /**
-     * @param mixed $body
-     * @param string $server
-     * @param mixed $requestId
-     * @param string $routingKey
-     * @param int $expiration
-     * @throws \Zend\Serializer\Exception\ExceptionInterface
+     * @throws \Laminas\Serializer\Exception\ExceptionInterface
      */
     public function addRequest($body, string $server, $requestId, string $routingKey = '', int $expiration = 0): void
     {
@@ -59,9 +49,6 @@ class RpcClient extends BaseAmqp
         }
     }
 
-    /**
-     * @return string
-     */
     protected function getQueueName(): string
     {
         if (null === $this->queueName) {
@@ -72,14 +59,14 @@ class RpcClient extends BaseAmqp
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     public function getReplies(): array
     {
         $this->replies = [];
         $consumer_tag = $this->getChannel()
             ->basic_consume($this->getQueueName(), '', false, true, false, false, [$this, 'processMessage']);
-        while (\count($this->replies) < $this->requests) {
+        while (count($this->replies) < $this->requests) {
             $this->getChannel()->wait(null, false, $this->timeout);
         }
         $this->getChannel()->basic_cancel($consumer_tag);
@@ -90,8 +77,7 @@ class RpcClient extends BaseAmqp
     }
 
     /**
-     * @param AMQPMessage $message
-     * @throws \Zend\Serializer\Exception\ExceptionInterface
+     * @throws \Laminas\Serializer\Exception\ExceptionInterface
      */
     public function processMessage(AMQPMessage $message): void
     {
@@ -102,17 +88,11 @@ class RpcClient extends BaseAmqp
         $this->replies[$message->get('correlation_id')] = $messageBody;
     }
 
-    /**
-     * @param SerializerInterface|null $serializer
-     */
     public function setSerializer(SerializerInterface $serializer = null): void
     {
         $this->serializer = $serializer;
     }
 
-    /**
-     * @return null|SerializerInterface
-     */
     public function getSerializer(): ?SerializerInterface
     {
         return $this->serializer;

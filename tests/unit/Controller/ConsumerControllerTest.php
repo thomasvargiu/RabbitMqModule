@@ -2,18 +2,19 @@
 
 namespace RabbitMqModule\Controller;
 
-use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
+use Laminas\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
+use function ob_get_clean;
 
 class ConsumerControllerTest extends AbstractConsoleControllerTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
-        $config = include __DIR__.'/../../TestConfiguration.php';
+        $config = include __DIR__ . '/../../TestConfiguration.php';
         $this->setApplicationConfig($config);
         parent::setUp();
     }
 
-    public function testDispatchWithTestConsumer()
+    public function testDispatchWithTestConsumer(): void
     {
         $consumer = $this->getMockBuilder('RabbitMqModule\Consumer')
             ->setMethods(['consume'])
@@ -35,7 +36,7 @@ class ConsumerControllerTest extends AbstractConsoleControllerTestCase
         $this->assertResponseStatusCode(0);
     }
 
-    public function testDispatchWithInvalidTestConsumer()
+    public function testDispatchWithInvalidTestConsumer(): void
     {
         ob_start();
         $this->dispatch('rabbitmq consumer foo');
@@ -46,7 +47,7 @@ class ConsumerControllerTest extends AbstractConsoleControllerTestCase
         $this->assertResponseStatusCode(1);
     }
 
-    public function testStopConsumerController()
+    public function testStopConsumerController(): void
     {
         $consumer = $this->getMockBuilder('RabbitMqModule\Consumer')
             ->setMethods(['forceStopConsumer', 'stopConsuming'])
@@ -59,12 +60,12 @@ class ConsumerControllerTest extends AbstractConsoleControllerTestCase
         $consumer->expects(static::once())
             ->method('stopConsuming');
 
-        $container = $this->getMockBuilder('Zend\ServiceManager\ServiceManager')
+        $container = $this->getMockBuilder('Laminas\ServiceManager\ServiceManager')
             ->getMock();
 
         $stub = $this->getMockBuilder('RabbitMqModule\\Controller\\ConsumerController')
             ->setConstructorArgs([$container])
-            ->setMethods(array('callExit'))
+            ->setMethods(['callExit'])
             ->getMock();
 
         $stub->expects(static::once())
@@ -78,7 +79,7 @@ class ConsumerControllerTest extends AbstractConsoleControllerTestCase
         $controller->stopConsumer();
     }
 
-    public function testDispatchWithoutSignals()
+    public function testDispatchWithoutSignals(): void
     {
         $consumer = $this->getMockBuilder('RabbitMqModule\Consumer')
             ->setMethods(['consume'])
@@ -101,46 +102,46 @@ class ConsumerControllerTest extends AbstractConsoleControllerTestCase
         $this->assertResponseStatusCode(0);
     }
 
-    public function testListConsumersWithNoConsumers()
+    public function testListConsumersWithNoConsumers(): void
     {
         ob_start();
         $this->dispatch('rabbitmq list consumers');
-        ob_end_clean();
+        $output = ob_get_clean();
 
-        $this->assertConsoleOutputContains('No consumers defined!');
+        $this->assertStringContainsString('No consumers defined!', $output);
 
         $this->assertResponseStatusCode(0);
     }
 
-    public function testListConsumersWithNoConfigKey()
+    public function testListConsumersWithNoConfigKey(): void
     {
         $serviceManager = $this->getApplicationServiceLocator();
         $serviceManager->setAllowOverride(true);
         /** @var array $configuration */
-        $configuration = $serviceManager->get('Configuration');
+        $configuration = $serviceManager->get('config');
         unset($configuration['rabbitmq']);
-        $serviceManager->setService('Configuration', $configuration);
+        $serviceManager->setService('config', $configuration);
 
         ob_start();
         $this->dispatch('rabbitmq list consumers');
-        ob_end_clean();
+        $output = ob_get_clean();
 
-        $this->assertConsoleOutputContains('No \'rabbitmq.consumer\' configuration key found!');
+        $this->assertStringContainsString('No "rabbitmq.consumer" configuration key found!', $output);
 
-        $this->assertResponseStatusCode(0);
+        $this->assertResponseStatusCode(1);
     }
 
-    public function testListConsumers()
+    public function testListConsumers(): void
     {
         $serviceManager = $this->getApplicationServiceLocator();
         $serviceManager->setAllowOverride(true);
         /** @var array $configuration */
-        $configuration = $serviceManager->get('Configuration');
+        $configuration = $serviceManager->get('config');
         $configuration['rabbitmq']['consumer'] = [
             'consumer_key1' => [],
             'consumer_key2' => ['description' => 'foo description'],
         ];
-        $serviceManager->setService('Configuration', $configuration);
+        $serviceManager->setService('config', $configuration);
 
         ob_start();
         $this->dispatch('rabbitmq list consumers');

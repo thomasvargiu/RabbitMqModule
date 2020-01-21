@@ -8,54 +8,37 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class Producer extends BaseAmqp implements ProducerInterface
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $contentType = 'text/plain';
-    /**
-     * @var int
-     */
+
+    /** @var int */
     protected $deliveryMode = 2;
 
-    /** @var bool  */
+    /** @var bool */
     private $alreadySetup = false;
 
-    /**
-     * @return string
-     */
     public function getContentType(): string
     {
         return $this->contentType;
     }
 
-    /**
-     * @param string $contentType
-     */
     public function setContentType(string $contentType): void
     {
         $this->contentType = $contentType;
     }
 
-    /**
-     * @return int
-     */
     public function getDeliveryMode(): int
     {
         return $this->deliveryMode;
     }
 
-    /**
-     * @param int $deliveryMode
-     */
     public function setDeliveryMode(int $deliveryMode): void
     {
         $this->deliveryMode = $deliveryMode;
     }
 
     /**
-     * @param string $body
-     * @param string $routingKey
-     * @param array  $properties
+     * @param array<string, mixed>  $properties
      */
     public function publish(string $body, string $routingKey = '', array $properties = []): void
     {
@@ -71,7 +54,7 @@ class Producer extends BaseAmqp implements ProducerInterface
 
         if (false === $this->alreadySetup && $this->isAutoSetupFabricEnabled()) {
             $this->setupFabric();
-            $this->alreadySetup  = true;
+            $this->alreadySetup = true;
         }
 
         $this->getChannel()->basic_publish(

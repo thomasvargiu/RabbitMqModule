@@ -4,138 +4,94 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Options;
 
-use Zend\Stdlib\AbstractOptions;
+use InvalidArgumentException;
+use Laminas\Stdlib\AbstractOptions;
 
 class Exchange extends AbstractOptions
 {
-    /**
-     * @var null|string
-     */
+    /** @var null|string */
     protected $name;
-    /**
-     * @var null|string
-     */
+
+    /** @var null|string */
     protected $type;
-    /**
-     * @var bool
-     */
+
+    /** @var bool */
     protected $passive = false;
-    /**
-     * @var bool
-     */
+
+    /** @var bool */
     protected $durable = true;
-    /**
-     * @var bool
-     */
+
+    /** @var bool */
     protected $autoDelete = false;
-    /**
-     * @var bool
-     */
+
+    /** @var bool */
     protected $internal = false;
-    /**
-     * @var bool
-     */
+
+    /** @var bool */
     protected $noWait = false;
-    /**
-     * @var bool
-     */
+
+    /** @var bool */
     protected $declare = true;
-    /**
-     * @var array
-     */
+
+    /** @var array<string, mixed> */
     protected $arguments = [];
-    /**
-     * @var int
-     */
+
+    /** @var int */
     protected $ticket = 0;
-    /**
-     * @var ExchangeBind[]
-     */
+
+    /** @var ExchangeBind[] */
     protected $exchangeBinds = [];
 
-    /**
-     * @return null|string
-     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param null|string $name
-     */
     public function setName(?string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return null|string
-     */
     public function getType(): ?string
     {
         return $this->type;
     }
 
-    /**
-     * @param null|string $type
-     */
     public function setType(?string $type): void
     {
         $this->type = $type;
     }
 
-    /**
-     * @return bool
-     */
     public function isPassive(): bool
     {
         return $this->passive;
     }
 
-    /**
-     * @param bool $passive
-     */
     public function setPassive(bool $passive): void
     {
         $this->passive = $passive;
     }
 
-    /**
-     * @return bool
-     */
     public function isDurable(): bool
     {
         return $this->durable;
     }
 
-    /**
-     * @param bool $durable
-     */
     public function setDurable(bool $durable): void
     {
         $this->durable = $durable;
     }
 
-    /**
-     * @return bool
-     */
     public function isAutoDelete(): bool
     {
         return $this->autoDelete;
     }
 
-    /**
-     * @param bool $autoDelete
-     */
     public function setAutoDelete(bool $autoDelete): void
     {
         $this->autoDelete = $autoDelete;
     }
 
-    /**
-     * @return bool
-     */
     public function isInternal(): bool
     {
         return $this->internal;
@@ -149,40 +105,28 @@ class Exchange extends AbstractOptions
         $this->internal = $internal;
     }
 
-    /**
-     * @return bool
-     */
     public function isNoWait(): bool
     {
         return $this->noWait;
     }
 
-    /**
-     * @param bool $noWait
-     */
     public function setNoWait(bool $noWait): void
     {
         $this->noWait = $noWait;
     }
 
-    /**
-     * @return bool
-     */
     public function isDeclare(): bool
     {
         return $this->declare;
     }
 
-    /**
-     * @param bool $declare
-     */
     public function setDeclare(bool $declare): void
     {
         $this->declare = $declare;
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     public function getArguments(): array
     {
@@ -190,24 +134,18 @@ class Exchange extends AbstractOptions
     }
 
     /**
-     * @param array $arguments
+     * @param array<string, mixed> $arguments
      */
     public function setArguments(array $arguments): void
     {
         $this->arguments = $arguments;
     }
 
-    /**
-     * @return int
-     */
     public function getTicket(): int
     {
         return $this->ticket;
     }
 
-    /**
-     * @param int $ticket
-     */
     public function setTicket(int $ticket): void
     {
         $this->ticket = $ticket;
@@ -222,7 +160,7 @@ class Exchange extends AbstractOptions
     }
 
     /**
-     * @param array|ExchangeBind[] $exchangeBinds
+     * @param array<string, mixed>|ExchangeBind[] $exchangeBinds
      */
     public function setExchangeBinds(array $exchangeBinds): void
     {
@@ -233,16 +171,17 @@ class Exchange extends AbstractOptions
     }
 
     /**
-     * @param array|ExchangeBind $bind
-     * @throws \InvalidArgumentException
+     * @param array<string, mixed>|ExchangeBind $bind
+     *
+     * @throws InvalidArgumentException
      */
     public function addExchangeBind($bind): void
     {
         if (is_array($bind)) {
             $bind = new ExchangeBind($bind);
         }
-        if (!$bind instanceof ExchangeBind) {
-            throw new \InvalidArgumentException('Invalid exchange bind options');
+        if (! $bind instanceof ExchangeBind) {
+            throw new InvalidArgumentException('Invalid exchange bind options');
         }
         $this->exchangeBinds[] = $bind;
     }

@@ -2,19 +2,14 @@
 
 namespace RabbitMqModule\Service;
 
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Psr\Container\ContainerInterface;
 
-class ServiceFactoryMock implements FactoryInterface
+class ServiceFactoryMock
 {
     /**
      * Create service.
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return mixed
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container)
     {
         return true;
     }

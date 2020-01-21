@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace RabbitMqModule;
 
+use function call_user_func;
+use function count;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -23,25 +25,25 @@ class Consumer extends BaseConsumer
     public function consume(): void
     {
         $this->setupConsumer();
-        while (\count($this->getChannel()->callbacks)) {
+        while (count($this->getChannel()->callbacks)) {
             $this->maybeStopConsumer();
             $this->getChannel()->wait(null, false, $this->getIdleTimeout());
         }
     }
 
-    /**
-     * @param AMQPMessage $message
-     */
     public function processMessage(AMQPMessage $message): void
     {
-        $this->getEventManager()->trigger(__FUNCTION__.'.pre', $this, compact('message'));
+        $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, compact('message'));
 
-        $processFlag = \call_user_func($this->getCallback(), $message);
+        $processFlag = call_user_func($this->getCallback(), $message);
         $this->handleProcessMessage($message, $processFlag);
 
-        $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, compact('message'));
+        $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, compact('message'));
     }
 
+    /**
+     * @param bool|int $processFlag
+     */
     protected function handleProcessMessage(AMQPMessage $msg, $processFlag): void
     {
         /** @var AMQPChannel $channel */

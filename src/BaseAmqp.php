@@ -4,46 +4,38 @@ declare(strict_types=1);
 
 namespace RabbitMqModule;
 
+use function count;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AbstractConnection;
-use PhpAmqpLib\Exception\AMQPChannelClosedException;
+use PhpAmqpLib\Wire\AMQPTable;
 use RabbitMqModule\Options\Exchange as ExchangeOptions;
 use RabbitMqModule\Options\Queue as QueueOptions;
 use RabbitMqModule\Service\SetupFabricAwareInterface;
 
 abstract class BaseAmqp implements SetupFabricAwareInterface
 {
-    /**
-     * @var AbstractConnection
-     */
+    /** @var AbstractConnection */
     protected $connection;
-    /**
-     * @var AMQPChannel
-     */
+
+    /** @var AMQPChannel|null */
     private $channel;
-    /**
-     * @var QueueOptions
-     */
+
+    /** @var QueueOptions */
     protected $queueOptions;
-    /**
-     * @var ExchangeOptions
-     */
+
+    /** @var ExchangeOptions */
     protected $exchangeOptions;
-    /**
-     * @var bool
-     */
+
+    /** @var bool */
     protected $autoSetupFabricEnabled = true;
-    /**
-     * @var bool
-     */
+
+    /** @var bool */
     protected $exchangeDeclared = false;
-    /**
-     * @var bool
-     */
+
+    /** @var bool */
     protected $queueDeclared = false;
 
     /**
-     * @param AbstractConnection $connection
      * @param AMQPChannel        $channel
      */
     public function __construct(AbstractConnection $connection, AMQPChannel $channel = null)
@@ -52,77 +44,50 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
         $this->channel = $channel;
     }
 
-    /**
-     * @return AbstractConnection
-     */
     public function getConnection(): AbstractConnection
     {
         return $this->connection;
     }
 
-    /**
-     * @return AMQPChannel
-     */
     public function getChannel(): AMQPChannel
     {
-        if (!$this->channel) {
+        if (! $this->channel) {
             $this->channel = $this->getConnection()->channel();
         }
 
         return $this->channel;
     }
 
-    /**
-     * @param AMQPChannel $channel
-     */
     public function setChannel(AMQPChannel $channel): void
     {
         $this->channel = $channel;
     }
 
-    /**
-     * @return null|QueueOptions
-     */
     public function getQueueOptions(): ?QueueOptions
     {
         return $this->queueOptions;
     }
 
-    /**
-     * @param QueueOptions $queueOptions
-     */
     public function setQueueOptions(QueueOptions $queueOptions): void
     {
         $this->queueOptions = $queueOptions;
     }
 
-    /**
-     * @return ExchangeOptions
-     */
     public function getExchangeOptions(): ExchangeOptions
     {
         return $this->exchangeOptions;
     }
 
-    /**
-     * @param ExchangeOptions $exchangeOptions
-     */
     public function setExchangeOptions(ExchangeOptions $exchangeOptions): void
     {
         $this->exchangeOptions = $exchangeOptions;
     }
 
-    /**
-     * @return bool
-     */
     public function isAutoSetupFabricEnabled(): bool
     {
         return $this->autoSetupFabricEnabled;
     }
 
-    /**
-     * @param bool $autoSetupFabricEnabled
-     */
     public function setAutoSetupFabricEnabled(bool $autoSetupFabricEnabled): void
     {
         $this->autoSetupFabricEnabled = $autoSetupFabricEnabled;
@@ -143,6 +108,8 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
             return;
         }
 
+        $arguments = $options->getArguments();
+
         $this->getChannel()->exchange_declare(
             $options->getName(),
             $options->getType(),
@@ -151,7 +118,7 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
             $options->isAutoDelete(),
             $options->isInternal(),
             $options->isNoWait(),
-            $options->getArguments(),
+            $arguments ? new AMQPTable($arguments) : [],
             $options->getTicket()
         );
 
@@ -159,7 +126,7 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
         foreach ($binds as $bind) {
             $this->declareExchange($bind->getExchange());
             $routingKeys = $bind->getRoutingKeys();
-            if (! \count($routingKeys)) {
+            if (! count($routingKeys)) {
                 $routingKeys = [''];
             }
             foreach ($routingKeys as $routingKey) {
@@ -181,11 +148,12 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
     {
         $queueOptions = $this->getQueueOptions();
 
-        if (!$queueOptions || null === $queueOptions->getName()) {
+        if (! $queueOptions || null === $queueOptions->getName()) {
             return;
         }
 
         $exchangeOptions = $this->getExchangeOptions();
+        $arguments = $queueOptions->getArguments();
 
         [$queueName] = $this->getChannel()->queue_declare(
             $queueOptions->getName(),
@@ -194,12 +162,12 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
             $queueOptions->isExclusive(),
             $queueOptions->isAutoDelete(),
             $queueOptions->isNoWait(),
-            $queueOptions->getArguments(),
+            $arguments ? new AMQPTable($arguments) : [],
             $queueOptions->getTicket()
         );
 
         $routingKeys = $queueOptions->getRoutingKeys();
-        if (! \count($routingKeys)) {
+        if (! count($routingKeys)) {
             $routingKeys = [''];
         }
         foreach ($routingKeys as $routingKey) {
@@ -218,13 +186,13 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
      */
     public function setupFabric(): void
     {
-        if (!$this->exchangeDeclared) {
+        if (! $this->exchangeDeclared) {
             $this->declareExchange();
         }
 
         $queueOptions = $this->getQueueOptions();
 
-        if (!$this->queueDeclared && $queueOptions) {
+        if (! $this->queueDeclared && $queueOptions) {
             $this->declareQueue();
         }
     }
@@ -234,11 +202,7 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
      */
     public function reconnect(): void
     {
-        if (!$this->getConnection()->isConnected()) {
-            return;
-        }
-
-        $this->getConnection()->reconnect();
         $this->channel = null;
+        $this->getConnection()->reconnect();
     }
 }

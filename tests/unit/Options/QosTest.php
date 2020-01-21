@@ -4,7 +4,7 @@ namespace RabbitMqModule\Options;
 
 class QosTest extends \PHPUnit\Framework\TestCase
 {
-    public function testOptions()
+    public function testOptions(): void
     {
         $configuration = [
             'prefetch_size' => 7,

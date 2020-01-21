@@ -4,277 +4,184 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Options;
 
-use Zend\Stdlib\AbstractOptions;
+use Laminas\Stdlib\AbstractOptions;
 
 class Connection extends AbstractOptions
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $type = 'stream';
-    /**
-     * @var string
-     */
+
+    /** @var string */
     protected $host = 'localhost';
-    /**
-     * @var int
-     */
+
+    /** @var int */
     protected $port = 5672;
-    /**
-     * @var string
-     */
+
+    /** @var string */
     protected $username = 'guest';
-    /**
-     * @var string
-     */
+
+    /** @var string */
     protected $password = 'guest';
-    /**
-     * @var string
-     */
+
+    /** @var string */
     protected $vhost = '/';
-    /**
-     * @var bool
-     */
+
+    /** @var bool */
     protected $insist = false;
-    /**
-     * @var string
-     */
+
+    /** @var string */
     protected $loginMethod = 'AMQPLAIN';
-    /**
-     * @var string
-     */
+
+    /** @var string */
     protected $locale = 'en_US';
-    /**
-     * @var int
-     */
+
+    /** @var int */
     protected $readWriteTimeout = 3;
-    /**
-     * @var bool
-     */
+
+    /** @var bool */
     protected $keepAlive = false;
-    /**
-     * @var int
-     */
+
+    /** @var int */
     protected $connectionTimeout = 3;
-    /**
-     * @var int
-     */
+
+    /** @var int */
     protected $heartbeat = 0;
-    /**
-     * @var array
-     */
+
+    /** @var array<string, mixed> */
     protected $sslOptions = [];
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @param string $type
-     */
     public function setType(string $type): void
     {
         $this->type = $type;
     }
 
-    /**
-     * @return string
-     */
     public function getHost(): string
     {
         return $this->host;
     }
 
-    /**
-     * @param string $host
-     */
     public function setHost(string $host): void
     {
         $this->host = $host;
     }
 
-    /**
-     * @return int
-     */
     public function getPort(): int
     {
         return $this->port;
     }
 
-    /**
-     * @param int $port
-     */
     public function setPort(int $port): void
     {
         $this->port = $port;
     }
 
-    /**
-     * @return string
-     */
     public function getUsername(): string
     {
         return $this->username;
     }
 
-    /**
-     * @param string $username
-     */
     public function setUsername(string $username): void
     {
         $this->username = $username;
     }
 
-    /**
-     * @return string
-     */
     public function getPassword(): string
     {
         return $this->password;
     }
 
-    /**
-     * @param string $password
-     */
     public function setPassword(string $password): void
     {
         $this->password = $password;
     }
 
-    /**
-     * @return string
-     */
     public function getVhost(): string
     {
         return $this->vhost;
     }
 
-    /**
-     * @param string $vhost
-     */
     public function setVhost(string $vhost): void
     {
         $this->vhost = $vhost;
     }
 
-    /**
-     * @return bool
-     */
     public function isInsist(): bool
     {
         return $this->insist;
     }
 
-    /**
-     * @param bool $insist
-     */
     public function setInsist(bool $insist): void
     {
         $this->insist = $insist;
     }
 
-    /**
-     * @return string
-     */
     public function getLoginMethod(): string
     {
         return $this->loginMethod;
     }
 
-    /**
-     * @param string $loginMethod
-     */
     public function setLoginMethod(string $loginMethod): void
     {
         $this->loginMethod = $loginMethod;
     }
 
-    /**
-     * @return string
-     */
     public function getLocale(): string
     {
         return $this->locale;
     }
 
-    /**
-     * @param string $locale
-     */
     public function setLocale(string $locale): void
     {
         $this->locale = $locale;
     }
 
-    /**
-     * @return int
-     */
     public function getReadWriteTimeout(): int
     {
         return $this->readWriteTimeout;
     }
 
-    /**
-     * @param int $readWriteTimeout
-     */
     public function setReadWriteTimeout(int $readWriteTimeout): void
     {
         $this->readWriteTimeout = $readWriteTimeout;
     }
 
-    /**
-     * @return bool
-     */
     public function isKeepAlive(): bool
     {
         return $this->keepAlive;
     }
 
-    /**
-     * @param bool $keepAlive
-     */
     public function setKeepAlive(bool $keepAlive): void
     {
         $this->keepAlive = $keepAlive;
     }
 
-    /**
-     * @return int
-     */
     public function getConnectionTimeout(): int
     {
         return $this->connectionTimeout;
     }
 
-    /**
-     * @param int $connectionTimeout
-     */
     public function setConnectionTimeout(int $connectionTimeout): void
     {
         $this->connectionTimeout = $connectionTimeout;
     }
 
-    /**
-     * @return int
-     */
     public function getHeartbeat(): int
     {
         return $this->heartbeat;
     }
 
-    /**
-     * @param int $heartbeat
-     */
     public function setHeartbeat(int $heartbeat): void
     {
         $this->heartbeat = $heartbeat;
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     public function getSslOptions(): array
     {
@@ -282,7 +189,7 @@ class Connection extends AbstractOptions
     }
 
     /**
-     * @param array $sslOptions
+     * @param array<string, mixed> $sslOptions
      */
     public function setSslOptions(array $sslOptions): void
     {

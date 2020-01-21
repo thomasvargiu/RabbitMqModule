@@ -4,7 +4,7 @@ namespace RabbitMqModule\Options;
 
 class QueueTest extends \PHPUnit\Framework\TestCase
 {
-    public function testOptions()
+    public function testOptions(): void
     {
         $configuration = [
             'name' => 'test-name',
