@@ -6,6 +6,7 @@ namespace RabbitMqModule;
 
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AbstractConnection;
+use PhpAmqpLib\Exception\AMQPChannelClosedException;
 use RabbitMqModule\Options\Exchange as ExchangeOptions;
 use RabbitMqModule\Options\Queue as QueueOptions;
 use RabbitMqModule\Service\SetupFabricAwareInterface;
@@ -239,16 +240,5 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
 
         $this->getConnection()->reconnect();
         $this->channel = null;
-    }
-
-    public function __destruct()
-    {
-        if ($this->channel) {
-            $this->channel->close();
-        }
-
-        if ($this->connection && $this->getConnection()->isConnected()) {
-            $this->getConnection()->close();
-        }
     }
 }
