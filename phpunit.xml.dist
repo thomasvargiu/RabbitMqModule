@@ -1,15 +1,10 @@
 <?xml version="1.0"?>
-<phpunit
-        bootstrap="./vendor/autoload.php"
-        colors="true"
-        convertErrorsToExceptions="true"
-        convertNoticesToExceptions="true"
-        convertWarningsToExceptions="true"
-        verbose="true"
-        stopOnFailure="false"
-        processIsolation="false"
-        backupGlobals="false"
-        syntaxCheck="true"
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
+         colors="true"
+         verbose="true"
+         cacheResultFile="false"
+         cacheResult="false"
 >
     <testsuite name="RabbitMqModule tests">
         <directory suffix="Test.php">./tests/unit</directory>
@@ -20,9 +15,4 @@
             <directory suffix=".php">./src</directory>
         </whitelist>
     </filter>
-<!--
-    <listeners>
-        <listener class="\Mockery\Adapter\Phpunit\TestListener" />
-    </listeners>
-    -->
 </phpunit>

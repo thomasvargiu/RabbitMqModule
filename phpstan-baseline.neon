@@ -56,7 +56,7 @@ parameters:
 			path: src/Controller/ConsumerController.php
 
 		-
-			message: "#^Method RabbitMqModule\\\\Controller\\\\SetupFabricController\\:\\:getServiceKeys\\(\\) should return array\<int, string\\> but returns array\<int, int\\|string\\>\\.$#"
+			message: "#^Method RabbitMqModule\\\\Controller\\\\SetupFabricController\\:\\:getServiceKeys\\(\\) should return array\\<int, string\\> but returns array\\<int, int\\|string\\>\\.$#"
 			count: 1
 			path: src/Controller/SetupFabricController.php
 
@@ -81,12 +81,12 @@ parameters:
 			path: src/RpcServer.php
 
 		-
-			message: "#^Cannot access offset 'factoryClass' on \\(array\<string, string\\>\\)\\|true\\.$#"
+			message: "#^Cannot access offset 'factoryClass' on \\(array\\<string, string\\>\\)\\|true\\.$#"
 			count: 1
 			path: src/Service/AbstractServiceFactory.php
 
 		-
-			message: "#^Cannot access offset 'serviceName' on \\(array\<string, string\\>\\)\\|true\\.$#"
+			message: "#^Cannot access offset 'serviceName' on \\(array\\<string, string\\>\\)\\|true\\.$#"
 			count: 1
 			path: src/Service/AbstractServiceFactory.php
 
@@ -96,7 +96,7 @@ parameters:
 			path: src/Service/Connection/LazyConnectionFactory.php
 
 		-
-			message: "#^Parameter \\#12 \\$context of class PhpAmqpLib\\\\Connection\\\\AMQPStreamConnection constructor expects null, array\<string, mixed\\> given\\.$#"
+			message: "#^Parameter \\#12 \\$context of class PhpAmqpLib\\\\Connection\\\\AMQPStreamConnection constructor expects null, array\\<string, mixed\\> given\\.$#"
 			count: 1
 			path: src/Service/Connection/SSLConnectionFactory.php
 
@@ -246,62 +246,62 @@ parameters:
 			path: tests/unit/Controller/StdInProducerControllerTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$queue of method RabbitMqModule\\\\Options\\\\Consumer\\:\\:setQueue\\(\\) expects array\<string, mixed\\>\\|RabbitMqModule\\\\Options\\\\Queue, string given\\.$#"
+			message: "#^Parameter \\#1 \\$queue of method RabbitMqModule\\\\Options\\\\Consumer\\:\\:setQueue\\(\\) expects array\\<string, mixed\\>\\|RabbitMqModule\\\\Options\\\\Queue, string given\\.$#"
 			count: 1
 			path: tests/unit/Options/ConsumerTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$exchange of method RabbitMqModule\\\\Options\\\\Consumer\\:\\:setExchange\\(\\) expects array\<string, mixed\\>\\|RabbitMqModule\\\\Options\\\\Exchange, string given\\.$#"
+			message: "#^Parameter \\#1 \\$exchange of method RabbitMqModule\\\\Options\\\\Consumer\\:\\:setExchange\\(\\) expects array\\<string, mixed\\>\\|RabbitMqModule\\\\Options\\\\Exchange, string given\\.$#"
 			count: 1
 			path: tests/unit/Options/ConsumerTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$qos of method RabbitMqModule\\\\Options\\\\Consumer\\:\\:setQos\\(\\) expects array\<string, mixed\\>\\|RabbitMqModule\\\\Options\\\\Qos, string given\\.$#"
+			message: "#^Parameter \\#1 \\$qos of method RabbitMqModule\\\\Options\\\\Consumer\\:\\:setQos\\(\\) expects array\\<string, mixed\\>\\|RabbitMqModule\\\\Options\\\\Qos, string given\\.$#"
 			count: 1
 			path: tests/unit/Options/ConsumerTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$exchange of method RabbitMqModule\\\\Options\\\\ExchangeBind\\:\\:setExchange\\(\\) expects array\<string, mixed\\>\\|RabbitMqModule\\\\Options\\\\Exchange, string given\\.$#"
+			message: "#^Parameter \\#1 \\$exchange of method RabbitMqModule\\\\Options\\\\ExchangeBind\\:\\:setExchange\\(\\) expects array\\<string, mixed\\>\\|RabbitMqModule\\\\Options\\\\Exchange, string given\\.$#"
 			count: 1
 			path: tests/unit/Options/ExchangeBindTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$bind of method RabbitMqModule\\\\Options\\\\Exchange\\:\\:addExchangeBind\\(\\) expects array\<string, mixed\\>\\|RabbitMqModule\\\\Options\\\\ExchangeBind, string given\\.$#"
+			message: "#^Parameter \\#1 \\$bind of method RabbitMqModule\\\\Options\\\\Exchange\\:\\:addExchangeBind\\(\\) expects array\\<string, mixed\\>\\|RabbitMqModule\\\\Options\\\\ExchangeBind, string given\\.$#"
 			count: 1
 			path: tests/unit/Options/ExchangeTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$queue of method RabbitMqModule\\\\Options\\\\Producer\\:\\:setQueue\\(\\) expects array\<string, mixed\\>\\|RabbitMqModule\\\\Options\\\\Queue, string given\\.$#"
+			message: "#^Parameter \\#1 \\$queue of method RabbitMqModule\\\\Options\\\\Producer\\:\\:setQueue\\(\\) expects array\\<string, mixed\\>\\|RabbitMqModule\\\\Options\\\\Queue, string given\\.$#"
 			count: 1
 			path: tests/unit/Options/ProducerTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$exchange of method RabbitMqModule\\\\Options\\\\Producer\\:\\:setExchange\\(\\) expects array\<string, mixed\\>\\|RabbitMqModule\\\\Options\\\\Exchange, string given\\.$#"
+			message: "#^Parameter \\#1 \\$exchange of method RabbitMqModule\\\\Options\\\\Producer\\:\\:setExchange\\(\\) expects array\\<string, mixed\\>\\|RabbitMqModule\\\\Options\\\\Exchange, string given\\.$#"
 			count: 1
 			path: tests/unit/Options/ProducerTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$serializer of method RabbitMqModule\\\\Options\\\\RpcClient\\:\\:setSerializer\\(\\) expects array\<string, array\<string, mixed\\>\\|string\\|null\\>\\|Laminas\\\\Serializer\\\\Adapter\\\\AdapterInterface\\|string\\|null, array\<string, string\\> given\\.$#"
+			message: "#^Parameter \\#1 \\$serializer of method RabbitMqModule\\\\Options\\\\RpcClient\\:\\:setSerializer\\(\\) expects array\\<string, array\\<string, mixed\\>\\|string\\|null\\>\\|Laminas\\\\Serializer\\\\Adapter\\\\AdapterInterface\\|string\\|null, array\\<string, string\\> given\\.$#"
 			count: 1
 			path: tests/unit/Options/RpcClientTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$serializer of method RabbitMqModule\\\\Options\\\\RpcClient\\:\\:setSerializer\\(\\) expects array\<string, array\<string, mixed\\>\\|string\\|null\\>\\|Laminas\\\\Serializer\\\\Adapter\\\\AdapterInterface\\|string\\|null, array given\\.$#"
+			message: "#^Parameter \\#1 \\$serializer of method RabbitMqModule\\\\Options\\\\RpcClient\\:\\:setSerializer\\(\\) expects array\\<string, array\\<string, mixed\\>\\|string\\|null\\>\\|Laminas\\\\Serializer\\\\Adapter\\\\AdapterInterface\\|string\\|null, array given\\.$#"
 			count: 1
 			path: tests/unit/Options/RpcClientTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$serializer of method RabbitMqModule\\\\Options\\\\RpcServer\\:\\:setSerializer\\(\\) expects array\<string, array\<string, mixed\\>\\|string\\|null\\>\\|Laminas\\\\Serializer\\\\Adapter\\\\AdapterInterface\\|string\\|null, array\<string, string\\> given\\.$#"
+			message: "#^Parameter \\#1 \\$serializer of method RabbitMqModule\\\\Options\\\\RpcServer\\:\\:setSerializer\\(\\) expects array\\<string, array\\<string, mixed\\>\\|string\\|null\\>\\|Laminas\\\\Serializer\\\\Adapter\\\\AdapterInterface\\|string\\|null, array\\<string, string\\> given\\.$#"
 			count: 1
 			path: tests/unit/Options/RpcServerTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$serializer of method RabbitMqModule\\\\Options\\\\RpcServer\\:\\:setSerializer\\(\\) expects array\<string, array\<string, mixed\\>\\|string\\|null\\>\\|Laminas\\\\Serializer\\\\Adapter\\\\AdapterInterface\\|string\\|null, array given\\.$#"
+			message: "#^Parameter \\#1 \\$serializer of method RabbitMqModule\\\\Options\\\\RpcServer\\:\\:setSerializer\\(\\) expects array\\<string, array\\<string, mixed\\>\\|string\\|null\\>\\|Laminas\\\\Serializer\\\\Adapter\\\\AdapterInterface\\|string\\|null, array given\\.$#"
 			count: 1
 			path: tests/unit/Options/RpcServerTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$exception of method PHPUnit\\\\Framework\\\\TestCase\\:\\:expectException\\(\\) expects class\\-string\<Throwable\\>, string given\\.$#"
+			message: "#^Parameter \\#1 \\$exception of method PHPUnit\\\\Framework\\\\TestCase\\:\\:expectException\\(\\) expects class\\-string\\<Throwable\\>, string given\\.$#"
 			count: 1
 			path: tests/unit/Service/AbstractServiceFactoryTest.php
 
@@ -316,7 +316,7 @@ parameters:
 			path: tests/unit/Service/ConnectionFactoryTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$factoryMap of method RabbitMqModule\\\\Service\\\\ConnectionFactory\\:\\:setFactoryMap\\(\\) expects array\<string, class\\-string\<RabbitMqModule\\\\Service\\\\Connection\\\\ConnectionFactoryInterface\\>\\>, array\<string, string\\> given\\.$#"
+			message: "#^Parameter \\#1 \\$factoryMap of method RabbitMqModule\\\\Service\\\\ConnectionFactory\\:\\:setFactoryMap\\(\\) expects array\\<string, class\\-string\\<RabbitMqModule\\\\Service\\\\Connection\\\\ConnectionFactoryInterface\\>\\>, array\\<string, string\\> given\\.$#"
 			count: 1
 			path: tests/unit/Service/ConnectionFactoryTest.php
 

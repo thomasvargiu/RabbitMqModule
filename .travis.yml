@@ -49,7 +49,7 @@ install:
   - stty cols 120 && composer show
 
 script:
-  - if [[ "$EXECUTE_STATIC_ANALYSIS" == 'true' ]]; then composer phpstan; fi
+  - if [[ "$EXECUTE_STATIC_ANALYSIS" == 'true' ]]; then composer phpstan ; fi
   - if [[ "$EXECUTE_TEST_SCRUTINIZER" == 'true' ]]; then ./vendor/bin/phpunit --coverage-clover coverage.clover ; fi
   - if [[ "$EXECUTE_TEST_SCRUTINIZER" != 'true' ]]; then ./vendor/bin/phpunit ; fi
   - if [[ "$EXECUTE_CS_CHECK" == 'true' ]]; then composer cs-check ; fi
