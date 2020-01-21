@@ -34,25 +34,16 @@ class Producer extends AbstractOptions
      */
     protected $autoSetupFabricEnabled = true;
 
-    /**
-     * @return string
-     */
     public function getConnection(): string
     {
         return $this->connection;
     }
 
-    /**
-     * @param string $connection
-     */
     public function setConnection(string $connection): void
     {
         $this->connection = $connection;
     }
 
-    /**
-     * @return null|Exchange
-     */
     public function getExchange(): ?Exchange
     {
         return $this->exchange;
@@ -76,9 +67,6 @@ class Producer extends AbstractOptions
         $this->exchange = $exchange;
     }
 
-    /**
-     * @return null|Queue
-     */
     public function getQueue(): ?Queue
     {
         return $this->queue;
@@ -102,33 +90,21 @@ class Producer extends AbstractOptions
         $this->queue = $queue;
     }
 
-    /**
-     * @return string
-     */
     public function getClass(): string
     {
         return $this->class;
     }
 
-    /**
-     * @param string $class
-     */
     public function setClass(string $class): void
     {
         $this->class = $class;
     }
 
-    /**
-     * @return bool
-     */
     public function isAutoSetupFabricEnabled(): bool
     {
         return $this->autoSetupFabricEnabled;
     }
 
-    /**
-     * @param bool $autoSetupFabricEnabled
-     */
     public function setAutoSetupFabricEnabled(bool $autoSetupFabricEnabled): void
     {
         $this->autoSetupFabricEnabled = $autoSetupFabricEnabled;

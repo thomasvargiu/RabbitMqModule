@@ -41,25 +41,16 @@ abstract class BaseConsumer extends BaseAmqp implements EventManagerAwareInterfa
      */
     protected $signalsEnabled = true;
 
-    /**
-     * @return bool
-     */
     public function isSignalsEnabled(): bool
     {
         return $this->signalsEnabled;
     }
 
-    /**
-     * @param bool $signalsEnabled
-     */
     public function setSignalsEnabled(bool $signalsEnabled = true): void
     {
         $this->signalsEnabled = $signalsEnabled;
     }
 
-    /**
-     * @return string
-     */
     public function getConsumerTag(): string
     {
         if (! $this->consumerTag) {
@@ -69,41 +60,26 @@ abstract class BaseConsumer extends BaseAmqp implements EventManagerAwareInterfa
         return $this->consumerTag;
     }
 
-    /**
-     * @param string $consumerTag
-     */
     public function setConsumerTag(string $consumerTag): void
     {
         $this->consumerTag = $consumerTag;
     }
 
-    /**
-     * @return callable
-     */
     public function getCallback(): callable
     {
         return $this->callback;
     }
 
-    /**
-     * @param callable $callback
-     */
     public function setCallback(callable $callback): void
     {
         $this->callback = $callback;
     }
 
-    /**
-     * @return int
-     */
     public function getIdleTimeout(): int
     {
         return $this->idleTimeout;
     }
 
-    /**
-     * @param int $idleTimeout
-     */
     public function setIdleTimeout(int $idleTimeout): void
     {
         $this->idleTimeout = $idleTimeout;
@@ -180,8 +156,5 @@ abstract class BaseConsumer extends BaseAmqp implements EventManagerAwareInterfa
         $this->getChannel()->basic_cancel($this->getConsumerTag());
     }
 
-    /**
-     * @param AMQPMessage $message
-     */
     abstract public function processMessage(AMQPMessage $message): void;
 }

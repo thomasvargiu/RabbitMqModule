@@ -50,7 +50,6 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
     protected $queueDeclared = false;
 
     /**
-     * @param AbstractConnection $connection
      * @param AMQPChannel        $channel
      */
     public function __construct(AbstractConnection $connection, AMQPChannel $channel = null)
@@ -59,17 +58,11 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
         $this->channel = $channel;
     }
 
-    /**
-     * @return AbstractConnection
-     */
     public function getConnection(): AbstractConnection
     {
         return $this->connection;
     }
 
-    /**
-     * @return AMQPChannel
-     */
     public function getChannel(): AMQPChannel
     {
         if (! $this->channel) {
@@ -79,57 +72,36 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
         return $this->channel;
     }
 
-    /**
-     * @param AMQPChannel $channel
-     */
     public function setChannel(AMQPChannel $channel): void
     {
         $this->channel = $channel;
     }
 
-    /**
-     * @return null|QueueOptions
-     */
     public function getQueueOptions(): ?QueueOptions
     {
         return $this->queueOptions;
     }
 
-    /**
-     * @param QueueOptions $queueOptions
-     */
     public function setQueueOptions(QueueOptions $queueOptions): void
     {
         $this->queueOptions = $queueOptions;
     }
 
-    /**
-     * @return ExchangeOptions
-     */
     public function getExchangeOptions(): ExchangeOptions
     {
         return $this->exchangeOptions;
     }
 
-    /**
-     * @param ExchangeOptions $exchangeOptions
-     */
     public function setExchangeOptions(ExchangeOptions $exchangeOptions): void
     {
         $this->exchangeOptions = $exchangeOptions;
     }
 
-    /**
-     * @return bool
-     */
     public function isAutoSetupFabricEnabled(): bool
     {
         return $this->autoSetupFabricEnabled;
     }
 
-    /**
-     * @param bool $autoSetupFabricEnabled
-     */
     public function setAutoSetupFabricEnabled(bool $autoSetupFabricEnabled): void
     {
         $this->autoSetupFabricEnabled = $autoSetupFabricEnabled;

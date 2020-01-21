@@ -11,10 +11,6 @@ class NullProducerFactory
 {
     /**
      * Create NullProducer.
-     *
-     * @param ContainerInterface $container
-     *
-     * @return NullProducer
      */
     public function __invoke(ContainerInterface $container): NullProducer
     {

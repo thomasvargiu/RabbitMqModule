@@ -9,10 +9,5 @@ use RabbitMqModule\Options\Connection as ConnectionOptions;
 
 interface ConnectionFactoryInterface
 {
-    /**
-     * @param ConnectionOptions $options
-     *
-     * @return AbstractConnection
-     */
     public function createConnection(ConnectionOptions $options): AbstractConnection;
 }

@@ -55,7 +55,6 @@ final class ConnectionFactory extends AbstractFactory
     /**
      * Get the class name of the options associated with this factory.
      *
-     * @return string
      * @phpstan-return class-string<ConnectionOptions>
      * @psalm-return class-string<ConnectionOptions>
      */
@@ -67,12 +66,9 @@ final class ConnectionFactory extends AbstractFactory
     /**
      * Create an object.
      *
-     * @param ContainerInterface $container
      *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
-     *
-     * @return AbstractConnection
      */
     public function __invoke(ContainerInterface $container): AbstractConnection
     {
@@ -84,13 +80,8 @@ final class ConnectionFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface $container
-     * @param string $type
-     *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
-     *
-     * @return ConnectionFactoryInterface
      */
     protected function getFactory(ContainerInterface $container, string $type): ConnectionFactoryInterface
     {

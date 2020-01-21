@@ -29,10 +29,5 @@ interface ConsumerInterface
      */
     public const MSG_REJECT = -1;
 
-    /**
-     * @param AMQPMessage $message
-     *
-     * @return int|null
-     */
     public function execute(AMQPMessage $message): ?int;
 }

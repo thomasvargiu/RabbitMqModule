@@ -16,8 +16,6 @@ class RpcServer extends Consumer
     protected $serializer;
 
     /**
-     * @param AMQPMessage $message
-     *
      * @throws \Laminas\Serializer\Exception\ExceptionInterface
      */
     public function processMessage(AMQPMessage $message): void
@@ -34,8 +32,6 @@ class RpcServer extends Consumer
     }
 
     /**
-     * @param mixed  $result
-     * @param string $client
      * @param string $correlationId
      */
     protected function sendReply($result, string $client, $correlationId): void
@@ -56,8 +52,6 @@ class RpcServer extends Consumer
 
     /**
      * Set the serializer.
-     *
-     * @param SerializerInterface|null $serializer
      */
     public function setSerializer(SerializerInterface $serializer = null): void
     {

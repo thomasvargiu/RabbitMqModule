@@ -20,9 +20,6 @@ class ExchangeBind extends AbstractOptions
      */
     protected $routingKeys = [];
 
-    /**
-     * @return Exchange
-     */
     public function getExchange(): Exchange
     {
         return $this->exchange;

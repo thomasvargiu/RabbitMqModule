@@ -18,9 +18,6 @@ class RpcServer extends Consumer
      */
     protected $serializer;
 
-    /**
-     * @return SerializerInterface|null
-     */
     public function getSerializer(): ?SerializerInterface
     {
         return $this->serializer;

@@ -31,9 +31,6 @@ class Consumer extends BaseConsumer
         }
     }
 
-    /**
-     * @param AMQPMessage $message
-     */
     public function processMessage(AMQPMessage $message): void
     {
         $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, compact('message'));
@@ -45,7 +42,6 @@ class Consumer extends BaseConsumer
     }
 
     /**
-     * @param AMQPMessage $msg
      * @param bool|int $processFlag
      */
     protected function handleProcessMessage(AMQPMessage $msg, $processFlag): void

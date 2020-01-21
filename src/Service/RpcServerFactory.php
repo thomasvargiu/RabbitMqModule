@@ -20,7 +20,6 @@ final class RpcServerFactory extends AbstractFactory
     /**
      * Get the class name of the options associated with this factory.
      *
-     * @return string
      * @phpstan-return class-string<Options>
      * @psalm-return class-string<Options>
      */
@@ -32,12 +31,9 @@ final class RpcServerFactory extends AbstractFactory
     /**
      * Create an object.
      *
-     * @param ContainerInterface $container
      *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
-     *
-     * @return RpcServer
      */
     public function __invoke(ContainerInterface $container): RpcServer
     {
@@ -48,13 +44,8 @@ final class RpcServerFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface $container
-     * @param Options $options
-     *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
-     *
-     * @return RpcServer
      */
     protected function createServer(ContainerInterface $container, Options $options): RpcServer
     {

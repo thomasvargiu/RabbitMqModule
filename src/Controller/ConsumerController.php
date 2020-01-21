@@ -125,11 +125,9 @@ class ConsumerController extends AbstractConsoleController
     }
 
     /**
-     * @param Consumer $consumer
-     *
      * @return $this
      */
-    public function setConsumer(Consumer $consumer)
+    public function setConsumer(Consumer $consumer): self
     {
         $this->consumer = $consumer;
 
@@ -140,7 +138,7 @@ class ConsumerController extends AbstractConsoleController
      * @param int $code
      * @codeCoverageIgnore
      */
-    protected function callExit($code): void
+    protected function callExit(int $code): void
     {
         exit($code);
     }

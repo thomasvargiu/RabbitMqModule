@@ -11,9 +11,6 @@ use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 class AbstractServiceFactory implements AbstractFactoryInterface
 {
     /**
-     * @param ContainerInterface $container
-     * @param string $name
-     *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      *
@@ -45,13 +42,10 @@ class AbstractServiceFactory implements AbstractFactoryInterface
     /**
      * Can the factory create an instance for the service?
      *
-     * @param ContainerInterface $container
      * @param string $requestedName
      *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
-     *
-     * @return bool
      */
     public function canCreate(ContainerInterface $container, $requestedName): bool
     {
@@ -61,7 +55,6 @@ class AbstractServiceFactory implements AbstractFactoryInterface
     /**
      * Create an object.
      *
-     * @param ContainerInterface $container
      * @param string $requestedName
      * @param null|array<mixed> $options
      *

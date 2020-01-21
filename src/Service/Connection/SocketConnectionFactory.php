@@ -16,8 +16,6 @@ class SocketConnectionFactory implements ConnectionFactoryInterface
     /**
      * @codeCoverageIgnore
      *
-     * @param ConnectionOptions $options
-     *
      * @return AMQPSocketConnection
      */
     public function createConnection(ConnectionOptions $options): AbstractConnection

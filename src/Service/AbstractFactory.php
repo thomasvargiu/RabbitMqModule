@@ -23,17 +23,11 @@ abstract class AbstractFactory
      */
     protected $options;
 
-    /**
-     * @param string $name
-     */
     public function __construct(string $name)
     {
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
@@ -42,9 +36,6 @@ abstract class AbstractFactory
     /**
      * Gets options from configuration based on name.
      *
-     * @param ContainerInterface $container
-     * @param string $key
-     * @param null|string $name
      *
      * @throws RuntimeException
      *
@@ -75,7 +66,6 @@ abstract class AbstractFactory
     /**
      * Get the class name of the options associated with this factory.
      *
-     * @return string
      * @phpstan-return class-string<TOptionsClass>
      * @psalm-return class-string<TOptionsClass>
      */

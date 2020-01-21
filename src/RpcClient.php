@@ -36,12 +36,6 @@ class RpcClient extends BaseAmqp
     protected $serializer;
 
     /**
-     * @param mixed $body
-     * @param string $server
-     * @param mixed $requestId
-     * @param string $routingKey
-     * @param int $expiration
-     *
      * @throws \Laminas\Serializer\Exception\ExceptionInterface
      */
     public function addRequest($body, string $server, $requestId, string $routingKey = '', int $expiration = 0): void
@@ -65,9 +59,6 @@ class RpcClient extends BaseAmqp
         }
     }
 
-    /**
-     * @return string
-     */
     protected function getQueueName(): string
     {
         if (null === $this->queueName) {
@@ -96,8 +87,6 @@ class RpcClient extends BaseAmqp
     }
 
     /**
-     * @param AMQPMessage $message
-     *
      * @throws \Laminas\Serializer\Exception\ExceptionInterface
      */
     public function processMessage(AMQPMessage $message): void
@@ -109,17 +98,11 @@ class RpcClient extends BaseAmqp
         $this->replies[$message->get('correlation_id')] = $messageBody;
     }
 
-    /**
-     * @param SerializerInterface|null $serializer
-     */
     public function setSerializer(SerializerInterface $serializer = null): void
     {
         $this->serializer = $serializer;
     }
 
-    /**
-     * @return null|SerializerInterface
-     */
     public function getSerializer(): ?SerializerInterface
     {
         return $this->serializer;

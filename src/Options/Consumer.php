@@ -61,17 +61,11 @@ class Consumer extends AbstractOptions
      */
     protected $description = '';
 
-    /**
-     * @return string
-     */
     public function getConnection(): string
     {
         return $this->connection;
     }
 
-    /**
-     * @param string $connection
-     */
     public function setConnection(string $connection): void
     {
         $this->connection = $connection;
@@ -143,41 +137,26 @@ class Consumer extends AbstractOptions
         $this->callback = $callback;
     }
 
-    /**
-     * @return int
-     */
     public function getIdleTimeout(): int
     {
         return $this->idleTimeout;
     }
 
-    /**
-     * @param int $idleTimeout
-     */
     public function setIdleTimeout(int $idleTimeout): void
     {
         $this->idleTimeout = $idleTimeout;
     }
 
-    /**
-     * @return null|string
-     */
     public function getConsumerTag(): ?string
     {
         return $this->consumerTag;
     }
 
-    /**
-     * @param string $consumerTag
-     */
     public function setConsumerTag(string $consumerTag): void
     {
         $this->consumerTag = $consumerTag;
     }
 
-    /**
-     * @return null|Qos
-     */
     public function getQos(): ?Qos
     {
         return $this->qos;
@@ -199,25 +178,16 @@ class Consumer extends AbstractOptions
         $this->qos = $qos;
     }
 
-    /**
-     * @return bool
-     */
     public function isAutoSetupFabricEnabled(): bool
     {
         return $this->autoSetupFabricEnabled;
     }
 
-    /**
-     * @param bool $autoSetupFabricEnabled
-     */
     public function setAutoSetupFabricEnabled(bool $autoSetupFabricEnabled): void
     {
         $this->autoSetupFabricEnabled = $autoSetupFabricEnabled;
     }
 
-    /**
-     * @return bool
-     */
     public function isSignalsEnabled(): bool
     {
         return $this->signalsEnabled;
@@ -231,17 +201,11 @@ class Consumer extends AbstractOptions
         $this->signalsEnabled = $signalsEnabled;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     */
     public function setDescription(string $description): void
     {
         $this->description = $description;

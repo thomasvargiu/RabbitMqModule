@@ -8,10 +8,6 @@ class ServiceFactoryMock
 {
     /**
      * Create service.
-     *
-     * @param ContainerInterface $container
-     *
-     * @return mixed
      */
     public function __invoke(ContainerInterface $container)
     {

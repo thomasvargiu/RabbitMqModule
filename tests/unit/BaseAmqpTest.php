@@ -96,8 +96,6 @@ class BaseAmqpTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param bool $isEnabled
-     *
      * @dataProvider getDataProviderForAutoSetupFabricEnabled
      */
     public function testAutoSetupFabricEnabled(bool $isEnabled): void
@@ -120,9 +118,6 @@ class BaseAmqpTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param array $exchangeData
-     * @param array $queueData
-     *
      * @dataProvider getDataProviderForSetupFabric
      */
     public function testSetupFabricWithoutBinds(array $exchangeData, array $queueData): void

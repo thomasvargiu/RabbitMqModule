@@ -14,10 +14,6 @@ class SetupFabricControllerFactory
 {
     /**
      * Create an object.
-     *
-     * @param ContainerInterface $container
-     *
-     * @return Controller
      */
     public function __invoke(ContainerInterface $container): Controller
     {

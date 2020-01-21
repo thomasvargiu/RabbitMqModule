@@ -17,41 +17,27 @@ class Producer extends BaseAmqp implements ProducerInterface
     /** @var bool */
     private $alreadySetup = false;
 
-    /**
-     * @return string
-     */
     public function getContentType(): string
     {
         return $this->contentType;
     }
 
-    /**
-     * @param string $contentType
-     */
     public function setContentType(string $contentType): void
     {
         $this->contentType = $contentType;
     }
 
-    /**
-     * @return int
-     */
     public function getDeliveryMode(): int
     {
         return $this->deliveryMode;
     }
 
-    /**
-     * @param int $deliveryMode
-     */
     public function setDeliveryMode(int $deliveryMode): void
     {
         $this->deliveryMode = $deliveryMode;
     }
 
     /**
-     * @param string $body
-     * @param string $routingKey
      * @param array<string, mixed>  $properties
      */
     public function publish(string $body, string $routingKey = '', array $properties = []): void

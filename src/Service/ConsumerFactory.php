@@ -20,7 +20,6 @@ final class ConsumerFactory extends AbstractFactory
     /**
      * Get the class name of the options associated with this factory.
      *
-     * @return string
      * @phpstan-return class-string<Options>
      * @psalm-return class-string<Options>
      */
@@ -32,7 +31,6 @@ final class ConsumerFactory extends AbstractFactory
     /**
      * Create an object.
      *
-     * @param ContainerInterface $container
      *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
@@ -48,13 +46,8 @@ final class ConsumerFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface $container
-     * @param Options $options
-     *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
-     *
-     * @return Consumer
      */
     protected function createConsumer(ContainerInterface $container, Options $options): Consumer
     {

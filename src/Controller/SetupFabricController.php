@@ -64,8 +64,6 @@ class SetupFabricController extends AbstractConsoleController
     }
 
     /**
-     * @param string $service
-     *
      * @throws RuntimeException
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface

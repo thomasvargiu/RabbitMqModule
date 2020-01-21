@@ -24,9 +24,6 @@ class RpcClient extends AbstractOptions
      */
     protected $serializer;
 
-    /**
-     * @return string
-     */
     public function getConnection(): string
     {
         return $this->connection;
@@ -40,9 +37,6 @@ class RpcClient extends AbstractOptions
         $this->connection = $connection;
     }
 
-    /**
-     * @return SerializerInterface|null
-     */
     public function getSerializer(): ?SerializerInterface
     {
         return $this->serializer;

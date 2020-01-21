@@ -32,8 +32,6 @@ class Module implements
     }
 
     /**
-     * @param AdapterInterface $console
-     *
      * @return array<string, string>
      */
     public function getConsoleUsage(AdapterInterface $console): array
@@ -47,11 +45,6 @@ class Module implements
         ];
     }
 
-    /**
-     * @param AdapterInterface $console
-     *
-     * @return string
-     */
     public function getConsoleBanner(AdapterInterface $console): string
     {
         return 'RabbitMQ Module';

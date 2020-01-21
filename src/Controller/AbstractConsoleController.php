@@ -14,8 +14,6 @@ class AbstractConsoleController extends BaseController
 
     /**
      * ConsumerController constructor.
-     *
-     * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
     {

@@ -17,7 +17,6 @@ final class RpcClientFactory extends AbstractFactory
     /**
      * Get the class name of the options associated with this factory.
      *
-     * @return string
      * @phpstan-return class-string<Options>
      * @psalm-return class-string<Options>
      */
@@ -29,12 +28,9 @@ final class RpcClientFactory extends AbstractFactory
     /**
      * Create an object.
      *
-     * @param ContainerInterface $container
      *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
-     *
-     * @return RpcClient
      */
     public function __invoke(ContainerInterface $container): RpcClient
     {
@@ -45,13 +41,8 @@ final class RpcClientFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface $container
-     * @param Options $options
-     *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
-     *
-     * @return RpcClient
      */
     protected function createClient(ContainerInterface $container, Options $options): RpcClient
     {
