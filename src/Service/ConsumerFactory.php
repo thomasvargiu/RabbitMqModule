@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Service;
 
+use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use RabbitMqModule\Consumer;
 use RabbitMqModule\ConsumerInterface;
 use RabbitMqModule\Options\Consumer as Options;
-use InvalidArgumentException;
 
 class ConsumerFactory extends AbstractFactory
 {
@@ -27,10 +27,10 @@ class ConsumerFactory extends AbstractFactory
      *
      * @param ContainerInterface $container
      *
-     * @return Consumer
-     *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
+     *
+     * @return Consumer
      */
     public function __invoke(ContainerInterface $container)
     {
@@ -44,9 +44,10 @@ class ConsumerFactory extends AbstractFactory
      * @param ContainerInterface $container
      * @param Options $options
      *
-     * @return Consumer
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
+     *
+     * @return Consumer
      */
     protected function createConsumer(ContainerInterface $container, Options $options): Consumer
     {

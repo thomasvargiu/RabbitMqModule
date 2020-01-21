@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Controller;
 
-use PhpAmqpLib\Exception\AMQPTimeoutException;
 use Laminas\Console\ColorInterface;
+use PhpAmqpLib\Exception\AMQPTimeoutException;
 use RabbitMqModule\Consumer;
 
 /**
@@ -29,7 +29,7 @@ class ConsumerController extends AbstractConsoleController
 
         $serviceName = sprintf('rabbitmq.consumer.%s', $this->params('name'));
 
-        if (!$this->container->has($serviceName)) {
+        if (! $this->container->has($serviceName)) {
             $this->getConsole()->writeLine(
                 sprintf('No consumer with name "%s" found', $this->params('name')),
                 ColorInterface::RED
@@ -41,14 +41,14 @@ class ConsumerController extends AbstractConsoleController
 
         /* @var \RabbitMqModule\Consumer $consumer */
         $this->consumer = $this->container->get($serviceName);
-        $this->consumer->setSignalsEnabled(!$withoutSignals);
+        $this->consumer->setSignalsEnabled(! $withoutSignals);
 
         if ($withoutSignals) {
             define('AMQP_WITHOUT_SIGNALS', true);
         }
 
         // @codeCoverageIgnoreStart
-        if (!$withoutSignals && \extension_loaded('pcntl')) {
+        if (! $withoutSignals && \extension_loaded('pcntl')) {
             if (! \function_exists('pcntl_signal')) {
                 throw new \BadFunctionCallException(
                     'Function \'pcntl_signal\' is referenced in the php.ini \'disable_functions\' and can\'t be called.'
@@ -73,13 +73,13 @@ class ConsumerController extends AbstractConsoleController
         /** @var array $config */
         $config = $this->container->get('Configuration');
 
-        if (!array_key_exists('rabbitmq', $config) || !array_key_exists('consumer', $config['rabbitmq'])) {
+        if (! array_key_exists('rabbitmq', $config) || ! array_key_exists('consumer', $config['rabbitmq'])) {
             return 'No \'rabbitmq.consumer\' configuration key found!';
         }
 
         $consumers = $config['rabbitmq']['consumer'];
 
-        if (!is_array($consumers) || count($consumers) === 0) {
+        if (! is_array($consumers) || count($consumers) === 0) {
             return 'No consumers defined!';
         }
 

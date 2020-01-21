@@ -20,7 +20,7 @@ class RpcServerController extends AbstractConsoleController
 
         $serviceName = sprintf('rabbitmq.rpc_server.%s', $this->params('name'));
 
-        if (!$this->container->has($serviceName)) {
+        if (! $this->container->has($serviceName)) {
             $this->getConsole()->writeLine(
                 sprintf('No rpc server with name "%s" found', $this->params('name')),
                 ColorInterface::RED

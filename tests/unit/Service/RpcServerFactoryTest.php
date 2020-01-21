@@ -18,7 +18,6 @@ class RpcServerFactoryTest extends \PHPUnit\Framework\TestCase
                         'foo' => [
                             'connection' => 'foo',
                             'exchange' => [
-
                             ],
                             'queue' => [
                                 'name' => 'bar',
@@ -86,7 +85,6 @@ class RpcServerFactoryTest extends \PHPUnit\Framework\TestCase
                         'foo' => [
                             'connection' => 'foo',
                             'exchange' => [
-
                             ],
                             'queue' => [
                                 'name' => 'bar',

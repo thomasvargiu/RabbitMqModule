@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Options;
 
-use Laminas\Serializer\Serializer;
 use Laminas\Serializer\Adapter\AdapterInterface as SerializerInterface;
+use Laminas\Serializer\Serializer;
 
 class RpcServer extends Consumer
 {
@@ -39,7 +39,7 @@ class RpcServer extends Consumer
         } elseif (\is_string($serializer)) {
             $serializer = Serializer::factory($serializer);
         }
-        if (null !== $serializer && !$serializer instanceof SerializerInterface) {
+        if (null !== $serializer && ! $serializer instanceof SerializerInterface) {
             throw new \InvalidArgumentException('Invalid serializer instance or options');
         }
         $this->serializer = $serializer;

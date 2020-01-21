@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Service;
 
-use Psr\Container\ContainerInterface;
 use InvalidArgumentException;
+use Psr\Container\ContainerInterface;
+use RabbitMqModule\Options\Connection as ConnectionOptions;
 use RabbitMqModule\Service\Connection\ConnectionFactoryInterface;
 use RuntimeException;
-use RabbitMqModule\Options\Connection as ConnectionOptions;
 
 class ConnectionFactory extends AbstractFactory
 {
@@ -59,10 +59,10 @@ class ConnectionFactory extends AbstractFactory
      * @param string $requestedName
      * @param null|array $options
      *
-     * @return object
-     *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
+     *
+     * @return object
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
@@ -77,21 +77,21 @@ class ConnectionFactory extends AbstractFactory
      * @param ContainerInterface $container
      * @param string $type
      *
-     * @return ConnectionFactoryInterface
-     *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
+     *
+     * @return ConnectionFactoryInterface
      */
     protected function getFactory(ContainerInterface $container, $type)
     {
         $map = $this->getFactoryMap();
-        if (!array_key_exists($type, $map)) {
+        if (! array_key_exists($type, $map)) {
             throw new InvalidArgumentException(sprintf('Options type "%s" not valid', $type));
         }
 
         $className = $map[$type];
         $factory = $container->get($className);
-        if (!$factory instanceof ConnectionFactoryInterface) {
+        if (! $factory instanceof ConnectionFactoryInterface) {
             throw new RuntimeException(
                 sprintf('Factory for type "%s" must be an instance of ConnectionFactoryInterface', $type)
             );

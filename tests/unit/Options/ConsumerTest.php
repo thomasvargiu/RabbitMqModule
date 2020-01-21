@@ -17,7 +17,6 @@ class ConsumerTest extends \PHPUnit\Framework\TestCase
             'callback' => 'callback-name',
             'idle_timeout' => 6,
             'qos' => [
-
             ],
             'auto_setup_fabric_enabled' => false,
             'consumer_tag' => 'test-tag',

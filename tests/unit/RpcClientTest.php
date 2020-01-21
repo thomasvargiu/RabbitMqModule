@@ -2,8 +2,8 @@
 
 namespace RabbitMqModule;
 
-use PhpAmqpLib\Message\AMQPMessage;
 use Laminas\Serializer\Serializer;
+use PhpAmqpLib\Message\AMQPMessage;
 
 class RpcClientTest extends \PHPUnit\Framework\TestCase
 {

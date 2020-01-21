@@ -20,7 +20,7 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "psr/container": "^1.0",
         "container-interop/container-interop": "^1.2",
         "php-amqplib/php-amqplib": "^2.7",
@@ -30,15 +30,19 @@
         "laminas/laminas-mvc": "^3.0.3",
         "laminas/laminas-mvc-console": "^1.1.11",
         "laminas/laminas-console": "^2.6",
-        "laminas/laminas-serializer": "^2.6.1",
-        "laminas/laminas-dependency-plugin": "^1.0"
+        "laminas/laminas-serializer": "^2.6.1"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.0 || ^7.0",
         "laminas/laminas-test": "^3.1",
         "laminas/laminas-log": "^2.7",
         "laminas/laminas-i18n": "^2.6",
-        "laminas/laminas-http": "^2.5.5"
+        "laminas/laminas-http": "^2.5.5",
+        "friendsofphp/php-cs-fixer": "^2.9",
+        "phpstan/extension-installer": "^1.0",
+        "phpstan/phpstan": "^0.12.7",
+        "phpstan/phpstan-phpunit": "^0.12.6",
+        "jangregor/phpstan-prophecy": "^0.6.0"
     },
     "autoload": {
         "psr-4": {
@@ -58,21 +62,16 @@
     "scripts": {
         "test": [
             "@phpunit",
-            "@phpcs"
+            "@cs-check"
         ],
         "ci-test": [
             "@ci-phpunit",
-            "@phpcs"
+            "@cs-check"
         ],
+        "phpstan": "phpstan analyze .",
         "phpunit": "phpunit",
         "ci-phpunit": "phpunit --coverage-clover=coverage.clover",
-        "phpcs": [
-            "php-cs-fixer fix -v --diff --dry-run src/",
-            "php-cs-fixer fix -v --diff --dry-run tests/"
-        ],
-        "phpcs-fix": [
-            "php-cs-fixer fix -v --diff src/",
-            "php-cs-fixer fix -v --diff tests/"
-        ]
+        "cs-check": "php-cs-fixer fix --dry-run --diff",
+        "cs-fix": "php-cs-fixer fix --diff"
     }
 }

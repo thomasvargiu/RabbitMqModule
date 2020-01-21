@@ -2,9 +2,9 @@
 
 namespace RabbitMqModule;
 
+use RabbitMqModule\Options\Exchange as ExchangeOptions;
 use RabbitMqModule\Options\ExchangeBind;
 use RabbitMqModule\Options\Queue as QueueOptions;
-use RabbitMqModule\Options\Exchange as ExchangeOptions;
 
 class ConsumerTest extends \PHPUnit\Framework\TestCase
 {

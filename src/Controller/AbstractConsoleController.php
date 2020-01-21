@@ -2,8 +2,8 @@
 
 namespace RabbitMqModule\Controller;
 
-use Psr\Container\ContainerInterface;
 use Laminas\Mvc\Console\Controller\AbstractConsoleController as BaseController;
+use Psr\Container\ContainerInterface;
 
 class AbstractConsoleController extends BaseController
 {

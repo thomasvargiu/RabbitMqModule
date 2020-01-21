@@ -9,17 +9,10 @@ cache:
 env:
   global:
     - COMPOSER_ARGS="--no-interaction"
-    - CS_CHECK_DEPS="friendsofphp/php-cs-fixer:^2.9"
 
 matrix:
   fast_finish: true
   include:
-    - php: 7.1
-      env:
-        - DEPS=lowest
-    - php: 7.1
-      env:
-        - DEPS=latest
     - php: 7.2
       env:
         - DEPS=lowest
@@ -37,6 +30,12 @@ matrix:
     - php: 7.3
       env:
       - DEPS=latest
+    - php: 7.4
+      env:
+        - DEPS=lowest
+    - php: 7.4
+      env:
+        - DEPS=latest
 
 before_install:
   - if [[ $EXECUTE_TEST_SCRUTINIZER != 'true' ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
@@ -46,13 +45,12 @@ install:
   - travis_retry composer install $COMPOSER_ARGS
   - if [[ "$DEPS" == 'latest' ]]; then travis_retry composer update $COMPOSER_ARGS ; fi
   - if [[ "$DEPS" == 'lowest' ]]; then travis_retry composer update --prefer-lowest --prefer-stable $COMPOSER_ARGS ; fi
-  - if [[ "$EXECUTE_TEST_SCRUTINIZER" == 'true' ]]; then composer require --dev $COMPOSER_ARGS $CS_CHECK_DEPS; fi
   - stty cols 120 && composer show
 
 script:
   - if [[ "$EXECUTE_TEST_SCRUTINIZER" == 'true' ]]; then ./vendor/bin/phpunit --coverage-clover coverage.clover ; fi
   - if [[ "$EXECUTE_TEST_SCRUTINIZER" != 'true' ]]; then ./vendor/bin/phpunit ; fi
-  - if [[ "$EXECUTE_CS_CHECK" == 'true' ]]; then ./vendor/bin/php-cs-fixer fix -v --diff --dry-run . ; fi
+  - if [[ "$EXECUTE_CS_CHECK" == 'true' ]]; then composer cs-check ; fi
 
 after_script:
   - if [[ "$EXECUTE_TEST_SCRUTINIZER" == 'true' ]]; then wget https://scrutinizer-ci.com/ocular.phar ; fi

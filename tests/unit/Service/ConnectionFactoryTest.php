@@ -2,10 +2,10 @@
 
 namespace RabbitMqModule\Service;
 
+use Laminas\ServiceManager\ServiceManager;
 use PhpAmqpLib\Connection\AbstractConnection;
 use Prophecy\Argument;
 use RabbitMqModule\Service\Connection\ConnectionFactoryInterface;
-use Laminas\ServiceManager\ServiceManager;
 
 class ConnectionFactoryTest extends \PHPUnit\Framework\TestCase
 {

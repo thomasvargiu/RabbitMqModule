@@ -2,8 +2,8 @@
 
 namespace RabbitMqModule\Service;
 
-use PHPUnit\Framework\TestCase;
 use Laminas\ServiceManager\ServiceManager;
+use PHPUnit\Framework\TestCase;
 
 class AbstractServiceFactoryTest extends TestCase
 {
@@ -32,11 +32,9 @@ class AbstractServiceFactoryTest extends TestCase
                     ],
                     'foo' => [
                         'bar' => [
-
                         ],
                         'ab3_-' => [
-
-                        ]
+                        ],
                     ],
                 ],
                 'rabbitmq_factories' => [

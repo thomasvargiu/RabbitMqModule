@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Service;
 
+use Laminas\Stdlib\AbstractOptions;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
-use Laminas\Stdlib\AbstractOptions;
 
 abstract class AbstractFactory
 {
@@ -43,8 +43,9 @@ abstract class AbstractFactory
      * @param string $key
      * @param null|string $name
      *
-     * @return \ArrayObject
      * @throws RuntimeException
+     *
+     * @return \ArrayObject
      */
     public function getOptions(ContainerInterface $container, string $key, ?string $name = null)
     {

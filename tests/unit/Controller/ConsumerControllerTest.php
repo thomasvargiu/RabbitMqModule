@@ -8,7 +8,7 @@ class ConsumerControllerTest extends AbstractConsoleControllerTestCase
 {
     protected function setUp()
     {
-        $config = include __DIR__.'/../../TestConfiguration.php';
+        $config = include __DIR__ . '/../../TestConfiguration.php';
         $this->setApplicationConfig($config);
         parent::setUp();
     }
@@ -64,7 +64,7 @@ class ConsumerControllerTest extends AbstractConsoleControllerTestCase
 
         $stub = $this->getMockBuilder('RabbitMqModule\\Controller\\ConsumerController')
             ->setConstructorArgs([$container])
-            ->setMethods(array('callExit'))
+            ->setMethods(['callExit'])
             ->getMock();
 
         $stub->expects(static::once())

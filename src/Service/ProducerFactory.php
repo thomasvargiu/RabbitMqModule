@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Service;
 
-use Psr\Container\ContainerInterface;
 use PhpAmqpLib\Connection\AbstractConnection;
-use RabbitMqModule\Producer;
+use Psr\Container\ContainerInterface;
 use RabbitMqModule\Options\Producer as Options;
+use RabbitMqModule\Producer;
 
 class ProducerFactory extends AbstractFactory
 {
@@ -26,10 +26,10 @@ class ProducerFactory extends AbstractFactory
      *
      * @param ContainerInterface $container
      *
-     * @return Producer
-     *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
+     *
+     * @return Producer
      */
     public function __invoke(ContainerInterface $container)
     {
@@ -43,10 +43,10 @@ class ProducerFactory extends AbstractFactory
      * @param ContainerInterface $container
      * @param Options $options
      *
-     * @return Producer
-     *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
+     *
+     * @return Producer
      */
     protected function createProducer(ContainerInterface $container, Options $options): Producer
     {

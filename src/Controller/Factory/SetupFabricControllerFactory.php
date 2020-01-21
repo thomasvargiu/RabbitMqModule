@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Controller\Factory;
 
-use RabbitMqModule\Controller\SetupFabricController as Controller;
 use Psr\Container\ContainerInterface;
+use RabbitMqModule\Controller\SetupFabricController as Controller;
 
 /**
  * Class SetupFabricControllerFactory.

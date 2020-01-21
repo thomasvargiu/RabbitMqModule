@@ -12,38 +12,47 @@ class Queue extends AbstractOptions
      * @var null|string
      */
     protected $name;
+
     /**
      * @var null|string
      */
     protected $type;
+
     /**
      * @var bool
      */
     protected $passive = false;
+
     /**
      * @var bool
      */
     protected $durable = true;
+
     /**
      * @var bool
      */
     protected $autoDelete = false;
+
     /**
      * @var bool
      */
     protected $exclusive = false;
+
     /**
      * @var bool
      */
     protected $noWait = false;
+
     /**
      * @var array
      */
     protected $arguments = [];
+
     /**
      * @var int
      */
     protected $ticket = 0;
+
     /**
      * @var array
      */
@@ -180,7 +189,7 @@ class Queue extends AbstractOptions
     /**
      * @return int
      */
-    public function getTicket():int
+    public function getTicket(): int
     {
         return $this->ticket;
     }

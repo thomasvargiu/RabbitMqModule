@@ -12,12 +12,13 @@ class Producer extends BaseAmqp implements ProducerInterface
      * @var string
      */
     protected $contentType = 'text/plain';
+
     /**
      * @var int
      */
     protected $deliveryMode = 2;
 
-    /** @var bool  */
+    /** @var bool */
     private $alreadySetup = false;
 
     /**
@@ -71,7 +72,7 @@ class Producer extends BaseAmqp implements ProducerInterface
 
         if (false === $this->alreadySetup && $this->isAutoSetupFabricEnabled()) {
             $this->setupFabric();
-            $this->alreadySetup  = true;
+            $this->alreadySetup = true;
         }
 
         $this->getChannel()->basic_publish(

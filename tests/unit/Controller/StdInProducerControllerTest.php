@@ -8,7 +8,7 @@ class StdInProducerControllerTest extends AbstractConsoleControllerTestCase
 {
     protected function setUp()
     {
-        $config = include __DIR__.'/../../TestConfiguration.php';
+        $config = include __DIR__ . '/../../TestConfiguration.php';
         $this->setApplicationConfig($config);
         parent::setUp();
     }

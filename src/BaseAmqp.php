@@ -6,7 +6,6 @@ namespace RabbitMqModule;
 
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AbstractConnection;
-use PhpAmqpLib\Exception\AMQPChannelClosedException;
 use RabbitMqModule\Options\Exchange as ExchangeOptions;
 use RabbitMqModule\Options\Queue as QueueOptions;
 use RabbitMqModule\Service\SetupFabricAwareInterface;
@@ -17,26 +16,32 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
      * @var AbstractConnection
      */
     protected $connection;
+
     /**
      * @var AMQPChannel
      */
     private $channel;
+
     /**
      * @var QueueOptions
      */
     protected $queueOptions;
+
     /**
      * @var ExchangeOptions
      */
     protected $exchangeOptions;
+
     /**
      * @var bool
      */
     protected $autoSetupFabricEnabled = true;
+
     /**
      * @var bool
      */
     protected $exchangeDeclared = false;
+
     /**
      * @var bool
      */
@@ -65,7 +70,7 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
      */
     public function getChannel(): AMQPChannel
     {
-        if (!$this->channel) {
+        if (! $this->channel) {
             $this->channel = $this->getConnection()->channel();
         }
 
@@ -181,7 +186,7 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
     {
         $queueOptions = $this->getQueueOptions();
 
-        if (!$queueOptions || null === $queueOptions->getName()) {
+        if (! $queueOptions || null === $queueOptions->getName()) {
             return;
         }
 
@@ -218,13 +223,13 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
      */
     public function setupFabric(): void
     {
-        if (!$this->exchangeDeclared) {
+        if (! $this->exchangeDeclared) {
             $this->declareExchange();
         }
 
         $queueOptions = $this->getQueueOptions();
 
-        if (!$this->queueDeclared && $queueOptions) {
+        if (! $this->queueDeclared && $queueOptions) {
             $this->declareQueue();
         }
     }
@@ -234,7 +239,7 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
      */
     public function reconnect(): void
     {
-        if (!$this->getConnection()->isConnected()) {
+        if (! $this->getConnection()->isConnected()) {
             return;
         }
 

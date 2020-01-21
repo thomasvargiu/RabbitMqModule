@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace RabbitMqModule\Service;
 
 use Interop\Container\ContainerInterface;
-use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 
 class AbstractServiceFactory implements AbstractFactoryInterface
 {
@@ -14,15 +14,16 @@ class AbstractServiceFactory implements AbstractFactoryInterface
      * @param ContainerInterface $container
      * @param string $name
      *
-     * @return bool|array
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
+     *
+     * @return bool|array
      */
     private function getFactoryMapping(ContainerInterface $container, string $name)
     {
         $matches = [];
 
-        if (!preg_match('/^rabbitmq\.(?P<serviceType>[a-z0-9_]+)\.(?P<serviceName>[a-z0-9_-]+)$/', $name, $matches)) {
+        if (! preg_match('/^rabbitmq\.(?P<serviceType>[a-z0-9_]+)\.(?P<serviceName>[a-z0-9_-]+)$/', $name, $matches)) {
             return false;
         }
 
@@ -30,7 +31,7 @@ class AbstractServiceFactory implements AbstractFactoryInterface
         $serviceType = $matches['serviceType'];
         $serviceName = $matches['serviceName'];
 
-        if (!isset($config['rabbitmq_factories'][$serviceType], $config['rabbitmq'][$serviceType][$serviceName])) {
+        if (! isset($config['rabbitmq_factories'][$serviceType], $config['rabbitmq'][$serviceType][$serviceName])) {
             return false;
         }
 
@@ -47,9 +48,10 @@ class AbstractServiceFactory implements AbstractFactoryInterface
      * @param ContainerInterface $container
      * @param string $requestedName
      *
-     * @return bool
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
+     *
+     * @return bool
      */
     public function canCreate(ContainerInterface $container, $requestedName): bool
     {
@@ -63,15 +65,16 @@ class AbstractServiceFactory implements AbstractFactoryInterface
      * @param string $requestedName
      * @param null|array $options
      *
-     * @return object
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
+     *
+     * @return object
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         $mappings = $this->getFactoryMapping($container, $requestedName);
 
-        if (!$mappings) {
+        if (! $mappings) {
             throw new ServiceNotFoundException();
         }
 

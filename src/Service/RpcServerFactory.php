@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Service;
 
+use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use RabbitMqModule\ConsumerInterface;
-use RabbitMqModule\RpcServer;
 use RabbitMqModule\Options\RpcServer as Options;
-use InvalidArgumentException;
+use RabbitMqModule\RpcServer;
 
 class RpcServerFactory extends AbstractFactory
 {
@@ -27,10 +27,10 @@ class RpcServerFactory extends AbstractFactory
      *
      * @param ContainerInterface $container
      *
-     * @return object
-     *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
+     *
+     * @return object
      */
     public function __invoke(ContainerInterface $container)
     {
@@ -44,9 +44,10 @@ class RpcServerFactory extends AbstractFactory
      * @param ContainerInterface $container
      * @param Options $options
      *
-     * @return RpcServer
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
+     *
+     * @return RpcServer
      */
     protected function createServer(ContainerInterface $container, Options $options): RpcServer
     {

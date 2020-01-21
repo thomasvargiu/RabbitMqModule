@@ -12,18 +12,22 @@ class Producer extends AbstractOptions
      * @var string
      */
     protected $connection = 'default';
+
     /**
      * @var Exchange
      */
     protected $exchange;
+
     /**
      * @var Queue
      */
     protected $queue;
+
     /**
      * @var string
      */
     protected $class = \RabbitMqModule\Producer::class;
+
     /**
      * @var bool
      */
@@ -63,7 +67,7 @@ class Producer extends AbstractOptions
         if (is_array($exchange)) {
             $exchange = new Exchange($exchange);
         }
-        if (!$exchange instanceof Exchange) {
+        if (! $exchange instanceof Exchange) {
             throw new \InvalidArgumentException(
                 'Parameter "exchange" should be array or an instance of Exchange options'
             );
@@ -89,7 +93,7 @@ class Producer extends AbstractOptions
         if (\is_array($queue)) {
             $queue = new Queue($queue);
         }
-        if (!$queue instanceof Queue) {
+        if (! $queue instanceof Queue) {
             throw new \InvalidArgumentException(
                 'Parameter "queue" should be array or an instance of Queue options'
             );

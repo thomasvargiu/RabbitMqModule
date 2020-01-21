@@ -12,42 +12,52 @@ class Exchange extends AbstractOptions
      * @var null|string
      */
     protected $name;
+
     /**
      * @var null|string
      */
     protected $type;
+
     /**
      * @var bool
      */
     protected $passive = false;
+
     /**
      * @var bool
      */
     protected $durable = true;
+
     /**
      * @var bool
      */
     protected $autoDelete = false;
+
     /**
      * @var bool
      */
     protected $internal = false;
+
     /**
      * @var bool
      */
     protected $noWait = false;
+
     /**
      * @var bool
      */
     protected $declare = true;
+
     /**
      * @var array
      */
     protected $arguments = [];
+
     /**
      * @var int
      */
     protected $ticket = 0;
+
     /**
      * @var ExchangeBind[]
      */
@@ -234,6 +244,7 @@ class Exchange extends AbstractOptions
 
     /**
      * @param array|ExchangeBind $bind
+     *
      * @throws \InvalidArgumentException
      */
     public function addExchangeBind($bind): void
@@ -241,7 +252,7 @@ class Exchange extends AbstractOptions
         if (is_array($bind)) {
             $bind = new ExchangeBind($bind);
         }
-        if (!$bind instanceof ExchangeBind) {
+        if (! $bind instanceof ExchangeBind) {
             throw new \InvalidArgumentException('Invalid exchange bind options');
         }
         $this->exchangeBinds[] = $bind;

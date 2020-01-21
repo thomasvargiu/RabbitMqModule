@@ -13,38 +13,47 @@ class Consumer extends AbstractOptions
      * @var string
      */
     protected $connection = 'default';
+
     /**
      * @var null|Exchange
      */
     protected $exchange;
+
     /**
      * @var null|Queue
      */
     protected $queue;
+
     /**
      * @var null|string|callable
      */
     protected $callback;
+
     /**
      * @var int
      */
     protected $idleTimeout = 0;
+
     /**
      * @var null|string
      */
     protected $consumerTag;
+
     /**
      * @var null|Qos
      */
     protected $qos;
+
     /**
      * @var bool
      */
     protected $autoSetupFabricEnabled = true;
+
     /**
      * @var bool
      */
     protected $signalsEnabled = true;
+
     /**
      * @var string
      */
@@ -102,6 +111,7 @@ class Consumer extends AbstractOptions
 
     /**
      * @param array|Queue $queue
+     *
      * @throws \InvalidArgumentException
      */
     public function setQueue($queue): void
@@ -173,6 +183,7 @@ class Consumer extends AbstractOptions
 
     /**
      * @param array|Qos $qos
+     *
      * @throws InvalidArgumentException
      */
     public function setQos($qos): void

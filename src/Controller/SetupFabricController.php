@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Controller;
 
-use RabbitMqModule\Service\SetupFabricAwareInterface;
 use Laminas\Console\ColorInterface;
+use RabbitMqModule\Service\SetupFabricAwareInterface;
 
 /**
  * Class SetupFabricController
@@ -36,9 +36,10 @@ class SetupFabricController extends AbstractConsoleController
     }
 
     /**
-     * @return array
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
+     *
+     * @return array
      */
     protected function getServiceParts(): array
     {
@@ -61,16 +62,18 @@ class SetupFabricController extends AbstractConsoleController
 
     /**
      * @param $service
-     * @return array
+     *
      * @throws \RuntimeException
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
+     *
+     * @return array
      */
     protected function getServiceKeys($service): array
     {
         /** @var array $config */
         $config = $this->container->get('Configuration');
-        if (!isset($config['rabbitmq'][$service])) {
+        if (! isset($config['rabbitmq'][$service])) {
             throw new \RuntimeException(sprintf('No service "rabbitmq.%s" found in configuration', $service));
         }
 

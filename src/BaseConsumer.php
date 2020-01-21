@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace RabbitMqModule;
 
-use PhpAmqpLib\Message\AMQPMessage;
 use Laminas\EventManager\EventManagerAwareInterface;
 use Laminas\EventManager\EventManagerAwareTrait;
+use PhpAmqpLib\Message\AMQPMessage;
 
 abstract class BaseConsumer extends BaseAmqp implements EventManagerAwareInterface
 {
@@ -16,18 +16,22 @@ abstract class BaseConsumer extends BaseAmqp implements EventManagerAwareInterfa
      * @var null|string
      */
     protected $consumerTag;
+
     /**
      * @var callable
      */
     protected $callback;
+
     /**
      * @var bool
      */
     protected $forceStop = false;
+
     /**
      * @var int
      */
     protected $idleTimeout = 0;
+
     /**
      * @var bool
      */
@@ -149,7 +153,7 @@ abstract class BaseConsumer extends BaseAmqp implements EventManagerAwareInterfa
         if (\extension_loaded('pcntl') && $this->isSignalsEnabled()) {
             if (! \function_exists('pcntl_signal_dispatch')) {
                 throw new \BadFunctionCallException(
-                    'Function \'pcntl_signal_dispatch\' is referenced in the php.ini'.
+                    'Function \'pcntl_signal_dispatch\' is referenced in the php.ini' .
                     '\'disable_functions\' and can\'t be called.'
                 );
             }

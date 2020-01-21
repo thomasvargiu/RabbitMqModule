@@ -18,7 +18,6 @@ class ConsumerFactoryTest extends \PHPUnit\Framework\TestCase
                         'foo' => [
                             'connection' => 'foo',
                             'exchange' => [
-
                             ],
                             'queue' => [
                                 'name' => 'bar',
@@ -84,7 +83,6 @@ class ConsumerFactoryTest extends \PHPUnit\Framework\TestCase
                         'foo' => [
                             'connection' => 'foo',
                             'exchange' => [
-
                             ],
                             'queue' => [
                                 'name' => 'bar',

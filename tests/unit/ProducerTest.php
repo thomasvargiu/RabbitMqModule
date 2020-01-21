@@ -3,8 +3,8 @@
 namespace RabbitMqModule;
 
 use PhpAmqpLib\Message\AMQPMessage;
-use RabbitMqModule\Options\Queue as QueueOptions;
 use RabbitMqModule\Options\Exchange as ExchangeOptions;
+use RabbitMqModule\Options\Queue as QueueOptions;
 
 class ProducerTest extends \PHPUnit\Framework\TestCase
 {

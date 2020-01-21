@@ -12,6 +12,7 @@ class ExchangeBind extends AbstractOptions
      * @var Exchange
      */
     protected $exchange;
+
     /**
      * @var array
      */

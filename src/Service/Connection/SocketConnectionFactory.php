@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace RabbitMqModule\Service\Connection;
 
 use PhpAmqpLib\Connection\AbstractConnection;
-use RabbitMqModule\Options\Connection as ConnectionOptions;
 use PhpAmqpLib\Connection\AMQPSocketConnection;
+use RabbitMqModule\Options\Connection as ConnectionOptions;
 
 /**
  * Class SocketConnectionFactory.

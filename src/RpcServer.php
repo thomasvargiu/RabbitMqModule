@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace RabbitMqModule;
 
-use PhpAmqpLib\Message\AMQPMessage;
 use Laminas\Serializer\Adapter\AdapterInterface as SerializerInterface;
+use PhpAmqpLib\Message\AMQPMessage;
 
 class RpcServer extends Consumer
 {
@@ -16,6 +16,7 @@ class RpcServer extends Consumer
 
     /**
      * @param AMQPMessage $message
+     *
      * @throws \Laminas\Serializer\Exception\ExceptionInterface
      */
     public function processMessage(AMQPMessage $message): void
