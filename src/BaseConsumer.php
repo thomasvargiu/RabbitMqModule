@@ -16,29 +16,19 @@ abstract class BaseConsumer extends BaseAmqp implements EventManagerAwareInterfa
 {
     use EventManagerAwareTrait;
 
-    /**
-     * @var null|string
-     */
+    /** @var null|string */
     protected $consumerTag;
 
-    /**
-     * @var callable
-     */
+    /** @var callable */
     protected $callback;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $forceStop = false;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $idleTimeout = 0;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $signalsEnabled = true;
 
     public function isSignalsEnabled(): bool

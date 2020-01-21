@@ -14,14 +14,10 @@ use Laminas\Stdlib\AbstractOptions;
 
 class RpcClient extends AbstractOptions
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $connection = 'default';
 
-    /**
-     * @var SerializerInterface|null
-     */
+    /** @var SerializerInterface|null */
     protected $serializer;
 
     public function getConnection(): string

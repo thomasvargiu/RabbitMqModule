@@ -18,9 +18,7 @@ use RabbitMqModule\Consumer;
  */
 class ConsumerController extends AbstractConsoleController
 {
-    /**
-     * @var Consumer
-     */
+    /** @var Consumer */
     protected $consumer;
 
     public function indexAction(): Response
@@ -135,7 +133,6 @@ class ConsumerController extends AbstractConsoleController
     }
 
     /**
-     * @param int $code
      * @codeCoverageIgnore
      */
     protected function callExit(int $code): void

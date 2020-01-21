@@ -7,9 +7,7 @@ use Psr\Container\ContainerInterface;
 
 class AbstractConsoleController extends BaseController
 {
-    /**
-     * @var ContainerInterface
-     */
+    /** @var ContainerInterface */
     protected $container;
 
     /**

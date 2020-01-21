@@ -13,14 +13,10 @@ use RuntimeException;
  */
 abstract class AbstractFactory
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $name;
 
-    /**
-     * @var AbstractOptions
-     */
+    /** @var AbstractOptions */
     protected $options;
 
     public function __construct(string $name)

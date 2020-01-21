@@ -8,9 +8,7 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class AbstractServiceFactoryTest extends TestCase
 {
-    /**
-     * @var \Interop\Container\ContainerInterface
-     */
+    /** @var \Interop\Container\ContainerInterface */
     protected $serviceManager;
 
     /**

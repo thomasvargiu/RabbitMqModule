@@ -13,9 +13,7 @@ use Laminas\Serializer\Serializer;
 
 class RpcServer extends Consumer
 {
-    /**
-     * @var SerializerInterface|null
-     */
+    /** @var SerializerInterface|null */
     protected $serializer;
 
     public function getSerializer(): ?SerializerInterface

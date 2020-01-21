@@ -8,74 +8,46 @@ use Laminas\Stdlib\AbstractOptions;
 
 class Connection extends AbstractOptions
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $type = 'stream';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $host = 'localhost';
 
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $port = 5672;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $username = 'guest';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $password = 'guest';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $vhost = '/';
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $insist = false;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $loginMethod = 'AMQPLAIN';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $locale = 'en_US';
 
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $readWriteTimeout = 3;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $keepAlive = false;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $connectionTimeout = 3;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $heartbeat = 0;
 
-    /**
-     * @var array<string, mixed>
-     */
+    /** @var array<string, mixed> */
     protected $sslOptions = [];
 
     public function getType(): string

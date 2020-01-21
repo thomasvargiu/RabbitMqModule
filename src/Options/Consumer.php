@@ -11,54 +11,34 @@ use RabbitMqModule\ConsumerInterface;
 
 class Consumer extends AbstractOptions
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $connection = 'default';
 
-    /**
-     * @var null|Exchange
-     */
+    /** @var null|Exchange */
     protected $exchange;
 
-    /**
-     * @var null|Queue
-     */
+    /** @var null|Queue */
     protected $queue;
 
-    /**
-     * @var null|string|ConsumerInterface|callable(\PhpAmqpLib\Message\AMQPMessage): int|null
-     */
+    /** @var null|string|ConsumerInterface|callable(\PhpAmqpLib\Message\AMQPMessage): int|null */
     protected $callback;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $idleTimeout = 0;
 
-    /**
-     * @var null|string
-     */
+    /** @var null|string */
     protected $consumerTag;
 
-    /**
-     * @var null|Qos
-     */
+    /** @var null|Qos */
     protected $qos;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $autoSetupFabricEnabled = true;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $signalsEnabled = true;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $description = '';
 
     public function getConnection(): string

@@ -14,39 +14,25 @@ use RabbitMqModule\Service\SetupFabricAwareInterface;
 
 abstract class BaseAmqp implements SetupFabricAwareInterface
 {
-    /**
-     * @var AbstractConnection
-     */
+    /** @var AbstractConnection */
     protected $connection;
 
-    /**
-     * @var AMQPChannel|null
-     */
+    /** @var AMQPChannel|null */
     private $channel;
 
-    /**
-     * @var QueueOptions
-     */
+    /** @var QueueOptions */
     protected $queueOptions;
 
-    /**
-     * @var ExchangeOptions
-     */
+    /** @var ExchangeOptions */
     protected $exchangeOptions;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $autoSetupFabricEnabled = true;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $exchangeDeclared = false;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $queueDeclared = false;
 
     /**

@@ -8,54 +8,34 @@ use Laminas\Stdlib\AbstractOptions;
 
 class Queue extends AbstractOptions
 {
-    /**
-     * @var null|string
-     */
+    /** @var null|string */
     protected $name;
 
-    /**
-     * @var null|string
-     */
+    /** @var null|string */
     protected $type;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $passive = false;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $durable = true;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $autoDelete = false;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $exclusive = false;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $noWait = false;
 
-    /**
-     * @var array<string, mixed>
-     */
+    /** @var array<string, mixed> */
     protected $arguments = [];
 
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $ticket = 0;
 
-    /**
-     * @var string[]
-     */
+    /** @var string[] */
     protected $routingKeys = [];
 
     public function getName(): ?string

@@ -10,9 +10,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class RpcServer extends Consumer
 {
-    /**
-     * @var SerializerInterface|null
-     */
+    /** @var SerializerInterface|null */
     protected $serializer;
 
     /**

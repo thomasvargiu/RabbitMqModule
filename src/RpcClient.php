@@ -10,29 +10,19 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class RpcClient extends BaseAmqp
 {
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $requests = 0;
 
-    /**
-     * @var array<string, mixed>
-     */
+    /** @var array<string, mixed> */
     protected $replies = [];
 
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $timeout = 0;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $queueName;
 
-    /**
-     * @var SerializerInterface|null
-     */
+    /** @var SerializerInterface|null */
     protected $serializer;
 
     /**

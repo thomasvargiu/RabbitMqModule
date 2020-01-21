@@ -8,19 +8,13 @@ use Laminas\Stdlib\AbstractOptions;
 
 class Qos extends AbstractOptions
 {
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $prefetchSize = 0;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $prefetchCount = 0;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $global = false;
 
     public function getPrefetchSize(): int

@@ -9,29 +9,19 @@ use Laminas\Stdlib\AbstractOptions;
 
 class Producer extends AbstractOptions
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $connection = 'default';
 
-    /**
-     * @var Exchange|null
-     */
+    /** @var Exchange|null */
     protected $exchange;
 
-    /**
-     * @var Queue|null
-     */
+    /** @var Queue|null */
     protected $queue;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $class = \RabbitMqModule\Producer::class;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $autoSetupFabricEnabled = true;
 
     public function getConnection(): string

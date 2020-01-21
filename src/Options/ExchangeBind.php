@@ -10,14 +10,10 @@ use Laminas\Stdlib\AbstractOptions;
 
 class ExchangeBind extends AbstractOptions
 {
-    /**
-     * @var Exchange
-     */
+    /** @var Exchange */
     protected $exchange;
 
-    /**
-     * @var string[]
-     */
+    /** @var string[] */
     protected $routingKeys = [];
 
     public function getExchange(): Exchange
