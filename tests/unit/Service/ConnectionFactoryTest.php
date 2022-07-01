@@ -43,7 +43,7 @@ class ConnectionFactoryTest extends TestCase
             ->shouldBeCalled()
             ->willReturn($connection->reveal());
 
-        $service = $factory($container->reveal(), 'service-name');
+        $service = $factory($container->reveal());
 
         static::assertSame($connection->reveal(), $service);
     }
@@ -66,7 +66,7 @@ class ConnectionFactoryTest extends TestCase
             ]
         );
 
-        $factory($serviceManager, 'service-name');
+        $factory($serviceManager);
     }
 
     public function testCreateServiceWithInvalidFactory(): void
@@ -93,7 +93,7 @@ class ConnectionFactoryTest extends TestCase
             'bar' => 'barFactoryMock',
         ]);
 
-        $service = $factory($serviceManager, 'service-name');
+        $service = $factory($serviceManager);
 
         static::assertEquals('foo', $service);
     }
