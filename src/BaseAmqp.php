@@ -155,7 +155,7 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
         $exchangeOptions = $this->getExchangeOptions();
         $arguments = $queueOptions->getArguments();
 
-        [$queueName] = $this->getChannel()->queue_declare(
+        $result = $this->getChannel()->queue_declare(
             $queueOptions->getName(),
             $queueOptions->isPassive(),
             $queueOptions->isDurable(),
@@ -165,6 +165,11 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
             $arguments ? new AMQPTable($arguments) : [],
             $queueOptions->getTicket()
         );
+        if (is_array($result)) {
+            [$queueName] = $result;
+        } else {
+            $queueName = null;
+        }
 
         $routingKeys = $queueOptions->getRoutingKeys();
         if (! count($routingKeys)) {
