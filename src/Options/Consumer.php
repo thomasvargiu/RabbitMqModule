@@ -88,7 +88,7 @@ class Consumer extends AbstractOptions
     /**
      * @param array<string, mixed>|Queue $queue
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function setQueue($queue): void
     {
