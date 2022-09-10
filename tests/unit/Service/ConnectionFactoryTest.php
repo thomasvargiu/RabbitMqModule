@@ -5,13 +5,17 @@ namespace RabbitMqModule\Service;
 use InvalidArgumentException;
 use Laminas\ServiceManager\ServiceManager;
 use PhpAmqpLib\Connection\AbstractConnection;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use RabbitMqModule\Service\Connection\ConnectionFactoryInterface;
 use RabbitMqModule\Service\Connection\LazyConnectionFactory;
 use RuntimeException;
 
-class ConnectionFactoryTest extends \PHPUnit\Framework\TestCase
+class ConnectionFactoryTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testCreateService(): void
     {
         $factory = new ConnectionFactory('foo');
@@ -39,7 +43,7 @@ class ConnectionFactoryTest extends \PHPUnit\Framework\TestCase
             ->shouldBeCalled()
             ->willReturn($connection->reveal());
 
-        $service = $factory($container->reveal(), 'service-name');
+        $service = $factory($container->reveal());
 
         static::assertSame($connection->reveal(), $service);
     }
@@ -62,7 +66,7 @@ class ConnectionFactoryTest extends \PHPUnit\Framework\TestCase
             ]
         );
 
-        $factory($serviceManager, 'service-name');
+        $factory($serviceManager);
     }
 
     public function testCreateServiceWithInvalidFactory(): void
@@ -89,7 +93,7 @@ class ConnectionFactoryTest extends \PHPUnit\Framework\TestCase
             'bar' => 'barFactoryMock',
         ]);
 
-        $service = $factory($serviceManager, 'service-name');
+        $service = $factory($serviceManager);
 
         static::assertEquals('foo', $service);
     }

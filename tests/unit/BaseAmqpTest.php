@@ -5,12 +5,16 @@ namespace RabbitMqModule;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Wire\AMQPTable;
+use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use RabbitMqModule\Options\Exchange as ExchangeOptions;
 use RabbitMqModule\Options\Queue as QueueOptions;
 use ReflectionClass;
 
-class BaseAmqpTest extends \PHPUnit\Framework\TestCase
+class BaseAmqpTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testConstructor(): void
     {
         $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')

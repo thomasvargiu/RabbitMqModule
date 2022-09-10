@@ -11,11 +11,6 @@ parameters:
 			path: src/BaseAmqp.php
 
 		-
-			message: "#^Parameter \\#8 \\$arguments of method PhpAmqpLib\\\\Channel\\\\AMQPChannel\\:\\:exchange_declare\\(\\) expects array, array\\|PhpAmqpLib\\\\Wire\\\\AMQPTable given\\.$#"
-			count: 1
-			path: src/BaseAmqp.php
-
-		-
 			message: "#^Parameter \\#1 \\$destination of method PhpAmqpLib\\\\Channel\\\\AMQPChannel\\:\\:exchange_bind\\(\\) expects string, string\\|null given\\.$#"
 			count: 1
 			path: src/BaseAmqp.php
@@ -49,16 +44,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$queue of method PhpAmqpLib\\\\Channel\\\\AMQPChannel\\:\\:queue_purge\\(\\) expects string, string\\|null given\\.$#"
 			count: 1
 			path: src/Consumer.php
-
-		-
-			message: "#^Parameter \\#1 \\$string of method Laminas\\\\Console\\\\Adapter\\\\AdapterInterface\\:\\:colorize\\(\\) expects string, int\\|string given\\.$#"
-			count: 1
-			path: src/Controller/ConsumerController.php
-
-		-
-			message: "#^Method RabbitMqModule\\\\Controller\\\\SetupFabricController\\:\\:getServiceKeys\\(\\) should return array\\<int, string\\> but returns array\\<int, int\\|string\\>\\.$#"
-			count: 1
-			path: src/Controller/SetupFabricController.php
 
 		-
 			message: "#^Parameter \\#2 \\$exchange of method PhpAmqpLib\\\\Channel\\\\AMQPChannel\\:\\:basic_publish\\(\\) expects string, string\\|null given\\.$#"
@@ -209,41 +194,6 @@ parameters:
 			message: "#^Method RabbitMqModule\\\\ConsumerTest\\:\\:processMessageProvider\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: tests/unit/ConsumerTest.php
-
-		-
-			message: "#^Parameter \\#2 \\$string of static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertRegExp\\(\\) expects string, string\\|false given\\.$#"
-			count: 1
-			path: tests/unit/Controller/ConsumerControllerTest.php
-
-		-
-			message: "#^Parameter \\#2 \\$haystack of method PHPUnit\\\\Framework\\\\Assert\\:\\:assertStringContainsString\\(\\) expects string, string\\|false given\\.$#"
-			count: 2
-			path: tests/unit/Controller/ConsumerControllerTest.php
-
-		-
-			message: "#^PHPDoc tag @var for variable \\$configuration has no value type specified in iterable type array\\.$#"
-			count: 2
-			path: tests/unit/Controller/ConsumerControllerTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$haystack of function strpos expects string, string\\|false given\\.$#"
-			count: 3
-			path: tests/unit/Controller/ConsumerControllerTest.php
-
-		-
-			message: "#^Parameter \\#2 \\$string of static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertRegExp\\(\\) expects string, string\\|false given\\.$#"
-			count: 1
-			path: tests/unit/Controller/RpcServerControllerTest.php
-
-		-
-			message: "#^PHPDoc tag @var for variable \\$configuration has no value type specified in iterable type array\\.$#"
-			count: 2
-			path: tests/unit/Controller/SetupFabricControllerTest.php
-
-		-
-			message: "#^Parameter \\#2 \\$string of static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertRegExp\\(\\) expects string, string\\|false given\\.$#"
-			count: 1
-			path: tests/unit/Controller/StdInProducerControllerTest.php
 
 		-
 			message: "#^Parameter \\#1 \\$queue of method RabbitMqModule\\\\Options\\\\Consumer\\:\\:setQueue\\(\\) expects array\\<string, mixed\\>\\|RabbitMqModule\\\\Options\\\\Queue, string given\\.$#"

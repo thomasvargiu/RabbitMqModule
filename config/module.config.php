@@ -2,7 +2,15 @@
 
 namespace RabbitMqModule;
 
+use Laminas\ServiceManager\AbstractFactory\ConfigAbstractFactory;
+use RabbitMqModule\Command;
+
 return [
+    ConfigAbstractFactory::class => [
+        Command\ListConsumersCommand::class => [
+            'config',
+        ],
+    ],
     'rabbitmq' => [
         'connection' => [
             'default' => []
@@ -19,69 +27,6 @@ return [
         'rpc_server' => 'RabbitMqModule\\Service\\RpcServerFactory',
         'rpc_client' => 'RabbitMqModule\\Service\\RpcClientFactory'
     ],
-    'console' => [
-        'router' => [
-            'routes' => [
-                'rabbitmq_module-setup-fabric' => [
-                    'options' => [
-                        'route'    => 'rabbitmq setup-fabric',
-                        'defaults' => [
-                            'controller' => 'RabbitMqModule\\Controller\\SetupFabricController',
-                            'action' => 'index'
-                        ]
-                    ]
-                ],
-                'rabbitmq_module-list_consumers' => [
-                    'options' => [
-                        'route'    => 'rabbitmq list consumers',
-                        'defaults' => [
-                            'controller' => 'RabbitMqModule\\Controller\\ConsumerController',
-                            'action' => 'list'
-                        ]
-                    ]
-                ],
-                'rabbitmq_module-consumer' => [
-                    'options' => [
-                        'route'    => 'rabbitmq consumer <name> [--without-signals|-w]',
-                        'defaults' => [
-                            'controller' => 'RabbitMqModule\\Controller\\ConsumerController',
-                            'action' => 'index'
-                        ]
-                    ]
-                ],
-                'rabbitmq_module-rpc_server' => [
-                    'options' => [
-                        'route'    => 'rabbitmq rpc_server <name> [--without-signals|-w]',
-                        'defaults' => [
-                            'controller' => 'RabbitMqModule\\Controller\\RpcServerController',
-                            'action' => 'index'
-                        ]
-                    ]
-                ],
-                'rabbitmq_module-stdin-producer' => [
-                    'options' => [
-                        'route'    => 'rabbitmq stdin-producer <name> [--route=] <msg>',
-                        'defaults' => [
-                            'controller' => 'RabbitMqModule\\Controller\\StdInProducerController',
-                            'action' => 'index'
-                        ]
-                    ]
-                ]
-            ]
-        ]
-    ],
-    'controllers' => [
-        'factories' => [
-            'RabbitMqModule\\Controller\\SetupFabricController' =>
-                'RabbitMqModule\\Controller\\Factory\\SetupFabricControllerFactory',
-            'RabbitMqModule\\Controller\\ConsumerController' =>
-                'RabbitMqModule\\Controller\\Factory\\ConsumerControllerFactory',
-            'RabbitMqModule\\Controller\\RpcServerController' =>
-                'RabbitMqModule\\Controller\\Factory\\RpcServerControllerFactory',
-            'RabbitMqModule\\Controller\\StdInProducerController' =>
-                'RabbitMqModule\\Controller\\Factory\\StdInProducerControllerFactory'
-        ],
-    ],
     'service_manager' => [
         'invokables' => [
             'RabbitMqModule\\Service\\RabbitMqService' => 'RabbitMqModule\\Service\\RabbitMqService',
@@ -96,6 +41,22 @@ return [
         ],
         'abstract_factories' => [
             'RabbitMqModule\\Service\\AbstractServiceFactory' => 'RabbitMqModule\\Service\\AbstractServiceFactory'
+        ],
+        'factories' => [
+            Command\ListConsumersCommand::class => ConfigAbstractFactory::class,
+            Command\StartConsumerCommand::class => Command\Factory\ContainerAwareCommandFactory::class,
+            Command\StartRpcServerCommand::class => Command\Factory\ContainerAwareCommandFactory::class,
+            Command\PublishMessageCommand::class => Command\Factory\ContainerAwareCommandFactory::class,
+            Command\SetupFabricCommand::class => Command\Factory\ContainerAwareCommandFactory::class,
+        ],
+    ],
+    'laminas-cli' => [
+        'commands' => [
+            Command\ListConsumersCommand::getDefaultName() => Command\ListConsumersCommand::class,
+            Command\StartConsumerCommand::getDefaultName() => Command\StartConsumerCommand::class,
+            Command\StartRpcServerCommand::getDefaultName() => Command\StartRpcServerCommand::class,
+            Command\PublishMessageCommand::getDefaultName() => Command\PublishMessageCommand::class,
+            Command\SetupFabricCommand::getDefaultName() => Command\SetupFabricCommand::class,
         ]
     ]
 ];
