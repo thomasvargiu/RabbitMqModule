@@ -20,12 +20,11 @@
         }
     ],
     "require": {
-        "php": "^7.3 || ~8.0.0",
-        "psr/container": "^1.0",
-        "container-interop/container-interop": "^1.2",
+        "php": "^7.4 || ^8.0",
+        "psr/container": "^1.0 || ^2.0",
         "php-amqplib/php-amqplib": "^3.0.0",
         "laminas/laminas-stdlib": "^3.3.0",
-        "laminas/laminas-servicemanager": "^3.6.0",
+        "laminas/laminas-servicemanager": "^3.11",
         "laminas/laminas-modulemanager": "^2.10.0",
         "laminas/laminas-mvc": "^3.3",
         "laminas/laminas-cli": "^1.0",
@@ -33,13 +32,10 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^9.3",
-        "friendsofphp/php-cs-fixer": "^v2.17.0",
-        "phpstan/extension-installer": "^1.0.5",
-        "phpstan/phpstan": "^1.0.0",
-        "phpstan/phpstan-phpunit": "^1.0.0",
-        "jangregor/phpstan-prophecy": "^1.0.0",
+        "friendsofphp/php-cs-fixer": "^3.11",
         "phpspec/prophecy": "^1.12.0",
-        "phpspec/prophecy-phpunit": "^2.0"
+        "phpspec/prophecy-phpunit": "^2.0",
+        "vimeo/psalm": "^4.27"
     },
     "autoload": {
         "psr-4": {
@@ -65,10 +61,15 @@
             "@ci-phpunit",
             "@cs-check"
         ],
-        "phpstan": "phpstan analyze",
+        "psalm": "psalm --php-version=8.1",
         "phpunit": "phpunit",
         "ci-phpunit": "phpunit --coverage-clover=coverage.clover",
         "cs-check": "php-cs-fixer fix --dry-run --diff --allow-risky yes",
         "cs-fix": "php-cs-fixer fix --diff"
+    },
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
     }
 }

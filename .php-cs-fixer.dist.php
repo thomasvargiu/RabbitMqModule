@@ -7,7 +7,7 @@ $finder = PhpCsFixer\Finder::create()
     ])
 ;
 
-return PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config())
     ->setRules([
         '@PSR2' => true,
         'align_multiline_comment' => true,
@@ -16,8 +16,10 @@ return PhpCsFixer\Config::create()
             'syntax' => 'short',
         ],
         'binary_operator_spaces' => [
-            'align_double_arrow' => false,
-            'align_equals' => false,
+            'operators' => [
+                '=>' => null,
+                '=' => null,
+            ],
         ],
         'blank_line_after_namespace' => true,
         'blank_line_after_opening_tag' => true,
@@ -37,9 +39,11 @@ return PhpCsFixer\Config::create()
         'declare_equal_normalize' => true,
         'function_typehint_space' => true,
         'include' => true,
+        'increment_style' => [
+            'style' => 'pre',
+        ],
         'lowercase_cast' => true,
         'method_chaining_indentation' => true,
-        'method_separation' => true,
         'multiline_comment_opening_closing' => true,
         'native_function_casing' => true,
         'new_with_braces' => true,
@@ -47,7 +51,7 @@ return PhpCsFixer\Config::create()
         'no_empty_comment' => true,
         'no_empty_phpdoc' => true,
         'no_empty_statement' => true,
-        'no_extra_consecutive_blank_lines' => [
+        'no_extra_blank_lines' => [
             'tokens' => [
                 'curly_brace_block',
                 'extra',
@@ -66,12 +70,9 @@ return PhpCsFixer\Config::create()
         'no_short_bool_cast' => true,
         'no_singleline_whitespace_before_semicolons' => true,
         'no_spaces_around_offset' => true,
-        'no_superfluous_phpdoc_tags' => true,
         'no_trailing_comma_in_list_call' => true,
         'no_trailing_comma_in_singleline_array' => true,
         'no_unneeded_control_parentheses' => true,
-        'no_unneeded_curly_braces' => true,
-        'no_unneeded_final_method' => true,
         'no_unused_imports' => true,
         'no_whitespace_before_comma_in_array' => true,
         'no_whitespace_in_blank_line' => true,
@@ -82,9 +83,6 @@ return PhpCsFixer\Config::create()
         'phpdoc_align' => false,
         'phpdoc_annotation_without_dot' => true,
         'phpdoc_indent' => true,
-        'phpdoc_line_span' => [
-            'property' => 'single',
-        ],
         'phpdoc_no_package' => true,
         'phpdoc_no_useless_inheritdoc' => true,
         'phpdoc_order' => true,
@@ -95,7 +93,6 @@ return PhpCsFixer\Config::create()
         'phpdoc_trim' => true,
         'phpdoc_types' => true,
         'phpdoc_var_without_name' => true,
-        'pre_increment' => true,
         'return_type_declaration' => true,
         'short_scalar_cast' => true,
         'single_blank_line_before_namespace' => true,
@@ -105,35 +102,12 @@ return PhpCsFixer\Config::create()
         'standardize_not_equals' => true,
         'ternary_operator_spaces' => true,
         'ternary_to_null_coalescing' => true,
-        'trailing_comma_in_multiline_array' => true,
+        'trailing_comma_in_multiline' => [
+            'elements' => ['arrays'],
+        ],
         'trim_array_spaces' => true,
         'unary_operator_spaces' => true,
         'whitespace_after_comma_in_array' => true,
-        // risky
-        'dir_constant' => true,
-        'function_to_constant' => true,
-        'global_namespace_import' => [
-            'import_classes' => true,
-            'import_constants' => true,
-            'import_functions' => true,
-        ],
-        'is_null' => true,
-        'logical_operators' => true,
-        'modernize_types_casting' => true,
-        'no_alias_functions' => true,
-        'no_php4_constructor' => true,
-        'non_printable_character' => true,
-        'php_unit_construct' => true,
-        'php_unit_dedicate_assert' => true,
-        'php_unit_mock' => true,
-        'php_unit_namespaced' => true,
-        'php_unit_set_up_tear_down_visibility' => true,
-        'pow_to_exponentiation' => true,
-        'psr0' => true,
-        'psr4' => true,
-        'random_api_migration' => true,
-        'self_accessor' => true,
-        'void_return' => true,
     ])
     ->setFinder($finder)
     ;

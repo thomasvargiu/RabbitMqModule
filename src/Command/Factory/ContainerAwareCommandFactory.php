@@ -2,7 +2,7 @@
 
 namespace RabbitMqModule\Command\Factory;
 
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use InvalidArgumentException;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use RabbitMqModule\Command\ContainerAwareCommand;
