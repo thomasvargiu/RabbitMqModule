@@ -4,58 +4,54 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Options;
 
-use Laminas\Stdlib\AbstractOptions;
-
+/**
+ * @psalm-type QueueOptions = array{
+ *   name: string,
+ *   passive?: bool,
+ *   durable?: bool,
+ *   auto_delete?: bool,
+ *   exclusive?: bool,
+ *   arguments?: array<string, mixed>,
+ *   ticket?: int,
+ *   routingKeys?: list<string>
+ * }
+ */
 class Queue extends AbstractOptions
 {
-    /** @var null|string */
-    protected $name;
+    protected string $name = '';
 
-    /** @var null|string */
-    protected $type;
+    protected bool $passive = false;
 
-    /** @var bool */
-    protected $passive = false;
+    protected bool $durable = true;
 
-    /** @var bool */
-    protected $durable = true;
+    protected bool $autoDelete = false;
 
-    /** @var bool */
-    protected $autoDelete = false;
-
-    /** @var bool */
-    protected $exclusive = false;
-
-    /** @var bool */
-    protected $noWait = false;
+    protected bool $exclusive = false;
 
     /** @var array<string, mixed> */
-    protected $arguments = [];
+    protected array $arguments = [];
 
-    /** @var int */
-    protected $ticket = 0;
+    protected int $ticket = 0;
 
     /** @var string[] */
-    protected $routingKeys = [];
+    protected array $routingKeys = [];
 
-    public function getName(): ?string
+    /**
+     * @psalm-param QueueOptions $data
+     */
+    public static function fromArray(array $data): self
+    {
+        return new self($data);
+    }
+
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(?string $name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(?string $type): void
-    {
-        $this->type = $type;
     }
 
     public function isPassive(): bool
@@ -96,16 +92,6 @@ class Queue extends AbstractOptions
     public function setExclusive(bool $exclusive): void
     {
         $this->exclusive = $exclusive;
-    }
-
-    public function isNoWait(): bool
-    {
-        return $this->noWait;
-    }
-
-    public function setNoWait(bool $noWait): void
-    {
-        $this->noWait = $noWait;
     }
 
     /**

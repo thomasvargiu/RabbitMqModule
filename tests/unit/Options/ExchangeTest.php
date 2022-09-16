@@ -37,7 +37,6 @@ class ExchangeTest extends \PHPUnit\Framework\TestCase
         static::assertEquals($configuration['durable'], $options->isDurable());
         static::assertEquals($configuration['auto_delete'], $options->isAutoDelete());
         static::assertEquals($configuration['internal'], $options->isInternal());
-        static::assertEquals($configuration['no_wait'], $options->isNoWait());
         static::assertEquals($configuration['ticket'], $options->getTicket());
         static::assertEquals($configuration['declare'], $options->isDeclare());
         static::assertEquals($configuration['arguments'], $options->getArguments());

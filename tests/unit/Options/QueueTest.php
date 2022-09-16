@@ -27,7 +27,6 @@ class QueueTest extends \PHPUnit\Framework\TestCase
         $options->setFromArray($configuration);
 
         static::assertEquals($configuration['name'], $options->getName());
-        static::assertEquals($configuration['type'], $options->getType());
         static::assertEquals($configuration['passive'], $options->isPassive());
         static::assertEquals($configuration['durable'], $options->isDurable());
         static::assertEquals($configuration['auto_delete'], $options->isAutoDelete());

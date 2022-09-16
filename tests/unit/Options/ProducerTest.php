@@ -25,7 +25,6 @@ class ProducerTest extends \PHPUnit\Framework\TestCase
         static::assertEquals($configuration['connection'], $options->getConnection());
         static::assertInstanceOf('RabbitMqModule\\Options\\Exchange', $options->getExchange());
         static::assertInstanceOf('RabbitMqModule\\Options\\Queue', $options->getQueue());
-        static::assertEquals($configuration['class'], $options->getClass());
         static::assertFalse($options->isAutoSetupFabricEnabled());
     }
 

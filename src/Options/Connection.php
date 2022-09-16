@@ -4,51 +4,61 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Options;
 
-use Laminas\Stdlib\AbstractOptions;
-
-class Connection extends AbstractOptions
+/**
+ * @psalm-type ConnectionOptions = array{
+ *   type?: 'stream' | 'socket' | 'ssl' | 'lazy',
+ *   host?: string,
+ *   port?: int,
+ *   username?: string,
+ *   password?: string,
+ *   vhost?: string,
+ *   insist?: bool,
+ *   loginMethod?: 'AMQPLAIN' | string,
+ *   locale?: string,
+ *   read_write_timeout?: int,
+ *   keep_alive?: bool,
+ *   connection_timeout?: int,
+ *   heartbeat?: int
+ * }
+ */
+final class Connection extends AbstractOptions
 {
-    /** @var string */
-    protected $type = 'stream';
+    protected string $type = 'stream';
 
-    /** @var string */
-    protected $host = 'localhost';
+    protected string $host = 'localhost';
 
-    /** @var int */
-    protected $port = 5672;
+    protected int $port = 5672;
 
-    /** @var string */
-    protected $username = 'guest';
+    protected string $username = 'guest';
 
-    /** @var string */
-    protected $password = 'guest';
+    protected string $password = 'guest';
 
-    /** @var string */
-    protected $vhost = '/';
+    protected string $vhost = '/';
 
-    /** @var bool */
-    protected $insist = false;
+    protected bool $insist = false;
 
-    /** @var string */
-    protected $loginMethod = 'AMQPLAIN';
+    protected string $loginMethod = 'AMQPLAIN';
 
-    /** @var string */
-    protected $locale = 'en_US';
+    protected string $locale = 'en_US';
 
-    /** @var int */
-    protected $readWriteTimeout = 3;
+    protected int $readWriteTimeout = 3;
 
-    /** @var bool */
-    protected $keepAlive = false;
+    protected bool $keepAlive = false;
 
-    /** @var int */
-    protected $connectionTimeout = 3;
+    protected int $connectionTimeout = 3;
 
-    /** @var int */
-    protected $heartbeat = 0;
+    protected int $heartbeat = 0;
 
     /** @var array<string, mixed> */
-    protected $sslOptions = [];
+    protected array $sslOptions = [];
+
+    /**
+     * @psalm-param ConnectionOptions $data
+     */
+    public static function fromArray(array $data): self
+    {
+        return new self($data);
+    }
 
     public function getType(): string
     {

@@ -6,18 +6,37 @@ namespace RabbitMqModule\Options;
 
 use InvalidArgumentException;
 use function is_array;
-use Laminas\Stdlib\AbstractOptions;
 
+/**
+ * @psalm-type ExchangeBindOptions = array{
+ *   exchange: array{name: string}|Exchange,
+ *   routingKeys?: non-empty-list<string>
+ * }
+ */
 class ExchangeBind extends AbstractOptions
 {
-    /** @var Exchange */
-    protected $exchange;
+    protected ?Exchange $exchange = null;
 
-    /** @var string[] */
-    protected $routingKeys = [];
+    /**
+     * @psalm-param list<string>
+     * @var string[]
+     */
+    protected array $routingKeys = [];
+
+    /**
+     * @psalm-param ExchangeBindOptions $data
+     */
+    public static function fromArray(array $data): self
+    {
+        return new self($data);
+    }
 
     public function getExchange(): Exchange
     {
+        if (! $this->exchange) {
+            throw new \RuntimeException('No exchange configuration for exchange bind');
+        }
+
         return $this->exchange;
     }
 

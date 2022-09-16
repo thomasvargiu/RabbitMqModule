@@ -14,30 +14,20 @@ use RabbitMqModule\Service\SetupFabricAwareInterface;
 
 abstract class BaseAmqp implements SetupFabricAwareInterface
 {
-    /** @var AbstractConnection */
-    protected $connection;
+    protected AbstractConnection $connection;
 
-    /** @var AMQPChannel|null */
-    private $channel;
+    private ?AMQPChannel $channel = null;
 
-    /** @var QueueOptions */
-    protected $queueOptions;
+    protected ?QueueOptions $queueOptions = null;
 
-    /** @var ExchangeOptions */
-    protected $exchangeOptions;
+    protected ?ExchangeOptions $exchangeOptions = null;
 
-    /** @var bool */
-    protected $autoSetupFabricEnabled = true;
+    protected bool $autoSetupFabricEnabled = true;
 
-    /** @var bool */
-    protected $exchangeDeclared = false;
+    protected bool $exchangeDeclared = false;
 
-    /** @var bool */
-    protected $queueDeclared = false;
+    protected bool $queueDeclared = false;
 
-    /**
-     * @param AMQPChannel        $channel
-     */
     public function __construct(AbstractConnection $connection, AMQPChannel $channel = null)
     {
         $this->connection = $connection;
@@ -68,17 +58,17 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
         return $this->queueOptions;
     }
 
-    public function setQueueOptions(QueueOptions $queueOptions): void
+    public function setQueueOptions(?QueueOptions $queueOptions): void
     {
         $this->queueOptions = $queueOptions;
     }
 
-    public function getExchangeOptions(): ExchangeOptions
+    public function getExchangeOptions(): ?ExchangeOptions
     {
         return $this->exchangeOptions;
     }
 
-    public function setExchangeOptions(ExchangeOptions $exchangeOptions): void
+    public function setExchangeOptions(?ExchangeOptions $exchangeOptions): void
     {
         $this->exchangeOptions = $exchangeOptions;
     }
@@ -95,16 +85,14 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
 
     /**
      * Declare Exchange
-     *
-     * @param ExchangeOptions $options
      */
-    protected function declareExchange(ExchangeOptions $options = null): void
+    protected function declareExchange(?ExchangeOptions $options = null): void
     {
         if (! $options) {
             $options = $this->getExchangeOptions();
         }
 
-        if (! $options->isDeclare()) {
+        if (! $options || ! $options->isDeclare()) {
             return;
         }
 
@@ -117,7 +105,7 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
             $options->isDurable(),
             $options->isAutoDelete(),
             $options->isInternal(),
-            $options->isNoWait(),
+            false,
             $arguments ? new AMQPTable($arguments) : [],
             $options->getTicket()
         );
@@ -148,30 +136,33 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
     {
         $queueOptions = $this->getQueueOptions();
 
-        if (! $queueOptions || null === $queueOptions->getName()) {
+        if (! $queueOptions || '' === $queueOptions->getName()) {
             return;
         }
 
         $exchangeOptions = $this->getExchangeOptions();
         $arguments = $queueOptions->getArguments();
 
+        /** @psalm-var non-empty-list<string> $result */
         $result = $this->getChannel()->queue_declare(
             $queueOptions->getName(),
             $queueOptions->isPassive(),
             $queueOptions->isDurable(),
             $queueOptions->isExclusive(),
             $queueOptions->isAutoDelete(),
-            $queueOptions->isNoWait(),
+            false,
             $arguments ? new AMQPTable($arguments) : [],
             $queueOptions->getTicket()
         );
-        if (is_array($result)) {
-            [$queueName] = $result;
-        } else {
-            $queueName = null;
+
+        [$queueName] = $result;
+
+        if (null === $exchangeOptions) {
+            throw new \RuntimeException('Unable to create queue bindings: no exchange configuration provided');
         }
 
         $routingKeys = $queueOptions->getRoutingKeys();
+
         if (! count($routingKeys)) {
             $routingKeys = [''];
         }

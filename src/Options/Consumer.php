@@ -6,40 +6,54 @@ namespace RabbitMqModule\Options;
 
 use InvalidArgumentException;
 use function is_array;
-use Laminas\Stdlib\AbstractOptions;
-use RabbitMqModule\ConsumerInterface;
 
+/**
+ * @psalm-import-type ExchangeOptions from Exchange
+ * @psalm-import-type QueueOptions from Queue
+ * @psalm-import-type QosOptions from Qos
+ * @psalm-type ConsumerOptions = array{
+ *   description?: string,
+ *   connection?: string,
+ *   queue: QueueOptions|Queue,
+ *   exchange?: ExchangeOptions|Exchange,
+ *   callback: string|callable(\PhpAmqpLib\Message\AMQPMessage): (int|null),
+ *   idleTimeout?: int,
+ *   consumerTag?: string,
+ *   qos?: QosOptions,
+ *   auto_setup_fabric_enabled?: bool,
+ *   signals_enabled?: bool,
+ * }
+ */
 class Consumer extends AbstractOptions
 {
-    /** @var string */
-    protected $connection = 'default';
+    protected string $connection = 'default';
 
-    /** @var null|Exchange */
-    protected $exchange;
+    protected ?Exchange $exchange = null;
 
-    /** @var null|Queue */
-    protected $queue;
+    protected ?Queue $queue = null;
 
-    /** @var null|string|ConsumerInterface|callable(\PhpAmqpLib\Message\AMQPMessage): int|null */
+    /** @var null|string|callable(\PhpAmqpLib\Message\AMQPMessage): (int|null) */
     protected $callback;
 
-    /** @var int */
-    protected $idleTimeout = 0;
+    protected int $idleTimeout = 0;
 
-    /** @var null|string */
-    protected $consumerTag;
+    protected ?string $consumerTag = null;
 
-    /** @var null|Qos */
-    protected $qos;
+    protected ?Qos $qos = null;
 
-    /** @var bool */
-    protected $autoSetupFabricEnabled = true;
+    protected bool $autoSetupFabricEnabled = true;
 
-    /** @var bool */
-    protected $signalsEnabled = true;
+    protected bool $signalsEnabled = true;
 
-    /** @var string */
-    protected $description = '';
+    protected string $description = '';
+
+    /**
+     * @psalm-param ConsumerOptions $data
+     */
+    public static function fromArray(array $data): self
+    {
+        return new self($data);
+    }
 
     public function getConnection(): string
     {
@@ -77,11 +91,12 @@ class Consumer extends AbstractOptions
         $this->exchange = $exchange;
     }
 
-    /**
-     * @return Queue
-     */
-    public function getQueue(): ?Queue
+    public function getQueue(): Queue
     {
+        if (! $this->queue) {
+            throw new \RuntimeException('No queue configuration for consumer');
+        }
+
         return $this->queue;
     }
 
@@ -102,7 +117,7 @@ class Consumer extends AbstractOptions
     }
 
     /**
-     * @return null|string|ConsumerInterface|callable(\PhpAmqpLib\Message\AMQPMessage): int|null
+     * @return null|string|(callable(\PhpAmqpLib\Message\AMQPMessage): (int|null))
      */
     public function getCallback()
     {
@@ -110,7 +125,7 @@ class Consumer extends AbstractOptions
     }
 
     /**
-     * @param null|string|ConsumerInterface|callable(\PhpAmqpLib\Message\AMQPMessage): int|null $callback
+     * @param null|string|callable(\PhpAmqpLib\Message\AMQPMessage): (int|null) $callback
      */
     public function setCallback($callback): void
     {
@@ -173,10 +188,7 @@ class Consumer extends AbstractOptions
         return $this->signalsEnabled;
     }
 
-    /**
-     * @param bool $signalsEnabled
-     */
-    public function setSignalsEnabled($signalsEnabled): void
+    public function setSignalsEnabled(bool $signalsEnabled): void
     {
         $this->signalsEnabled = $signalsEnabled;
     }

@@ -3,7 +3,9 @@
 namespace RabbitMqModule\Command;
 
 use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use RabbitMqModule\ConfigProvider;
 use RabbitMqModule\Service\SetupFabricAwareInterface;
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
@@ -11,13 +13,21 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
 
-class SetupFabricCommand extends ContainerAwareCommand
+/**
+ * @psalm-import-type ConfigArray from ConfigProvider
+ */
+final class SetupFabricCommand extends Command
 {
-    /** @var string */
-    protected static $defaultName = 'rabbitmq:fabric:setup';
+    public const NAME = 'rabbitmq:fabric:setup';
 
-    /** @var string */
-    protected static $defaultDescription = 'Sets up the Rabbit MQ fabric';
+    private ContainerInterface $container;
+
+    public function __construct(ContainerInterface $container)
+    {
+        parent::__construct(self::NAME);
+        $this->setDescription('Sets up the Rabbit MQ fabric');
+        $this->container = $container;
+    }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -45,11 +55,11 @@ class SetupFabricCommand extends ContainerAwareCommand
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      *
-     * @return array<int, mixed>
+     * @psalm-return list<mixed>
      */
-    protected function getServiceParts(): array
+    private function getServiceParts(): array
     {
-        /** @var array<string, array<string, array<mixed>>> $config */
+        /** @psalm-var ConfigArray $config */
         $config = $this->container->get('config');
         $serviceKeys = [
             'consumer',
@@ -57,6 +67,7 @@ class SetupFabricCommand extends ContainerAwareCommand
             'rpc_client',
             'rpc_server',
         ];
+        /** @psalm-var list<mixed> $parts */
         $parts = [];
         foreach ($serviceKeys as $serviceKey) {
             if (! isset($config['rabbitmq'][$serviceKey])) {
@@ -67,6 +78,7 @@ class SetupFabricCommand extends ContainerAwareCommand
 
             $keys = array_keys($config['rabbitmq'][$serviceKey]);
             foreach ($keys as $key) {
+                /** @psalm-suppress MixedAssignment */
                 $parts[] = $this->container->get(sprintf('rabbitmq.%s.%s', $serviceKey, $key));
             }
         }

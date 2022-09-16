@@ -13,14 +13,15 @@ use RabbitMqModule\ConsumerInterface;
 use RabbitMqModule\Options\Consumer as Options;
 
 /**
- * @extends AbstractFactory<Options>
+ * @extends AbstractFactory<Options, Consumer>
+ * @psalm-import-type ConsumerHandler from \RabbitMqModule\BaseConsumer
  */
 final class ConsumerFactory extends AbstractFactory
 {
     /**
      * Get the class name of the options associated with this factory.
      *
-     * @phpstan-return class-string<Options>
+     *
      * @psalm-return class-string<Options>
      */
     public function getOptionsClass(): string
@@ -28,16 +29,7 @@ final class ConsumerFactory extends AbstractFactory
         return Options::class;
     }
 
-    /**
-     * Create an object.
-     *
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     *
-     * @return Consumer
-     */
-    public function __invoke(ContainerInterface $container)
+    public function __invoke(ContainerInterface $container): Consumer
     {
         /* @var $consumerOptions Options */
         $consumerOptions = $this->getOptions($container, 'consumer');
@@ -46,36 +38,51 @@ final class ConsumerFactory extends AbstractFactory
     }
 
     /**
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @psalm-return ConsumerHandler
+     * @psalm-suppress MixedReturnTypeCoercion
      */
-    protected function createConsumer(ContainerInterface $container, Options $options): Consumer
+    public static function getCallback(ContainerInterface $container, Options $options): callable
     {
         $callback = $options->getCallback();
+
         if (is_string($callback)) {
+            /** @psalm-var ConsumerHandler $callback */
             $callback = $container->get($callback);
         }
+
         if ($callback instanceof ConsumerInterface) {
+            trigger_error(
+                'ConsumerInterface is deprecated. Consider using an invokable class',
+                E_USER_DEPRECATED
+            );
+            /** @psalm-var ConsumerHandler $callback */
             $callback = [$callback, 'execute'];
         }
         if (! is_callable($callback)) {
             throw new InvalidArgumentException('Invalid callback provided');
         }
 
+        return $callback;
+    }
+
+    protected function createConsumer(ContainerInterface $container, Options $options): Consumer
+    {
+        $callback = self::getCallback($container, $options);
+
         /** @var \PhpAmqpLib\Connection\AbstractConnection $connection */
         $connection = $container->get(sprintf('rabbitmq.connection.%s', $options->getConnection()));
-        $consumer = new Consumer($connection);
-        $consumer->setQueueOptions($options->getQueue());
+        $consumer = new Consumer($connection, $options->getQueue(), $callback);
         $consumer->setExchangeOptions($options->getExchange());
         $consumer->setConsumerTag($options->getConsumerTag() ?: sprintf('PHPPROCESS_%s_%s', gethostname(), getmypid()));
         $consumer->setAutoSetupFabricEnabled($options->isAutoSetupFabricEnabled());
-        $consumer->setCallback($callback);
         $consumer->setIdleTimeout($options->getIdleTimeout());
 
-        if ($options->getQos()) {
+        $qos = $options->getQos();
+
+        if ($qos) {
             $consumer->setQosOptions(
-                $options->getQos()->getPrefetchSize(),
-                $options->getQos()->getPrefetchCount()
+                $qos->getPrefetchSize(),
+                $qos->getPrefetchCount()
             );
         }
 

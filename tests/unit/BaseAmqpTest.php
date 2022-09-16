@@ -32,7 +32,7 @@ class BaseAmqpTest extends TestCase
 
         $connection->expects(static::once())->method('channel')->willReturn($channel);
 
-        /** @var \RabbitMqModule\BaseAmqp $baseAmqp */
+        /* @var \RabbitMqModule\BaseAmqp $baseAmqp */
         static::assertEquals($channel, $baseAmqp->getChannel());
     }
 

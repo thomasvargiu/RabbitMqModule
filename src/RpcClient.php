@@ -4,35 +4,44 @@ declare(strict_types=1);
 
 namespace RabbitMqModule;
 
+use PhpAmqpLib\Channel\AMQPChannel;
+use PhpAmqpLib\Connection\AbstractConnection;
+use RabbitMqModule\Options\Queue;
 use function count;
 use Laminas\Serializer\Adapter\AdapterInterface as SerializerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class RpcClient extends BaseAmqp
 {
-    /** @var int */
-    protected $requests = 0;
+    protected int $requests = 0;
 
     /** @var array<string, mixed> */
-    protected $replies = [];
+    protected array $replies = [];
 
-    /** @var int */
-    protected $timeout = 0;
+    protected int $timeout = 0;
 
-    /** @var string */
-    protected $queueName;
+    protected ?string $queueName = null;
 
-    /** @var SerializerInterface|null */
-    protected $serializer;
+    protected ?SerializerInterface $serializer = null;
 
     /**
-     * @throws \Laminas\Serializer\Exception\ExceptionInterface
+     * @param mixed $body
+     * @param string $server
+     * @param string $requestId
+     * @param string $routingKey
+     * @param int $expiration
+     * @return void
      */
-    public function addRequest($body, string $server, $requestId, string $routingKey = '', int $expiration = 0): void
+    public function addRequest($body, string $server, string $requestId, string $routingKey = '', int $expiration = 0): void
     {
         if ($this->serializer) {
             $body = $this->serializer->serialize($body);
         }
+
+        if (! is_string($body)) {
+            throw new \InvalidArgumentException('The body must be a string');
+        }
+
         $msg = new AMQPMessage($body, [
             'content_type' => 'text/plain',
             'reply_to' => $this->getQueueName(),
@@ -51,11 +60,16 @@ class RpcClient extends BaseAmqp
 
     protected function getQueueName(): string
     {
-        if (null === $this->queueName) {
-            [$this->queueName] = $this->getChannel()->queue_declare('', false, false, true, false);
+        if (null !== $this->queueName) {
+            return $this->queueName;
         }
 
-        return $this->queueName;
+        /** @psalm-var non-empty-list<string> $result */
+        $result = $this->getChannel()->queue_declare('', false, false, true, false);
+
+        [$queueName] = $result;
+
+        return $this->queueName = $queueName;
     }
 
     /**
@@ -76,16 +90,13 @@ class RpcClient extends BaseAmqp
         return $this->replies;
     }
 
-    /**
-     * @throws \Laminas\Serializer\Exception\ExceptionInterface
-     */
     public function processMessage(AMQPMessage $message): void
     {
-        $messageBody = $message->body;
-        if ($this->serializer) {
-            $messageBody = $this->serializer->unserialize($messageBody);
-        }
-        $this->replies[$message->get('correlation_id')] = $messageBody;
+        /** @var string $correlationId */
+        $correlationId = $message->get('correlation_id');
+        /** @var mixed $messageBody */
+        $messageBody = $this->serializer ? $this->serializer->unserialize($message->body) : $message->body;
+        $this->replies[$correlationId] = $messageBody;
     }
 
     public function setSerializer(SerializerInterface $serializer = null): void

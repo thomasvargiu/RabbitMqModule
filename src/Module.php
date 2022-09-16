@@ -1,27 +1,19 @@
 <?php
 
-/**
- * @codeCoverageIgnore
- */
-
 namespace RabbitMqModule;
 
-use Laminas\ModuleManager\Feature\ConfigProviderInterface;
-
-/**
- * Class Module.
- *
- * @codeCoverageIgnore
- */
-class Module implements ConfigProviderInterface
+final class Module
 {
     /**
-     * Returns configuration to merge with application configuration.
-     *
-     * @return array<mixed, mixed>
+     * @return array<string, mixed>
      */
     public function getConfig(): array
     {
-        return include __DIR__ . '/../config/module.config.php';
+        $provider = new ConfigProvider();
+        $config = $provider();
+        $config['service_manager'] = $provider->getDependencies();
+        unset($config['dependencies']);
+
+        return $config;
     }
 }

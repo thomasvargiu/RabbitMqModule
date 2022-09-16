@@ -4,22 +4,21 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Service;
 
-use Laminas\Stdlib\AbstractOptions;
 use Psr\Container\ContainerInterface;
+use RabbitMqModule\ConfigProvider;
 use RuntimeException;
+use RabbitMqModule\Options\AbstractOptions;
 
 /**
  * @template TOptionsClass as AbstractOptions
+ * @template-covariant R as object
+ * @psalm-import-type ConfigArray from ConfigProvider
  */
 abstract class AbstractFactory
 {
-    /** @var string */
-    protected $name;
+    protected string $name;
 
-    /** @var AbstractOptions */
-    protected $options;
-
-    public function __construct(string $name)
+    final public function __construct(string $name)
     {
         $this->name = $name;
     }
@@ -33,11 +32,10 @@ abstract class AbstractFactory
      * Gets options from configuration based on name.
      *
      *
-     * @throws RuntimeException
-     *
-     * @return AbstractOptions
-     * @phpstan-return TOptionsClass
      * @psalm-return TOptionsClass
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function getOptions(ContainerInterface $container, string $key, ?string $name = null)
     {
@@ -45,8 +43,9 @@ abstract class AbstractFactory
             $name = $this->getName();
         }
 
-        $options = $container->get('config');
-        $options = $options['rabbitmq'][$key][$name] ?? null;
+        /** @psalm-var ConfigArray $config */
+        $config = $container->get('config');
+        $options = $config['rabbitmq'][$key][$name] ?? null;
 
         if (null === $options) {
             throw new RuntimeException(
@@ -62,8 +61,12 @@ abstract class AbstractFactory
     /**
      * Get the class name of the options associated with this factory.
      *
-     * @phpstan-return class-string<TOptionsClass>
      * @psalm-return class-string<TOptionsClass>
      */
     abstract public function getOptionsClass(): string;
+
+    /**
+     * @psalm-return R
+     */
+    abstract public function __invoke(ContainerInterface $container): object;
 }
