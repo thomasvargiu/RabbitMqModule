@@ -4,13 +4,12 @@ namespace RabbitMqModule\Service;
 
 use InvalidArgumentException;
 use Laminas\ServiceManager\ServiceManager;
-use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AbstractConnection;
 use RabbitMqModule\Consumer;
 use RabbitMqModule\ConsumerInterface;
 use RabbitMqModule\Options;
 
-class ConsumerFactoryTest extends \PHPUnit\Framework\TestCase
+class ConsumerFactoryTest extends \RabbitMqModule\TestCase
 {
     public function testCreateService(): void
     {
@@ -44,23 +43,12 @@ class ConsumerFactoryTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->setMethods(['channel'])
             ->getMockForAbstractClass();
-        $channel = $this->getMockBuilder(AMQPChannel::class)
-            ->disableOriginalConstructor()
-            ->getMock();
         $callback = $this->getMockBuilder(ConsumerInterface::class)
             ->disableOriginalConstructor()
             ->setMethods(['execute'])
             ->getMockForAbstractClass();
-        $connection->expects(static::once())
-            ->method('channel')
-            ->will(static::returnValue($channel));
-        $channel->expects(static::once())
-            ->method('basic_qos')
-            ->with(
-                static::equalTo(99),
-                static::equalTo(89),
-                static::equalTo(false)
-            );
+        $connection->expects(static::never())
+            ->method('channel');
         $serviceManager->setService('rabbitmq.connection.foo', $connection);
         $serviceManager->setService('callback-service', $callback);
 

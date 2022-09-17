@@ -4,13 +4,19 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Service;
 
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
+use Psr\Container\ContainerInterface;
+use RabbitMqModule\ConfigProvider;
 
+/**
+ * @psalm-import-type ConfigArray from ConfigProvider
+ */
 class AbstractServiceFactory implements AbstractFactoryInterface
 {
     /**
+     * @psalm-return false|array{serviceType: string, serviceName: string, factoryClass: class-string<AbstractFactory>}
+     *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      *
@@ -24,18 +30,24 @@ class AbstractServiceFactory implements AbstractFactoryInterface
             return false;
         }
 
+        /** @psalm-var ConfigArray $config */
         $config = $container->get('config');
         $serviceType = $matches['serviceType'];
         $serviceName = $matches['serviceName'];
 
-        if (! isset($config['rabbitmq_factories'][$serviceType], $config['rabbitmq'][$serviceType][$serviceName])) {
+        if (! isset($config['rabbitmq'][$serviceType][$serviceName])) {
+            return false;
+        }
+
+        $factoryClass = $config['rabbitmq_factories'][$serviceType] ?? null;
+        if (! is_string($factoryClass)) {
             return false;
         }
 
         return [
             'serviceType' => $serviceType,
             'serviceName' => $serviceName,
-            'factoryClass' => $config['rabbitmq_factories'][$serviceType],
+            'factoryClass' => $factoryClass,
         ];
     }
 
@@ -43,9 +55,6 @@ class AbstractServiceFactory implements AbstractFactoryInterface
      * Can the factory create an instance for the service?
      *
      * @param string $requestedName
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function canCreate(ContainerInterface $container, $requestedName): bool
     {
@@ -55,6 +64,7 @@ class AbstractServiceFactory implements AbstractFactoryInterface
     /**
      * Create an object.
      *
+     * @param ContainerInterface $container
      * @param string $requestedName
      * @param null|array<mixed> $options
      *
@@ -63,7 +73,7 @@ class AbstractServiceFactory implements AbstractFactoryInterface
      *
      * @return object
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): object
     {
         $mappings = $this->getFactoryMapping($container, $requestedName);
 
@@ -72,9 +82,8 @@ class AbstractServiceFactory implements AbstractFactoryInterface
         }
 
         $factoryClass = $mappings['factoryClass'];
-        /* @var callable $factory */
         $factory = new $factoryClass($mappings['serviceName']);
 
-        return $factory($container, $requestedName, $options);
+        return $factory($container);
     }
 }

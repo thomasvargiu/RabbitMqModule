@@ -3,7 +3,9 @@
 namespace RabbitMqModule\Command;
 
 use Laminas\ServiceManager\ServiceManager;
-use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
+use RabbitMqModule\ProducerInterface;
+use RabbitMqModule\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -33,22 +35,14 @@ class PublishMessageCommandTest extends TestCase
 
     public function testExecutePublishMessageCommandWithTestProducer(): void
     {
-        $producer = $this->getMockBuilder('RabbitMqModule\Producer')
-            ->onlyMethods(['publish'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $producer
-            ->expects(static::once())
-            ->method('publish')
-            ->with(
-                static::equalTo('msg'),
-                static::equalTo('bar')
-            );
+        $producer = $this->prophesize(ProducerInterface::class);
+        $producer->publish('msg', 'bar')->shouldBeCalledOnce();
 
-        $serviceManager = new ServiceManager();
-        $serviceManager->setService('rabbitmq.producer.foo', $producer);
+        $container = $this->prophesize(ContainerInterface::class);
+        $container->has('rabbitmq.producer.foo')->willReturn(true);
+        $container->get('rabbitmq.producer.foo')->willReturn($producer->reveal());
 
-        $command = new PublishMessageCommand($serviceManager);
+        $command = new PublishMessageCommand($container->reveal());
 
         $application = new Application();
         $application->add($command);

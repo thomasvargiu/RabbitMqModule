@@ -5,28 +5,24 @@ namespace RabbitMqModule;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Message\AMQPMessage;
-use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Argument;
 use RabbitMqModule\Options\Exchange as ExchangeOptions;
 use RabbitMqModule\Options\Queue as QueueOptions;
 
-class ProducerTest extends \PHPUnit\Framework\TestCase
+class ProducerTest extends TestCase
 {
-    use ProphecyTrait;
-
     public function testProperties(): void
     {
-        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
-            ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+        $connection = $this->prophesize(AbstractConnection::class);
 
-        $producer = new Producer($connection);
+        $exchangeOptions = new ExchangeOptions();
+        $producer = new Producer($connection->reveal(), $exchangeOptions);
 
-        static::assertSame($connection, $producer->getConnection());
+        static::assertSame($connection->reveal(), $producer->getConnection());
         static::assertEquals('text/plain', $producer->getContentType());
         static::assertEquals(2, $producer->getDeliveryMode());
 
         $queueOptions = new QueueOptions();
-        $exchangeOptions = new ExchangeOptions();
 
         $producer->setDeliveryMode(-1);
         $producer->setContentType('foo');
@@ -34,7 +30,6 @@ class ProducerTest extends \PHPUnit\Framework\TestCase
         $producer->setExchangeOptions($exchangeOptions);
         $producer->setAutoSetupFabricEnabled(false);
 
-        static::assertSame($connection, $producer->getConnection());
         static::assertEquals('foo', $producer->getContentType());
         static::assertEquals(-1, $producer->getDeliveryMode());
         static::assertSame($queueOptions, $producer->getQueueOptions());
@@ -44,106 +39,81 @@ class ProducerTest extends \PHPUnit\Framework\TestCase
 
     public function testSetupFabric(): void
     {
-        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
-            ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
-        $channel = $this->getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $channel = $this->prophesize(AMQPChannel::class);
 
+        $connection = $this->prophesize(AbstractConnection::class);
+        $connection->channel()->willReturn($channel->reveal());
+
+        $exchangeOptions = ExchangeOptions::fromArray(['name' => 'exchange-name']);
         $queueOptions = new QueueOptions();
-        $queueOptions->setName('foo');
-        $exchangeOptions = new ExchangeOptions();
 
-        $producer = new Producer($connection, $channel);
+        $producer = new Producer($connection->reveal(), $exchangeOptions);
+
+        $queueOptions->setName('foo');
+
         $producer->setQueueOptions($queueOptions);
         $producer->setExchangeOptions($exchangeOptions);
 
-        $channel->expects(static::once())
-            ->method('exchange_declare');
-        $channel->expects(static::once())
-            ->method('queue_declare');
+        $channel->exchange_declare('exchange-name', Argument::cetera())->shouldBeCalledOnce();
+        $channel->queue_declare('foo', Argument::cetera())->shouldBeCalledOnce()->willReturn(['foo']);
+        $channel->queue_bind('foo', 'exchange-name', '')->shouldBeCalledOnce();
 
         $producer->setupFabric();
     }
 
     public function testPublish(): void
     {
-        $connection = $this->prophesize(AbstractConnection::class);
-        $channel = $this->getMockBuilder(AMQPChannel::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $channel = $this->prophesize(AMQPChannel::class);
 
-        $queueOptions = new QueueOptions();
-        $queueOptions->setName('foo');
-        $exchangeOptions = new ExchangeOptions();
-        $exchangeOptions->setName('foo');
+        $connection = $this->prophesize(AbstractConnection::class);
+        $connection->channel()->willReturn($channel->reveal());
+
+        $exchangeOptions = ExchangeOptions::fromArray(['name' => 'foo']);
+        $queueOptions = QueueOptions::fromArray(['name' => 'foo']);
+
+        $producer = new Producer($connection->reveal(), $exchangeOptions);
+        $producer->setQueueOptions($queueOptions);
 
         $connection->isConnected()->willReturn(true);
         $connection->reconnect()->shouldNotBeCalled();
 
-        $producer = new Producer($connection->reveal(), $channel);
-        $producer->setQueueOptions($queueOptions);
-        $producer->setExchangeOptions($exchangeOptions);
+        $channel->exchange_declare(Argument::cetera())->shouldBeCalledOnce();
+        $channel->queue_declare(Argument::cetera())->shouldBeCalledOnce()->willReturn(['foo']);
+        $channel->queue_bind(Argument::cetera())->shouldBeCalledOnce();
 
-        $channel->expects(static::once())
-            ->method('exchange_declare');
-        $channel->expects(static::once())
-            ->method('queue_declare');
-
-        $channel->expects(static::once())
-            ->method('basic_publish')
-            ->with(static::callback(
-                function ($subject) {
-                    return $subject instanceof AMQPMessage
-                    && $subject->body === 'test-body'
-                    && $subject->get_properties() === [
-                        'content_type' => 'foo/bar',
-                        'delivery_mode' => 2,
-                    ];
-                }
-            ), 'foo', 'test-key');
+        $channel->basic_publish(Argument::that(fn (AMQPMessage $message) => $message->body === 'test-body' && $message->get_properties() === [
+            'content_type' => 'foo/bar',
+            'delivery_mode' => 2,
+        ]), 'foo', 'test-key')->shouldBeCalledOnce();
 
         $producer->publish('test-body', 'test-key', ['content_type' => 'foo/bar']);
     }
 
     public function testShouldReconnectOnPublishWhenDisconnected(): void
     {
-        $connection = $this->prophesize(AbstractConnection::class);
-        $channel = $this->getMockBuilder(AMQPChannel::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $channel = $this->prophesize(AMQPChannel::class);
 
-        $queueOptions = new QueueOptions();
-        $queueOptions->setName('foo');
-        $exchangeOptions = new ExchangeOptions();
-        $exchangeOptions->setName('foo');
+        $connection = $this->prophesize(AbstractConnection::class);
+        $connection->channel()->willReturn($channel->reveal());
+
+        $exchangeOptions = ExchangeOptions::fromArray(['name' => 'foo']);
+        $queueOptions = QueueOptions::fromArray(['name' => 'foo']);
+
+        $producer = new Producer($connection->reveal(), $exchangeOptions);
+        $producer->setQueueOptions($queueOptions);
 
         $connection->isConnected()->willReturn(false);
         $connection->reconnect()->shouldBeCalled();
-        $connection->channel()->willReturn($channel);
+        $connection->channel()->willReturn($channel->reveal());
 
-        $producer = new Producer($connection->reveal(), $channel);
-        $producer->setQueueOptions($queueOptions);
-        $producer->setExchangeOptions($exchangeOptions);
+        $channel->exchange_declare(Argument::cetera())->shouldBeCalledOnce();
+        $channel->queue_declare(Argument::cetera())->shouldBeCalledOnce()->willReturn(['foo']);
+        $channel->queue_bind(Argument::cetera())->shouldBeCalledOnce();
 
-        $channel->expects(static::once())
-            ->method('exchange_declare');
-        $channel->expects(static::once())
-            ->method('queue_declare');
-
-        $channel->expects(static::once())
-            ->method('basic_publish')
-            ->with(static::callback(
-                function ($subject) {
-                    return $subject instanceof AMQPMessage
-                        && $subject->body === 'test-body'
-                        && $subject->get_properties() === [
-                            'content_type' => 'foo/bar',
-                            'delivery_mode' => 2,
-                        ];
-                }
-            ), 'foo', 'test-key');
+        $channel->basic_publish(Argument::that(fn (AMQPMessage $message) => $message->body === 'test-body' && $message->get_properties() === [
+            'content_type' => 'foo/bar',
+            'delivery_mode' => 2,
+        ]), 'foo', 'test-key')->shouldBeCalledOnce();
 
         $producer->publish('test-body', 'test-key', ['content_type' => 'foo/bar']);
     }

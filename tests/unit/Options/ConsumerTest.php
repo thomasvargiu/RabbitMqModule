@@ -4,7 +4,7 @@ namespace RabbitMqModule\Options;
 
 use InvalidArgumentException;
 
-class ConsumerTest extends \PHPUnit\Framework\TestCase
+class ConsumerTest extends \RabbitMqModule\TestCase
 {
     public function testOptions(): void
     {

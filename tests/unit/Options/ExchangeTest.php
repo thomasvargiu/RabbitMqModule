@@ -4,7 +4,7 @@ namespace RabbitMqModule\Options;
 
 use InvalidArgumentException;
 
-class ExchangeTest extends \PHPUnit\Framework\TestCase
+class ExchangeTest extends \RabbitMqModule\TestCase
 {
     public function testOptions(): void
     {
@@ -15,7 +15,6 @@ class ExchangeTest extends \PHPUnit\Framework\TestCase
             'durable' => true,
             'auto_delete' => false,
             'internal' => true,
-            'no_wait' => true,
             'ticket' => 1,
             'declare' => true,
             'arguments' => [
@@ -37,7 +36,6 @@ class ExchangeTest extends \PHPUnit\Framework\TestCase
         static::assertEquals($configuration['durable'], $options->isDurable());
         static::assertEquals($configuration['auto_delete'], $options->isAutoDelete());
         static::assertEquals($configuration['internal'], $options->isInternal());
-        static::assertEquals($configuration['no_wait'], $options->isNoWait());
         static::assertEquals($configuration['ticket'], $options->getTicket());
         static::assertEquals($configuration['declare'], $options->isDeclare());
         static::assertEquals($configuration['arguments'], $options->getArguments());

@@ -5,32 +5,50 @@ declare(strict_types=1);
 namespace RabbitMqModule;
 
 use BadFunctionCallException;
-use function count;
 use function extension_loaded;
 use function function_exists;
-use Laminas\EventManager\EventManagerAwareInterface;
-use Laminas\EventManager\EventManagerAwareTrait;
+use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Message\AMQPMessage;
+use RabbitMqModule\Options\Queue;
 
-abstract class BaseConsumer extends BaseAmqp implements EventManagerAwareInterface
+/**
+ * @psalm-type ConsumerHandler = callable(AMQPMessage): (int|null|void)
+ */
+abstract class BaseConsumer extends BaseAmqp
 {
-    use EventManagerAwareTrait;
+    protected ?string $consumerTag = null;
 
-    /** @var null|string */
-    protected $consumerTag;
-
-    /** @var callable */
+    /**
+     * @psalm-var callable(AMQPMessage): (int|void)
+     *
+     * @var callable
+     */
     protected $callback;
 
-    /** @var bool */
-    protected $forceStop = false;
+    protected bool $forceStop = false;
 
-    /** @var int */
-    protected $idleTimeout = 0;
+    protected int $idleTimeout = 0;
 
-    /** @var bool */
-    protected $signalsEnabled = true;
+    protected bool $signalsEnabled = true;
 
+    protected string $queueName;
+
+    /**
+     * @psalm-param callable(AMQPMessage): (int|void) $callback
+     */
+    public function __construct(AbstractConnection $connection, Queue $queueOptions, callable $callback)
+    {
+        parent::__construct($connection);
+        $this->setQueueOptions($queueOptions);
+        $this->queueName = $queueOptions->getName();
+        $this->callback = $callback;
+    }
+
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function isSignalsEnabled(): bool
     {
         return $this->signalsEnabled;
@@ -55,16 +73,35 @@ abstract class BaseConsumer extends BaseAmqp implements EventManagerAwareInterfa
         $this->consumerTag = $consumerTag;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     *
+     * @psalm-return callable(AMQPMessage): (int|void)
+     *
+     * @return callable
+     */
     public function getCallback(): callable
     {
         return $this->callback;
     }
 
+    /**
+     * @param callable(AMQPMessage): (int|void) $callback
+     *
+     * @return void
+     */
     public function setCallback(callable $callback): void
     {
         $this->callback = $callback;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function getIdleTimeout(): int
     {
         return $this->idleTimeout;
@@ -82,7 +119,7 @@ abstract class BaseConsumer extends BaseAmqp implements EventManagerAwareInterfa
     {
         $this->setupConsumer();
 
-        while (count($this->getChannel()->callbacks)) {
+        while ($this->getChannel()->is_consuming()) {
             $this->getChannel()->wait();
         }
     }
@@ -94,7 +131,7 @@ abstract class BaseConsumer extends BaseAmqp implements EventManagerAwareInterfa
         }
 
         $this->getChannel()->basic_consume(
-            $this->getQueueOptions()->getName(),
+            $this->queueName,
             $this->getConsumerTag(),
             false,
             false,
@@ -108,11 +145,9 @@ abstract class BaseConsumer extends BaseAmqp implements EventManagerAwareInterfa
      * Sets the qos settings for the current channel
      * Consider that prefetchSize and global do not work with rabbitMQ version <= 8.0.
      *
-     * @param int  $prefetchSize
-     * @param int  $prefetchCount
-     * @param bool $global
+     * @deprecated
      */
-    public function setQosOptions($prefetchSize = 0, $prefetchCount = 0, $global = false): void
+    public function setQosOptions(int $prefetchSize = 0, int $prefetchCount = 0, bool $global = false): void
     {
         $this->getChannel()->basic_qos($prefetchSize, $prefetchCount, $global);
     }

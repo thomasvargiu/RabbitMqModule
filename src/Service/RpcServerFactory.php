@@ -4,23 +4,24 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Service;
 
-use InvalidArgumentException;
-use function is_callable;
 use function is_string;
+use Laminas\Serializer\Adapter\AdapterInterface;
+use Laminas\Serializer\Serializer;
 use Psr\Container\ContainerInterface;
-use RabbitMqModule\ConsumerInterface;
 use RabbitMqModule\Options\RpcServer as Options;
 use RabbitMqModule\RpcServer;
 
 /**
- * @extends AbstractFactory<Options>
+ * @extends AbstractFactory<Options, RpcServer>
+ *
+ * @psalm-import-type ConsumerHandler from \RabbitMqModule\BaseConsumer
  */
 final class RpcServerFactory extends AbstractFactory
 {
     /**
      * Get the class name of the options associated with this factory.
      *
-     * @phpstan-return class-string<Options>
+     *
      * @psalm-return class-string<Options>
      */
     public function getOptionsClass(): string
@@ -28,55 +29,40 @@ final class RpcServerFactory extends AbstractFactory
         return Options::class;
     }
 
-    /**
-     * Create an object.
-     *
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     */
     public function __invoke(ContainerInterface $container): RpcServer
     {
-        /* @var $rpcOptions Options */
         $rpcOptions = $this->getOptions($container, 'rpc_server');
 
         return $this->createServer($container, $rpcOptions);
     }
 
-    /**
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     */
     protected function createServer(ContainerInterface $container, Options $options): RpcServer
     {
-        $callback = $options->getCallback();
-        if (is_string($callback)) {
-            $callback = $container->get($callback);
+        $callback = ConsumerFactory::getCallback($container, $options);
+
+        $serializer = $options->getSerializer();
+
+        if (is_array($serializer)) {
+            $name = $serializer['name'];
+            $serializer = Serializer::factory($name, $serializer['options'] ?? null);
+        } elseif (is_string($serializer)) {
+            /** @var mixed $serializer */
+            $serializer = $container->get($serializer);
         }
-        if ($callback instanceof ConsumerInterface) {
-            $callback = [$callback, 'execute'];
-        }
-        if (! is_callable($callback)) {
-            throw new InvalidArgumentException('Invalid callback provided');
+
+        if (null !== $serializer && ! $serializer instanceof AdapterInterface) {
+            throw new \InvalidArgumentException(sprintf('Invalid serializer instance for rpc_server "%s"', $this->name));
         }
 
         /** @var \PhpAmqpLib\Connection\AbstractConnection $connection */
         $connection = $container->get(sprintf('rabbitmq.connection.%s', $options->getConnection()));
-        $server = new RpcServer($connection);
-        $server->setQueueOptions($options->getQueue());
+        $server = new RpcServer($connection, $options->getQueue(), $callback);
         $server->setExchangeOptions($options->getExchange());
         $server->setConsumerTag($options->getConsumerTag() ?: sprintf('PHPPROCESS_%s_%s', gethostname(), getmypid()));
         $server->setAutoSetupFabricEnabled($options->isAutoSetupFabricEnabled());
-        $server->setCallback($callback);
         $server->setIdleTimeout($options->getIdleTimeout());
-        $server->setSerializer($options->getSerializer());
-
-        if ($options->getQos()) {
-            $server->setQosOptions(
-                $options->getQos()->getPrefetchSize(),
-                $options->getQos()->getPrefetchCount()
-            );
-        }
+        $server->setSerializer($serializer);
+        $server->setQos($options->getQos());
 
         return $server;
     }

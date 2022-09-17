@@ -10,14 +10,13 @@ use RabbitMqModule\Options\Producer as Options;
 use RabbitMqModule\Producer;
 
 /**
- * @extends AbstractFactory<Options>
+ * @extends AbstractFactory<Options, Producer>
  */
 final class ProducerFactory extends AbstractFactory
 {
     /**
      * Get the class name of the options associated with this factory.
      *
-     * @phpstan-return class-string<Options>
      * @psalm-return class-string<Options>
      */
     public function getOptionsClass(): string
@@ -25,16 +24,7 @@ final class ProducerFactory extends AbstractFactory
         return Options::class;
     }
 
-    /**
-     * Create an object.
-     *
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     *
-     * @return Producer
-     */
-    public function __invoke(ContainerInterface $container)
+    public function __invoke(ContainerInterface $container): Producer
     {
         /* @var $producerOptions Options */
         $producerOptions = $this->getOptions($container, 'producer');
@@ -42,16 +32,11 @@ final class ProducerFactory extends AbstractFactory
         return $this->createProducer($container, $producerOptions);
     }
 
-    /**
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     */
     protected function createProducer(ContainerInterface $container, Options $options): Producer
     {
         /** @var AbstractConnection $connection */
         $connection = $container->get(sprintf('rabbitmq.connection.%s', $options->getConnection()));
-        $producer = new Producer($connection);
-        $producer->setExchangeOptions($options->getExchange());
+        $producer = new Producer($connection, $options->getExchange());
         if ($options->getQueue()) {
             $producer->setQueueOptions($options->getQueue());
         }

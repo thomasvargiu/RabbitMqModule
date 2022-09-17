@@ -4,21 +4,31 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Options;
 
-use function array_key_exists;
-use InvalidArgumentException;
-use function is_array;
-use function is_string;
-use Laminas\Serializer\Adapter\AdapterInterface as SerializerInterface;
-use Laminas\Serializer\Serializer;
-use Laminas\Stdlib\AbstractOptions;
-
+/**
+ * @psalm-type SerializerOptions = array{name: string, options?: array<string, mixed>}
+ * @psalm-type RpcClientOptions = array{
+ *   connection?: string,
+ *   serializer?: string|SerializerOptions,
+ * }
+ */
 class RpcClient extends AbstractOptions
 {
-    /** @var string */
-    protected $connection = 'default';
+    protected string $connection = 'default';
 
-    /** @var SerializerInterface|null */
+    /**
+     * @psalm-var null|string|SerializerOptions
+     *
+     * @var string|array|null
+     */
     protected $serializer;
+
+    /**
+     * @psalm-param RpcClientOptions $data
+     */
+    public static function fromArray(array $data): self
+    {
+        return new self($data);
+    }
 
     public function getConnection(): string
     {
@@ -26,35 +36,34 @@ class RpcClient extends AbstractOptions
     }
 
     /**
-     * @param string $connection
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
      */
-    public function setConnection($connection): void
+    public function setConnection(string $connection): void
     {
         $this->connection = $connection;
     }
 
-    public function getSerializer(): ?SerializerInterface
+    /**
+     * @psalm-return null|string|SerializerOptions
+     *
+     * @return array|string|null
+     */
+    public function getSerializer()
     {
         return $this->serializer;
     }
 
     /**
-     * @param null|SerializerInterface|string|array{name: string, options: null|array<string,mixed>} $serializer
+     * @internal
      *
-     * @throws InvalidArgumentException
+     * @psalm-internal RabbitMqModule
+     *
+     * @param null|string|SerializerOptions $serializer
      */
     public function setSerializer($serializer = null): void
     {
-        if (is_array($serializer)) {
-            if (! array_key_exists('name', $serializer)) {
-                throw new InvalidArgumentException('A serializer name should be provided');
-            }
-            $name = $serializer['name'];
-            $serializer = Serializer::factory($name, $serializer['options'] ?? null);
-        } elseif (is_string($serializer)) {
-            $serializer = Serializer::factory($serializer);
-        }
-
         $this->serializer = $serializer;
     }
 }

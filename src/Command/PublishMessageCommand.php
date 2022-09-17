@@ -3,6 +3,7 @@
 namespace RabbitMqModule\Command;
 
 use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use RabbitMqModule\Producer;
 use Symfony\Component\Console\Command\Command;
@@ -11,13 +12,18 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class PublishMessageCommand extends ContainerAwareCommand
+final class PublishMessageCommand extends Command
 {
-    /** @var string */
-    protected static $defaultName = 'rabbitmq:producer:publish';
+    public const NAME = 'rabbitmq:producer:publish';
 
-    /** @var string */
-    protected static $defaultDescription = 'Send a message with a producer';
+    private ContainerInterface $container;
+
+    public function __construct(ContainerInterface $container)
+    {
+        parent::__construct(self::NAME);
+        $this->setDescription('Send a message with a producer');
+        $this->container = $container;
+    }
 
     protected function configure(): void
     {

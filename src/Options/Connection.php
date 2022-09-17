@@ -4,57 +4,72 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Options;
 
-use Laminas\Stdlib\AbstractOptions;
-
-class Connection extends AbstractOptions
+/**
+ * @psalm-type ConnectionOptions = array{
+ *   type?: 'stream' | 'socket' | 'ssl' | 'lazy',
+ *   host?: string,
+ *   port?: int,
+ *   username?: string,
+ *   password?: string,
+ *   vhost?: string,
+ *   insist?: bool,
+ *   loginMethod?: 'AMQPLAIN' | string,
+ *   locale?: string,
+ *   read_write_timeout?: int,
+ *   keep_alive?: bool,
+ *   connection_timeout?: int,
+ *   heartbeat?: int
+ * }
+ */
+final class Connection extends AbstractOptions
 {
-    /** @var string */
-    protected $type = 'stream';
+    protected string $type = 'stream';
 
-    /** @var string */
-    protected $host = 'localhost';
+    protected string $host = 'localhost';
 
-    /** @var int */
-    protected $port = 5672;
+    protected int $port = 5672;
 
-    /** @var string */
-    protected $username = 'guest';
+    protected string $username = 'guest';
 
-    /** @var string */
-    protected $password = 'guest';
+    protected string $password = 'guest';
 
-    /** @var string */
-    protected $vhost = '/';
+    protected string $vhost = '/';
 
-    /** @var bool */
-    protected $insist = false;
+    protected bool $insist = false;
 
-    /** @var string */
-    protected $loginMethod = 'AMQPLAIN';
+    protected string $loginMethod = 'AMQPLAIN';
 
-    /** @var string */
-    protected $locale = 'en_US';
+    protected string $locale = 'en_US';
 
-    /** @var int */
-    protected $readWriteTimeout = 3;
+    protected int $readWriteTimeout = 3;
 
-    /** @var bool */
-    protected $keepAlive = false;
+    protected bool $keepAlive = false;
 
-    /** @var int */
-    protected $connectionTimeout = 3;
+    protected int $connectionTimeout = 3;
 
-    /** @var int */
-    protected $heartbeat = 0;
+    protected int $heartbeat = 0;
 
     /** @var array<string, mixed> */
-    protected $sslOptions = [];
+    protected array $sslOptions = [];
+
+    /**
+     * @psalm-param ConnectionOptions $data
+     */
+    public static function fromArray(array $data): self
+    {
+        return new self($data);
+    }
 
     public function getType(): string
     {
         return $this->type;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setType(string $type): void
     {
         $this->type = $type;
@@ -65,6 +80,11 @@ class Connection extends AbstractOptions
         return $this->host;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setHost(string $host): void
     {
         $this->host = $host;
@@ -75,6 +95,11 @@ class Connection extends AbstractOptions
         return $this->port;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setPort(int $port): void
     {
         $this->port = $port;
@@ -85,6 +110,11 @@ class Connection extends AbstractOptions
         return $this->username;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setUsername(string $username): void
     {
         $this->username = $username;
@@ -95,6 +125,11 @@ class Connection extends AbstractOptions
         return $this->password;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setPassword(string $password): void
     {
         $this->password = $password;
@@ -105,6 +140,11 @@ class Connection extends AbstractOptions
         return $this->vhost;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setVhost(string $vhost): void
     {
         $this->vhost = $vhost;
@@ -115,6 +155,11 @@ class Connection extends AbstractOptions
         return $this->insist;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setInsist(bool $insist): void
     {
         $this->insist = $insist;
@@ -125,6 +170,11 @@ class Connection extends AbstractOptions
         return $this->loginMethod;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setLoginMethod(string $loginMethod): void
     {
         $this->loginMethod = $loginMethod;
@@ -135,6 +185,11 @@ class Connection extends AbstractOptions
         return $this->locale;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setLocale(string $locale): void
     {
         $this->locale = $locale;
@@ -145,6 +200,11 @@ class Connection extends AbstractOptions
         return $this->readWriteTimeout;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setReadWriteTimeout(int $readWriteTimeout): void
     {
         $this->readWriteTimeout = $readWriteTimeout;
@@ -155,6 +215,11 @@ class Connection extends AbstractOptions
         return $this->keepAlive;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setKeepAlive(bool $keepAlive): void
     {
         $this->keepAlive = $keepAlive;
@@ -165,6 +230,11 @@ class Connection extends AbstractOptions
         return $this->connectionTimeout;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setConnectionTimeout(int $connectionTimeout): void
     {
         $this->connectionTimeout = $connectionTimeout;
@@ -175,6 +245,11 @@ class Connection extends AbstractOptions
         return $this->heartbeat;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setHeartbeat(int $heartbeat): void
     {
         $this->heartbeat = $heartbeat;
@@ -189,6 +264,10 @@ class Connection extends AbstractOptions
     }
 
     /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     *
      * @param array<string, mixed> $sslOptions
      */
     public function setSslOptions(array $sslOptions): void

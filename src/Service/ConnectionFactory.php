@@ -12,13 +12,13 @@ use RabbitMqModule\Service\Connection\ConnectionFactoryInterface;
 use RuntimeException;
 
 /**
- * @extends AbstractFactory<ConnectionOptions>
+ * @extends AbstractFactory<ConnectionOptions, AbstractConnection>
  */
 final class ConnectionFactory extends AbstractFactory
 {
     /**
      * @var array<string, string>
-     * @phpstan-var array<string, class-string<Connection\ConnectionFactoryInterface>>
+     *
      * @psalm-var array<string, class-string<Connection\ConnectionFactoryInterface>>
      */
     private $factoryMap = [
@@ -30,7 +30,7 @@ final class ConnectionFactory extends AbstractFactory
 
     /**
      * @return array<string, string>
-     * @phpstan-return array<string, class-string<Connection\ConnectionFactoryInterface>>
+     *
      * @psalm-return array<string, class-string<Connection\ConnectionFactoryInterface>>
      */
     public function getFactoryMap(): array
@@ -40,7 +40,7 @@ final class ConnectionFactory extends AbstractFactory
 
     /**
      * @param array<string, string> $factoryMap
-     * @phpstan-param array<string, class-string<Connection\ConnectionFactoryInterface>> $factoryMap
+     *
      * @psalm-param array<string, class-string<Connection\ConnectionFactoryInterface>> $factoryMap
      *
      * @return $this
@@ -55,7 +55,7 @@ final class ConnectionFactory extends AbstractFactory
     /**
      * Get the class name of the options associated with this factory.
      *
-     * @phpstan-return class-string<ConnectionOptions>
+     *
      * @psalm-return class-string<ConnectionOptions>
      */
     public function getOptionsClass(): string
@@ -63,26 +63,13 @@ final class ConnectionFactory extends AbstractFactory
         return ConnectionOptions::class;
     }
 
-    /**
-     * Create an object.
-     *
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     */
     public function __invoke(ContainerInterface $container): AbstractConnection
     {
-        /* @var $connectionOptions ConnectionOptions */
         $connectionOptions = $this->getOptions($container, 'connection');
-        $factory = $this->getFactory($container, $connectionOptions->getType());
 
-        return $factory->createConnection($connectionOptions);
+        return $this->getFactory($container, $connectionOptions->getType())->createConnection($connectionOptions);
     }
 
-    /**
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     */
     protected function getFactory(ContainerInterface $container, string $type): ConnectionFactoryInterface
     {
         $map = $this->getFactoryMap();

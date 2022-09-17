@@ -4,7 +4,7 @@ namespace RabbitMqModule\Options;
 
 use InvalidArgumentException;
 
-class ProducerTest extends \PHPUnit\Framework\TestCase
+class ProducerTest extends \RabbitMqModule\TestCase
 {
     public function testOptions(): void
     {
@@ -16,7 +16,6 @@ class ProducerTest extends \PHPUnit\Framework\TestCase
             'queue' => [
                 'name' => 'queue-name',
             ],
-            'class' => 'class-name',
             'auto_setup_fabric_enabled' => false,
         ];
         $options = new Producer();
@@ -25,7 +24,6 @@ class ProducerTest extends \PHPUnit\Framework\TestCase
         static::assertEquals($configuration['connection'], $options->getConnection());
         static::assertInstanceOf('RabbitMqModule\\Options\\Exchange', $options->getExchange());
         static::assertInstanceOf('RabbitMqModule\\Options\\Queue', $options->getQueue());
-        static::assertEquals($configuration['class'], $options->getClass());
         static::assertFalse($options->isAutoSetupFabricEnabled());
     }
 

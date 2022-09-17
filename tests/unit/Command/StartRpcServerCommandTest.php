@@ -3,7 +3,7 @@
 namespace RabbitMqModule\Command;
 
 use Laminas\ServiceManager\ServiceManager;
-use PHPUnit\Framework\TestCase;
+use RabbitMqModule\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;

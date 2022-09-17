@@ -8,6 +8,7 @@ use function function_exists;
 use function pcntl_signal;
 use PhpAmqpLib\Exception\AMQPTimeoutException;
 use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use RabbitMqModule\Consumer;
 use Symfony\Component\Console\Command\Command;
@@ -16,16 +17,20 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class StartConsumerCommand extends ContainerAwareCommand
+class StartConsumerCommand extends Command
 {
-    /** @var string */
-    protected static $defaultName = 'rabbitmq:consumers:start';
+    public const NAME = 'rabbitmq:consumers:start';
 
-    /** @var string */
-    protected static $defaultDescription = 'Start a consumer by name';
+    private ContainerInterface $container;
 
-    /** @var Consumer */
-    protected $consumer;
+    private ?Consumer $consumer = null;
+
+    public function __construct(ContainerInterface $container)
+    {
+        parent::__construct(self::NAME);
+        $this->setDescription('Start a consumer by name');
+        $this->container = $container;
+    }
 
     protected function configure(): void
     {
@@ -53,7 +58,7 @@ class StartConsumerCommand extends ContainerAwareCommand
             return Command::FAILURE;
         }
 
-        $withoutSignals = $input->getOption('without-signals');
+        $withoutSignals = (bool) $input->getOption('without-signals');
 
         $consumer = $this->container->get($serviceName);
         if (! $consumer instanceof Consumer) {
@@ -78,8 +83,8 @@ class StartConsumerCommand extends ContainerAwareCommand
                 );
             }
 
-            pcntl_signal(SIGTERM, [$this, 'stopConsumer']);
-            pcntl_signal(SIGINT, [$this, 'stopConsumer']);
+            pcntl_signal(SIGTERM, fn () => $this->stopConsumer());
+            pcntl_signal(SIGINT, fn () => $this->stopConsumer());
         }
         // @codeCoverageIgnoreEnd
 
@@ -88,7 +93,7 @@ class StartConsumerCommand extends ContainerAwareCommand
         return Command::SUCCESS;
     }
 
-    public function stopConsumer(): void
+    protected function stopConsumer(): void
     {
         if ($this->consumer instanceof Consumer) {
             $this->consumer->forceStopConsumer();

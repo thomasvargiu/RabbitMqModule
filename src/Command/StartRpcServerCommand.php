@@ -3,6 +3,7 @@
 namespace RabbitMqModule\Command;
 
 use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use RabbitMqModule\RpcServer;
 use Symfony\Component\Console\Command\Command;
@@ -10,13 +11,18 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class StartRpcServerCommand extends ContainerAwareCommand
+final class StartRpcServerCommand extends Command
 {
-    /** @var string */
-    protected static $defaultName = 'rabbitmq:rpc-server:start';
+    public const NAME = 'rabbitmq:rpc-server:start';
 
-    /** @var string */
-    protected static $defaultDescription = 'Start a rpc server by name';
+    private ContainerInterface $container;
+
+    public function __construct(ContainerInterface $container)
+    {
+        parent::__construct(self::NAME);
+        $this->setDescription('Start a rpc server by name');
+        $this->container = $container;
+    }
 
     protected function configure(): void
     {

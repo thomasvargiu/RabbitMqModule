@@ -4,41 +4,62 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Options;
 
-use function array_key_exists;
-use InvalidArgumentException;
-use function is_array;
-use function is_string;
-use Laminas\Serializer\Adapter\AdapterInterface as SerializerInterface;
-use Laminas\Serializer\Serializer;
-
+/**
+ * @psalm-type SerializerOptions = array{name: string, options?: array<string, mixed>}
+ *
+ * @psalm-import-type ExchangeOptions from Exchange
+ * @psalm-import-type QueueOptions from Queue
+ * @psalm-import-type QosOptions from Qos
+ *
+ * @psalm-type RpcServerOptions = array{
+ *   connection?: string,
+ *   queue: QueueOptions|Queue,
+ *   exchange?: ExchangeOptions|Exchange,
+ *   callback: string|callable(\PhpAmqpLib\Message\AMQPMessage): void,
+ *   idleTimeout?: int,
+ *   consumerTag?: string,
+ *   qos?: QosOptions,
+ *   auto_setup_fabric_enabled?: bool,
+ *   signals_enabled?: bool,
+ *   serializer?: string|SerializerOptions,
+ * }
+ */
 class RpcServer extends Consumer
 {
-    /** @var SerializerInterface|null */
+    /**
+     * @psalm-var null|string|SerializerOptions
+     *
+     * @var string|array|null
+     */
     protected $serializer;
 
-    public function getSerializer(): ?SerializerInterface
+    /**
+     * @psalm-param RpcServerOptions $data
+     */
+    public static function fromArray(array $data): self
+    {
+        return new self($data);
+    }
+
+    /**
+     * @psalm-return null|string|SerializerOptions
+     *
+     * @return array|string|null
+     */
+    public function getSerializer()
     {
         return $this->serializer;
     }
 
     /**
-     * @param null|SerializerInterface|string|array{name: string, options: null|array<string,mixed>} $serializer
+     * @internal
      *
-     * @throws InvalidArgumentException
+     * @psalm-internal RabbitMqModule
+     *
+     * @param null|string|SerializerOptions $serializer
      */
     public function setSerializer($serializer = null): void
     {
-        if (is_array($serializer)) {
-            if (! array_key_exists('name', $serializer)) {
-                throw new InvalidArgumentException('A serializer name should be provided');
-            }
-            $name = $serializer['name'];
-            $options = $serializer['options'] ?? null;
-            $serializer = Serializer::factory($name, $options);
-        } elseif (is_string($serializer)) {
-            $serializer = Serializer::factory($serializer);
-        }
-
         $this->serializer = $serializer;
     }
 }

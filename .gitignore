@@ -3,5 +3,5 @@ composer.phar
 vendor/
 build/
 *.test.php
-.php_cs.cache
+.php-cs-fixer.cache
 .phpunit.result.cache

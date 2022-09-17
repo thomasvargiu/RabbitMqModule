@@ -5,41 +5,65 @@ declare(strict_types=1);
 namespace RabbitMqModule\Options;
 
 use InvalidArgumentException;
-use Laminas\Stdlib\AbstractOptions;
 
+/**
+ * @psalm-import-type ExchangeOptions from Exchange
+ * @psalm-import-type QueueOptions from Queue
+ *
+ * @psalm-type ProducerOptions = array{
+ *   connection?: string,
+ *   exchange: ExchangeOptions|Exchange,
+ *   queue?: QueueOptions|Queue,
+ *   auto_setup_fabric_enabled?: bool,
+ * }
+ */
 class Producer extends AbstractOptions
 {
-    /** @var string */
-    protected $connection = 'default';
+    protected string $connection = 'default';
 
-    /** @var Exchange|null */
-    protected $exchange;
+    protected ?Exchange $exchange = null;
 
-    /** @var Queue|null */
-    protected $queue;
+    protected ?Queue $queue = null;
 
-    /** @var string */
-    protected $class = \RabbitMqModule\Producer::class;
+    protected bool $autoSetupFabricEnabled = true;
 
-    /** @var bool */
-    protected $autoSetupFabricEnabled = true;
+    /**
+     * @psalm-param ProducerOptions $data
+     */
+    public static function fromArray(array $data): self
+    {
+        return new self($data);
+    }
 
     public function getConnection(): string
     {
         return $this->connection;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setConnection(string $connection): void
     {
         $this->connection = $connection;
     }
 
-    public function getExchange(): ?Exchange
+    public function getExchange(): Exchange
     {
+        if (! $this->exchange) {
+            throw new \RuntimeException('No exchange configuration for producer');
+        }
+
         return $this->exchange;
     }
 
     /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     *
      * @param array<string, mixed>|Exchange $exchange
      *
      * @throws InvalidArgumentException
@@ -63,6 +87,10 @@ class Producer extends AbstractOptions
     }
 
     /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     *
      * @param array<string, mixed>|Queue $queue
      *
      * @throws InvalidArgumentException
@@ -80,21 +108,16 @@ class Producer extends AbstractOptions
         $this->queue = $queue;
     }
 
-    public function getClass(): string
-    {
-        return $this->class;
-    }
-
-    public function setClass(string $class): void
-    {
-        $this->class = $class;
-    }
-
     public function isAutoSetupFabricEnabled(): bool
     {
         return $this->autoSetupFabricEnabled;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setAutoSetupFabricEnabled(bool $autoSetupFabricEnabled): void
     {
         $this->autoSetupFabricEnabled = $autoSetupFabricEnabled;
