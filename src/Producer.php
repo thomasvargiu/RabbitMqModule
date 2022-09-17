@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace RabbitMqModule;
 
-use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use RabbitMqModule\Options\Exchange as ExchangeOptions;
 
-class Producer extends BaseAmqp implements ProducerInterface
+final class Producer extends BaseAmqp implements ProducerInterface
 {
     protected string $exchangeName;
 
@@ -19,14 +18,18 @@ class Producer extends BaseAmqp implements ProducerInterface
 
     private bool $alreadySetup = false;
 
-    public function __construct(AbstractConnection $connection, ExchangeOptions $exchangeOptions, AMQPChannel $channel = null)
+    public function __construct(AbstractConnection $connection, ExchangeOptions $exchangeOptions)
     {
-        parent::__construct($connection, $channel);
+        parent::__construct($connection);
         $this->setExchangeOptions($exchangeOptions);
         $this->exchangeName = $exchangeOptions->getName();
     }
 
-
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function getContentType(): string
     {
         return $this->contentType;
@@ -37,6 +40,11 @@ class Producer extends BaseAmqp implements ProducerInterface
         $this->contentType = $contentType;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function getDeliveryMode(): int
     {
         return $this->deliveryMode;

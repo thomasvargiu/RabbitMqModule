@@ -17,6 +17,7 @@ class RpcClient extends AbstractOptions
 
     /**
      * @psalm-var null|string|SerializerOptions
+     *
      * @var string|array|null
      */
     protected $serializer;
@@ -34,6 +35,11 @@ class RpcClient extends AbstractOptions
         return $this->connection;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setConnection(string $connection): void
     {
         $this->connection = $connection;
@@ -41,6 +47,7 @@ class RpcClient extends AbstractOptions
 
     /**
      * @psalm-return null|string|SerializerOptions
+     *
      * @return array|string|null
      */
     public function getSerializer()
@@ -49,6 +56,10 @@ class RpcClient extends AbstractOptions
     }
 
     /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     *
      * @param null|string|SerializerOptions $serializer
      */
     public function setSerializer($serializer = null): void

@@ -1,11 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace RabbitMqModule;
 
 use Laminas\ServiceManager\Factory\InvokableFactory;
-use RabbitMqModule\Command;
-use RabbitMqModule\Service;
 use RabbitMqModule\Service\AbstractFactory;
 
 /**
@@ -18,6 +17,7 @@ use RabbitMqModule\Service\AbstractFactory;
  * @psalm-import-type ConsumerOptions from Options\Consumer
  * @psalm-import-type RpcClientOptions from Options\RpcClient
  * @psalm-import-type RpcServerOptions from Options\RpcServer
+ *
  * @psalm-type ConfigArray = array{
  *   rabbitmq_factories: array{
  *     connection: class-string<AbstractFactory>,
@@ -40,6 +40,7 @@ final class ConfigProvider
 {
     /**
      * @psalm-return ConfigArray
+     *
      * @return array<string, mixed>
      */
     public function __invoke(): array
@@ -48,12 +49,12 @@ final class ConfigProvider
             'dependencies' => $this->getDependencies(),
             'rabbitmq' => [
                 'connection' => [
-                    'default' => []
+                    'default' => [],
                 ],
                 'producer' => [],
                 'consumer' => [],
                 'rpc_server' => [],
-                'rpc_client' => []
+                'rpc_client' => [],
             ],
             'rabbitmq_factories' => [
                 'connection' => Service\ConnectionFactory::class,
@@ -69,8 +70,8 @@ final class ConfigProvider
                     Command\StartRpcServerCommand::NAME => Command\StartRpcServerCommand::class,
                     Command\PublishMessageCommand::NAME => Command\PublishMessageCommand::class,
                     Command\SetupFabricCommand::NAME => Command\SetupFabricCommand::class,
-                ]
-            ]
+                ],
+            ],
         ];
     }
 

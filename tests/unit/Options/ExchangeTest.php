@@ -4,7 +4,7 @@ namespace RabbitMqModule\Options;
 
 use InvalidArgumentException;
 
-class ExchangeTest extends \PHPUnit\Framework\TestCase
+class ExchangeTest extends \RabbitMqModule\TestCase
 {
     public function testOptions(): void
     {
@@ -15,7 +15,6 @@ class ExchangeTest extends \PHPUnit\Framework\TestCase
             'durable' => true,
             'auto_delete' => false,
             'internal' => true,
-            'no_wait' => true,
             'ticket' => 1,
             'declare' => true,
             'arguments' => [

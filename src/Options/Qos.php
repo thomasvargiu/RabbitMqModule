@@ -13,8 +13,6 @@ class Qos extends AbstractOptions
 
     protected int $prefetchCount = 0;
 
-    protected bool $global = false;
-
     /**
      * @psalm-param QosOptions $data
      */
@@ -28,6 +26,11 @@ class Qos extends AbstractOptions
         return $this->prefetchSize;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setPrefetchSize(int $prefetchSize): void
     {
         $this->prefetchSize = $prefetchSize;
@@ -38,6 +41,11 @@ class Qos extends AbstractOptions
         return $this->prefetchCount;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setPrefetchCount(int $prefetchCount): void
     {
         $this->prefetchCount = $prefetchCount;
@@ -48,14 +56,17 @@ class Qos extends AbstractOptions
      */
     public function isGlobal(): bool
     {
-        return $this->global;
+        return false;
     }
 
     /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     *
      * @deprecated
      */
     public function setGlobal(bool $global): void
     {
-        $this->global = $global;
     }
 }

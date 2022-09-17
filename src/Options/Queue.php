@@ -33,7 +33,11 @@ class Queue extends AbstractOptions
 
     protected int $ticket = 0;
 
-    /** @var string[] */
+    /**
+     * @psalm-var list<string>
+     *
+     * @var string[]
+     */
     protected array $routingKeys = [];
 
     /**
@@ -49,6 +53,11 @@ class Queue extends AbstractOptions
         return $this->name;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setName(string $name): void
     {
         $this->name = $name;
@@ -59,6 +68,11 @@ class Queue extends AbstractOptions
         return $this->passive;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setPassive(bool $passive): void
     {
         $this->passive = $passive;
@@ -69,6 +83,11 @@ class Queue extends AbstractOptions
         return $this->durable;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setDurable(bool $durable): void
     {
         $this->durable = $durable;
@@ -79,6 +98,11 @@ class Queue extends AbstractOptions
         return $this->autoDelete;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setAutoDelete(bool $autoDelete): void
     {
         $this->autoDelete = $autoDelete;
@@ -89,6 +113,11 @@ class Queue extends AbstractOptions
         return $this->exclusive;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setExclusive(bool $exclusive): void
     {
         $this->exclusive = $exclusive;
@@ -103,6 +132,10 @@ class Queue extends AbstractOptions
     }
 
     /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     *
      * @param array<string, mixed> $arguments
      */
     public function setArguments(array $arguments): void
@@ -115,12 +148,19 @@ class Queue extends AbstractOptions
         return $this->ticket;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setTicket(int $ticket): void
     {
         $this->ticket = $ticket;
     }
 
     /**
+     * @psalm-return list<string>
+     *
      * @return string[]
      */
     public function getRoutingKeys(): array
@@ -129,6 +169,12 @@ class Queue extends AbstractOptions
     }
 
     /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     *
+     * @psalm-param list<string> $routingKeys
+     *
      * @param string[] $routingKeys
      */
     public function setRoutingKeys(array $routingKeys): void

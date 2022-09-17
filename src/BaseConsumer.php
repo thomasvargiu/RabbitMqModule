@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace RabbitMqModule;
 
 use BadFunctionCallException;
-use PhpAmqpLib\Channel\AMQPChannel;
-use PhpAmqpLib\Connection\AbstractConnection;
-use RabbitMqModule\Options\Queue;
 use function extension_loaded;
 use function function_exists;
+use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Message\AMQPMessage;
+use RabbitMqModule\Options\Queue;
 
 /**
  * @psalm-type ConsumerHandler = callable(AMQPMessage): (int|null|void)
@@ -21,6 +20,7 @@ abstract class BaseConsumer extends BaseAmqp
 
     /**
      * @psalm-var callable(AMQPMessage): (int|void)
+     *
      * @var callable
      */
     protected $callback;
@@ -36,14 +36,19 @@ abstract class BaseConsumer extends BaseAmqp
     /**
      * @psalm-param callable(AMQPMessage): (int|void) $callback
      */
-    public function __construct(AbstractConnection $connection, Queue $queueOptions, callable $callback, AMQPChannel $channel = null)
+    public function __construct(AbstractConnection $connection, Queue $queueOptions, callable $callback)
     {
-        parent::__construct($connection, $channel);
+        parent::__construct($connection);
         $this->setQueueOptions($queueOptions);
         $this->queueName = $queueOptions->getName();
         $this->callback = $callback;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function isSignalsEnabled(): bool
     {
         return $this->signalsEnabled;
@@ -69,7 +74,12 @@ abstract class BaseConsumer extends BaseAmqp
     }
 
     /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     *
      * @psalm-return callable(AMQPMessage): (int|void)
+     *
      * @return callable
      */
     public function getCallback(): callable
@@ -79,6 +89,7 @@ abstract class BaseConsumer extends BaseAmqp
 
     /**
      * @param callable(AMQPMessage): (int|void) $callback
+     *
      * @return void
      */
     public function setCallback(callable $callback): void
@@ -86,6 +97,11 @@ abstract class BaseConsumer extends BaseAmqp
         $this->callback = $callback;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function getIdleTimeout(): int
     {
         return $this->idleTimeout;
@@ -128,6 +144,8 @@ abstract class BaseConsumer extends BaseAmqp
     /**
      * Sets the qos settings for the current channel
      * Consider that prefetchSize and global do not work with rabbitMQ version <= 8.0.
+     *
+     * @deprecated
      */
     public function setQosOptions(int $prefetchSize = 0, int $prefetchCount = 0, bool $global = false): void
     {

@@ -19,7 +19,6 @@ final class ConnectionFactory extends AbstractFactory
     /**
      * @var array<string, string>
      *
-     *
      * @psalm-var array<string, class-string<Connection\ConnectionFactoryInterface>>
      */
     private $factoryMap = [
@@ -32,7 +31,6 @@ final class ConnectionFactory extends AbstractFactory
     /**
      * @return array<string, string>
      *
-     *
      * @psalm-return array<string, class-string<Connection\ConnectionFactoryInterface>>
      */
     public function getFactoryMap(): array
@@ -42,7 +40,6 @@ final class ConnectionFactory extends AbstractFactory
 
     /**
      * @param array<string, string> $factoryMap
-     *
      *
      * @psalm-param array<string, class-string<Connection\ConnectionFactoryInterface>> $factoryMap
      *

@@ -11,6 +11,7 @@ use function is_array;
  * @psalm-import-type ExchangeOptions from Exchange
  * @psalm-import-type QueueOptions from Queue
  * @psalm-import-type QosOptions from Qos
+ *
  * @psalm-type ConsumerOptions = array{
  *   description?: string,
  *   connection?: string,
@@ -60,6 +61,11 @@ class Consumer extends AbstractOptions
         return $this->connection;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setConnection(string $connection): void
     {
         $this->connection = $connection;
@@ -74,6 +80,10 @@ class Consumer extends AbstractOptions
     }
 
     /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     *
      * @param array<string, mixed>|Exchange $exchange
      *
      * @throws InvalidArgumentException
@@ -101,6 +111,10 @@ class Consumer extends AbstractOptions
     }
 
     /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     *
      * @param array<string, mixed>|Queue $queue
      *
      * @throws InvalidArgumentException
@@ -125,6 +139,10 @@ class Consumer extends AbstractOptions
     }
 
     /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     *
      * @param null|string|callable(\PhpAmqpLib\Message\AMQPMessage): (int|null) $callback
      */
     public function setCallback($callback): void
@@ -137,6 +155,11 @@ class Consumer extends AbstractOptions
         return $this->idleTimeout;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setIdleTimeout(int $idleTimeout): void
     {
         $this->idleTimeout = $idleTimeout;
@@ -147,6 +170,11 @@ class Consumer extends AbstractOptions
         return $this->consumerTag;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setConsumerTag(string $consumerTag): void
     {
         $this->consumerTag = $consumerTag;
@@ -158,6 +186,10 @@ class Consumer extends AbstractOptions
     }
 
     /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     *
      * @param Qos|array<string, mixed> $qos
      *
      * @throws InvalidArgumentException
@@ -178,6 +210,11 @@ class Consumer extends AbstractOptions
         return $this->autoSetupFabricEnabled;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setAutoSetupFabricEnabled(bool $autoSetupFabricEnabled): void
     {
         $this->autoSetupFabricEnabled = $autoSetupFabricEnabled;
@@ -188,6 +225,11 @@ class Consumer extends AbstractOptions
         return $this->signalsEnabled;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setSignalsEnabled(bool $signalsEnabled): void
     {
         $this->signalsEnabled = $signalsEnabled;
@@ -198,6 +240,11 @@ class Consumer extends AbstractOptions
         return $this->description;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setDescription(string $description): void
     {
         $this->description = $description;

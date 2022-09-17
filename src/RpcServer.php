@@ -11,6 +11,11 @@ class RpcServer extends Consumer
 {
     protected ?SerializerInterface $serializer = null;
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function processMessage(AMQPMessage $message): void
     {
         $channel = $this->getChannel();
@@ -35,6 +40,11 @@ class RpcServer extends Consumer
         $this->getChannel()->basic_publish($reply, '', $client);
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function getSerializer(): ?SerializerInterface
     {
         return $this->serializer;

@@ -56,6 +56,8 @@ final class SetupFabricCommand extends Command
      * @throws NotFoundExceptionInterface
      *
      * @psalm-return list<mixed>
+     *
+     * @psalm-suppress MixedAssignment
      */
     private function getServiceParts(): array
     {
@@ -78,7 +80,6 @@ final class SetupFabricCommand extends Command
 
             $keys = array_keys($config['rabbitmq'][$serviceKey]);
             foreach ($keys as $key) {
-                /** @psalm-suppress MixedAssignment */
                 $parts[] = $this->container->get(sprintf('rabbitmq.%s.%s', $serviceKey, $key));
             }
         }

@@ -25,9 +25,6 @@
         "php-amqplib/php-amqplib": "^3.0.0",
         "laminas/laminas-stdlib": "^3.3.0",
         "laminas/laminas-servicemanager": "^3.11",
-        "laminas/laminas-modulemanager": "^2.10.0",
-        "laminas/laminas-mvc": "^3.3",
-        "laminas/laminas-cli": "^1.0",
         "laminas/laminas-serializer": "^2.10.0"
     },
     "require-dev": {
@@ -35,7 +32,8 @@
         "friendsofphp/php-cs-fixer": "^3.11",
         "phpspec/prophecy": "^1.12.0",
         "phpspec/prophecy-phpunit": "^2.0",
-        "vimeo/psalm": "^4.27"
+        "vimeo/psalm": "^4.27",
+        "laminas/laminas-cli": "^1.0"
     },
     "autoload": {
         "psr-4": {

@@ -9,6 +9,7 @@ use InvalidArgumentException;
 /**
  * @psalm-import-type ExchangeOptions from Exchange
  * @psalm-import-type QueueOptions from Queue
+ *
  * @psalm-type ProducerOptions = array{
  *   connection?: string,
  *   exchange: ExchangeOptions|Exchange,
@@ -39,6 +40,11 @@ class Producer extends AbstractOptions
         return $this->connection;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setConnection(string $connection): void
     {
         $this->connection = $connection;
@@ -54,6 +60,10 @@ class Producer extends AbstractOptions
     }
 
     /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     *
      * @param array<string, mixed>|Exchange $exchange
      *
      * @throws InvalidArgumentException
@@ -77,6 +87,10 @@ class Producer extends AbstractOptions
     }
 
     /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     *
      * @param array<string, mixed>|Queue $queue
      *
      * @throws InvalidArgumentException
@@ -99,6 +113,11 @@ class Producer extends AbstractOptions
         return $this->autoSetupFabricEnabled;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setAutoSetupFabricEnabled(bool $autoSetupFabricEnabled): void
     {
         $this->autoSetupFabricEnabled = $autoSetupFabricEnabled;

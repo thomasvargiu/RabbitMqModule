@@ -3,9 +3,7 @@
 namespace RabbitMqModule\Command;
 
 use Laminas\ServiceManager\ServiceManager;
-use PHPUnit\Framework\TestCase;
-use ReflectionClass;
-use ReflectionException;
+use RabbitMqModule\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -88,40 +86,5 @@ EOF;
 
         static::assertTrue(defined('AMQP_WITHOUT_SIGNALS'));
         $this->assertEquals(Command::SUCCESS, $commandTester->getStatusCode());
-    }
-
-    /**
-     * @throws ReflectionException
-     */
-    public function testStartConsumerCommandStopConsumer(): void
-    {
-        $consumer = $this->getMockBuilder('RabbitMqModule\Consumer')
-            ->onlyMethods(['forceStopConsumer', 'stopConsuming'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $consumer->expects(static::once())
-            ->method('forceStopConsumer');
-
-        $consumer->expects(static::once())
-            ->method('stopConsuming');
-
-        $container = $this->getMockBuilder('Laminas\ServiceManager\ServiceManager')
-            ->getMock();
-
-        $command = $this->getMockBuilder(StartConsumerCommand::class)
-            ->setConstructorArgs([$container])
-            ->onlyMethods(['callExit'])
-            ->getMock();
-
-        $command->expects(static::once())
-            ->method('callExit');
-
-        $property = (new ReflectionClass($command))->getProperty('consumer');
-        $property->setAccessible(true);
-        $property->setValue($command, $consumer);
-        $property->setAccessible(false);
-
-        $command->stopConsumer();
     }
 }

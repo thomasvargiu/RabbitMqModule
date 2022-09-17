@@ -4,7 +4,7 @@ namespace RabbitMqModule\Service;
 
 use Laminas\ServiceManager\ServiceManager;
 
-class ProducerFactoryTest extends \PHPUnit\Framework\TestCase
+class ProducerFactoryTest extends \RabbitMqModule\TestCase
 {
     public function testCreateService(): void
     {

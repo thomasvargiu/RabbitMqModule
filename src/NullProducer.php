@@ -7,7 +7,7 @@ namespace RabbitMqModule;
 /**
  * Class NullProducer. Useful for tests.
  */
-class NullProducer implements ProducerInterface
+final class NullProducer implements ProducerInterface
 {
     /**
      * @param array<string, mixed> $properties

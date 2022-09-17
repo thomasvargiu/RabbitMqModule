@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace RabbitMqModule\Service;
 
+use function is_string;
 use Laminas\Serializer\Adapter\AdapterInterface;
 use Laminas\Serializer\Serializer;
-use function is_string;
 use Psr\Container\ContainerInterface;
 use RabbitMqModule\Options\RpcServer as Options;
 use RabbitMqModule\RpcServer;
 
 /**
  * @extends AbstractFactory<Options, RpcServer>
+ *
  * @psalm-import-type ConsumerHandler from \RabbitMqModule\BaseConsumer
  */
 final class RpcServerFactory extends AbstractFactory
@@ -61,14 +62,7 @@ final class RpcServerFactory extends AbstractFactory
         $server->setAutoSetupFabricEnabled($options->isAutoSetupFabricEnabled());
         $server->setIdleTimeout($options->getIdleTimeout());
         $server->setSerializer($serializer);
-
-        $qos = $options->getQos();
-        if ($qos) {
-            $server->setQosOptions(
-                $qos->getPrefetchSize(),
-                $qos->getPrefetchCount()
-            );
-        }
+        $server->setQos($options->getQos());
 
         return $server;
     }

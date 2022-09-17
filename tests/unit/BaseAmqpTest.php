@@ -5,7 +5,6 @@ namespace RabbitMqModule;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Wire\AMQPTable;
-use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use RabbitMqModule\Options\Exchange as ExchangeOptions;
 use RabbitMqModule\Options\Queue as QueueOptions;
@@ -139,7 +138,7 @@ class BaseAmqpTest extends TestCase
                 $exchangeData['durable'],
                 $exchangeData['auto_delete'],
                 $exchangeData['internal'],
-                $exchangeData['no_wait'],
+                false,
                 $exchangeData['arguments'],
                 $exchangeData['ticket']
             );
@@ -151,7 +150,7 @@ class BaseAmqpTest extends TestCase
                 $queueData['durable'],
                 $queueData['exclusive'],
                 $queueData['auto_delete'],
-                $queueData['no_wait'],
+                false,
                 new AMQPTable($queueData['arguments']),
                 $queueData['ticket']
             )
@@ -196,7 +195,6 @@ class BaseAmqpTest extends TestCase
                     'durable' => true,
                     'auto_delete' => true,
                     'internal' => true,
-                    'no_wait' => true,
                     'arguments' => [],
                     'ticket' => 1,
                 ],
@@ -206,7 +204,6 @@ class BaseAmqpTest extends TestCase
                     'durable' => true,
                     'exclusive' => true,
                     'auto_delete' => true,
-                    'no_wait' => true,
                     'arguments' => ['some_argument'],
                     'ticket' => 1,
                     'routing_keys' => ['some_key'],

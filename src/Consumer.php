@@ -49,6 +49,11 @@ class Consumer extends BaseConsumer
         }
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function processMessage(AMQPMessage $message): void
     {
         $processFlag = call_user_func($this->getCallback(), $message);
@@ -60,11 +65,12 @@ class Consumer extends BaseConsumer
      */
     protected function handleProcessMessage(AMQPMessage $msg, $processFlag): void
     {
-        /** @psalm-suppress DocblockTypeContradiction */
+        /* @psalm-suppress DocblockTypeContradiction */
         if (null !== $processFlag && ! is_int($processFlag)) {
             trigger_error(
                 'Consumer handler should return an integer or void/null. Returning a different type is deprecated',
-            E_USER_DEPRECATED);
+                E_USER_DEPRECATED
+            );
         }
 
         $channel = $msg->getChannel() ?: $this->getChannel();

@@ -14,6 +14,7 @@ use RabbitMqModule\Options\Consumer as Options;
 
 /**
  * @extends AbstractFactory<Options, Consumer>
+ *
  * @psalm-import-type ConsumerHandler from \RabbitMqModule\BaseConsumer
  */
 final class ConsumerFactory extends AbstractFactory
@@ -39,6 +40,7 @@ final class ConsumerFactory extends AbstractFactory
 
     /**
      * @psalm-return ConsumerHandler
+     *
      * @psalm-suppress MixedReturnTypeCoercion
      */
     public static function getCallback(ContainerInterface $container, Options $options): callable
@@ -76,15 +78,7 @@ final class ConsumerFactory extends AbstractFactory
         $consumer->setConsumerTag($options->getConsumerTag() ?: sprintf('PHPPROCESS_%s_%s', gethostname(), getmypid()));
         $consumer->setAutoSetupFabricEnabled($options->isAutoSetupFabricEnabled());
         $consumer->setIdleTimeout($options->getIdleTimeout());
-
-        $qos = $options->getQos();
-
-        if ($qos) {
-            $consumer->setQosOptions(
-                $qos->getPrefetchSize(),
-                $qos->getPrefetchCount()
-            );
-        }
+        $consumer->setQos($options->getQos());
 
         return $consumer;
     }

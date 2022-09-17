@@ -6,8 +6,9 @@ use Laminas\Serializer\Serializer;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Message\AMQPMessage;
+use Prophecy\Argument;
 
-class RpcClientTest extends \PHPUnit\Framework\TestCase
+class RpcClientTest extends TestCase
 {
     public function testAddRequestAndGetReplies(): void
     {
@@ -19,34 +20,26 @@ class RpcClientTest extends \PHPUnit\Framework\TestCase
 
         $serializer = Serializer::factory('json');
 
-        $connection = $this->getMockBuilder(AbstractConnection::class)
-            ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
-        $channel = $this->getMockBuilder(AMQPChannel::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $channel = $this->prophesize(AMQPChannel::class);
 
-        $channel->expects(static::once())
-            ->method('queue_declare')
-            ->with('', false, false, true, false)
+        $connection = $this->prophesize(AbstractConnection::class);
+        $connection->channel()->willReturn($channel->reveal());
+
+        $channel->queue_declare('', false, false, true, false)
+            ->shouldBeCalledOnce()
             ->willReturn(['queue-name', null, null]);
 
-        $channel->expects(static::once())
-            ->method('basic_publish')
-            ->with(
-                static::callback(function (AMQPMessage $a) use ($body, $requestId, $serializer) {
-                    return $a->body === $serializer->serialize($body)
-                        && $a->get('reply_to') === 'queue-name'
-                        && $a->get('correlation_id') === $requestId
-                        && $a->get('delivery_mode') === 1
-                        && $a->get('expiration') === 2000;
-                }),
-                $server,
-                $routingKey
-            );
+        $channel->basic_publish(
+            Argument::that(fn (AMQPMessage $a) => $a->body === $serializer->serialize($body)
+            && $a->get('reply_to') === 'queue-name'
+            && $a->get('correlation_id') === $requestId
+            && $a->get('delivery_mode') === 1
+            && $a->get('expiration') === 2000),
+            $server,
+            $routingKey
+        )->shouldBeCalledOnce();
 
-        /* @var AbstractConnection $connection */
-        $rpcClient = new RpcClient($connection, $channel);
+        $rpcClient = new RpcClient($connection->reveal());
         $rpcClient->setSerializer($serializer);
 
         $rpcClient->addRequest($body, $server, $requestId, $routingKey, $expiration);
@@ -55,28 +48,27 @@ class RpcClientTest extends \PHPUnit\Framework\TestCase
         $message->body = $serializer->serialize('response');
         $message->set('correlation_id', $requestId);
 
-        $channel->expects(static::once())
-            ->method('basic_consume')
-            ->with('queue-name', '', false, true, false, false, static::callback(function ($a) {
-                return is_callable($a);
-            }))
+        $channel->basic_consume(
+            'queue-name',
+            '',
+            false,
+            true,
+            false,
+            false,
+            Argument::type('callable')
+        )
+            ->shouldBeCalledOnce()
             ->willReturn('consumer_tag');
 
-        $channel->expects(static::once())
-            ->method('wait')
-            ->with(
-                static::callback(function ($a) use ($rpcClient, $message) {
-                    $rpcClient->processMessage($message);
+        $channel->wait(null, false, 2)
+            ->shouldBeCalled()
+            ->will(function ($a) use ($rpcClient, $message) {
+                $rpcClient->processMessage($message);
 
-                    return null === $a;
-                }),
-                false,
-                2
-            );
+                return null === $a;
+            });
 
-        $channel->expects(static::once())
-            ->method('basic_cancel')
-            ->with('consumer_tag');
+        $channel->basic_cancel('consumer_tag')->shouldBeCalledOnce();
 
         $replies = $rpcClient->getReplies();
 

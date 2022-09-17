@@ -19,6 +19,7 @@ class ExchangeBind extends AbstractOptions
 
     /**
      * @psalm-param list<string>
+     *
      * @var string[]
      */
     protected array $routingKeys = [];
@@ -41,6 +42,10 @@ class ExchangeBind extends AbstractOptions
     }
 
     /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     *
      * @param array<string, mixed>|Exchange $exchange
      *
      * @throws InvalidArgumentException
@@ -67,6 +72,10 @@ class ExchangeBind extends AbstractOptions
     }
 
     /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     *
      * @param string[] $routingKeys
      */
     public function setRoutingKeys(array $routingKeys): void

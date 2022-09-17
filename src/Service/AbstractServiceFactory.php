@@ -16,9 +16,11 @@ class AbstractServiceFactory implements AbstractFactoryInterface
 {
     /**
      * @psalm-return false|array{serviceType: string, serviceName: string, factoryClass: class-string<AbstractFactory>}
-     * @return bool|array<string, string>
+     *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
+     *
+     * @return bool|array<string, string>
      */
     private function getFactoryMapping(ContainerInterface $container, string $name)
     {
@@ -65,9 +67,11 @@ class AbstractServiceFactory implements AbstractFactoryInterface
      * @param ContainerInterface $container
      * @param string $requestedName
      * @param null|array<mixed> $options
-     * @return object
+     *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
+     *
+     * @return object
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null): object
     {

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace RabbitMqModule\Options;
@@ -14,17 +15,21 @@ abstract class AbstractOptions extends BaseAbstractOptions
      * Constructor
      *
      * @internal Use {@see static::fromArray}
+     *
      * @psalm-internal RabbitMqModule
-     * @psalm-param array<string, mixed> $options
+     *
+     * @psalm-param null|array<string, mixed> $options
      */
-    final public function __construct(array $options)
+    final public function __construct(array $options = null)
     {
         parent::__construct($options);
     }
 
     /**
      * @psalm-suppress MixedAssignment
+     *
      * @psalm-param array<string, mixed> $data
+     *
      * @return AbstractOptions
      */
     public static function __set_state(array $data): AbstractOptions

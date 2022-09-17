@@ -6,12 +6,14 @@ namespace RabbitMqModule\Service;
 
 use Psr\Container\ContainerInterface;
 use RabbitMqModule\ConfigProvider;
-use RuntimeException;
 use RabbitMqModule\Options\AbstractOptions;
+use RuntimeException;
 
 /**
  * @template TOptionsClass as AbstractOptions
+ *
  * @template-covariant R as object
+ *
  * @psalm-import-type ConfigArray from ConfigProvider
  */
 abstract class AbstractFactory

@@ -26,7 +26,6 @@ final class RpcClientFactory extends AbstractFactory
         return Options::class;
     }
 
-
     public function __invoke(ContainerInterface $container): RpcClient
     {
         $rpcOptions = $this->getOptions($container, 'rpc_client');

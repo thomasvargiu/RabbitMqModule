@@ -9,12 +9,15 @@ use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Wire\AMQPTable;
 use RabbitMqModule\Options\Exchange as ExchangeOptions;
+use RabbitMqModule\Options\Qos;
 use RabbitMqModule\Options\Queue as QueueOptions;
 use RabbitMqModule\Service\SetupFabricAwareInterface;
 
 abstract class BaseAmqp implements SetupFabricAwareInterface
 {
     protected AbstractConnection $connection;
+
+    protected ?Qos $qos = null;
 
     private ?AMQPChannel $channel = null;
 
@@ -28,31 +31,65 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
 
     protected bool $queueDeclared = false;
 
-    public function __construct(AbstractConnection $connection, AMQPChannel $channel = null)
+    public function __construct(AbstractConnection $connection)
     {
         $this->connection = $connection;
-        $this->channel = $channel;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function getConnection(): AbstractConnection
     {
         return $this->connection;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function getChannel(): AMQPChannel
     {
-        if (! $this->channel) {
-            $this->channel = $this->getConnection()->channel();
+        if ($this->channel) {
+            return $this->channel;
+        }
+
+        $this->channel = $this->getConnection()->channel();
+
+        if ($this->qos) {
+            $this->channel->basic_qos(
+                $this->qos->getPrefetchSize(),
+                $this->qos->getPrefetchCount(),
+                false
+            );
         }
 
         return $this->channel;
     }
 
+    public function setQos(?Qos $qos): void
+    {
+        $this->qos = $qos;
+    }
+
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setChannel(AMQPChannel $channel): void
     {
         $this->channel = $channel;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function getQueueOptions(): ?QueueOptions
     {
         return $this->queueOptions;
@@ -63,6 +100,11 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
         $this->queueOptions = $queueOptions;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function getExchangeOptions(): ?ExchangeOptions
     {
         return $this->exchangeOptions;
@@ -73,6 +115,11 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
         $this->exchangeOptions = $exchangeOptions;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function isAutoSetupFabricEnabled(): bool
     {
         return $this->autoSetupFabricEnabled;
@@ -195,6 +242,10 @@ abstract class BaseAmqp implements SetupFabricAwareInterface
 
     /**
      * Reconnect
+     *
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
      */
     public function reconnect(): void
     {

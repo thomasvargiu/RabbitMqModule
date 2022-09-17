@@ -5,11 +5,11 @@ namespace RabbitMqModule\Service;
 use InvalidArgumentException;
 use Laminas\ServiceManager\ServiceManager;
 use PhpAmqpLib\Connection\AbstractConnection;
-use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use RabbitMqModule\Service\Connection\ConnectionFactoryInterface;
 use RabbitMqModule\Service\Connection\LazyConnectionFactory;
+use RabbitMqModule\TestCase;
 use RuntimeException;
 
 class ConnectionFactoryTest extends TestCase

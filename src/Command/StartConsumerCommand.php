@@ -17,7 +17,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class StartConsumerCommand extends Command
+class StartConsumerCommand extends Command
 {
     public const NAME = 'rabbitmq:consumers:start';
 
@@ -83,8 +83,8 @@ final class StartConsumerCommand extends Command
                 );
             }
 
-            pcntl_signal(SIGTERM, [$this, 'stopConsumer']);
-            pcntl_signal(SIGINT, [$this, 'stopConsumer']);
+            pcntl_signal(SIGTERM, fn () => $this->stopConsumer());
+            pcntl_signal(SIGINT, fn () => $this->stopConsumer());
         }
         // @codeCoverageIgnoreEnd
 
@@ -93,7 +93,7 @@ final class StartConsumerCommand extends Command
         return Command::SUCCESS;
     }
 
-    public function stopConsumer(): void
+    protected function stopConsumer(): void
     {
         if ($this->consumer instanceof Consumer) {
             $this->consumer->forceStopConsumer();

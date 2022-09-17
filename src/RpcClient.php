@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace RabbitMqModule;
 
-use PhpAmqpLib\Channel\AMQPChannel;
-use PhpAmqpLib\Connection\AbstractConnection;
-use RabbitMqModule\Options\Queue;
 use function count;
 use Laminas\Serializer\Adapter\AdapterInterface as SerializerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -30,6 +27,7 @@ class RpcClient extends BaseAmqp
      * @param string $requestId
      * @param string $routingKey
      * @param int $expiration
+     *
      * @return void
      */
     public function addRequest($body, string $server, string $requestId, string $routingKey = '', int $expiration = 0): void
@@ -90,6 +88,11 @@ class RpcClient extends BaseAmqp
         return $this->replies;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function processMessage(AMQPMessage $message): void
     {
         /** @var string $correlationId */
@@ -104,6 +107,11 @@ class RpcClient extends BaseAmqp
         $this->serializer = $serializer;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function getSerializer(): ?SerializerInterface
     {
         return $this->serializer;

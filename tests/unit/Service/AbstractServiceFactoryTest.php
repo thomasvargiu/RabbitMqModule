@@ -3,8 +3,8 @@
 namespace RabbitMqModule\Service;
 
 use Laminas\ServiceManager\ServiceManager;
-use PHPUnit\Framework\TestCase;
 use Psr\Container\NotFoundExceptionInterface;
+use RabbitMqModule\TestCase;
 
 class AbstractServiceFactoryTest extends TestCase
 {

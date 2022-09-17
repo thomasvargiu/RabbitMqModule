@@ -4,7 +4,7 @@ namespace RabbitMqModule\Options;
 
 use InvalidArgumentException;
 
-class ExchangeBindTest extends \PHPUnit\Framework\TestCase
+class ExchangeBindTest extends \RabbitMqModule\TestCase
 {
     public function testOptions(): void
     {

@@ -3,47 +3,41 @@
 namespace RabbitMqModule;
 
 use Laminas\Serializer\Serializer;
+use PhpAmqpLib\Channel\AMQPChannel;
+use PhpAmqpLib\Connection\AbstractConnection;
+use PhpAmqpLib\Message\AMQPMessage;
+use Prophecy\Argument;
+use RabbitMqModule\Options\Queue as QueueOptions;
 
-class RpcServerTest extends \PHPUnit\Framework\TestCase
+class RpcServerTest extends TestCase
 {
     public function testProcessMessage(): void
     {
         $response = 'ciao';
 
-        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
-            ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
-        $channel = $this->getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $channel = $this->prophesize(AMQPChannel::class);
+        $connection = $this->prophesize(AbstractConnection::class);
+        $connection->channel()->willReturn($channel->reveal());
 
-        $message = new \PhpAmqpLib\Message\AMQPMessage('request', [
+        $message = new AMQPMessage('request', [
             'reply_to' => 'foo',
             'correlation_id' => 'bar',
         ]);
+        $message->setChannel($channel->reveal());
+        $message->setDeliveryTag('foo');
 
-        $message->delivery_info = [
-            'channel' => $channel,
-            'delivery_tag' => 'foo',
-        ];
+        $queueOptions = QueueOptions::fromArray(['name' => 'foo']);
 
-        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
-        $rpcServer = new RpcServer($connection, $channel);
-        $rpcServer->setCallback(function () use ($response) {
-            return $response;
-        });
+        $rpcServer = new RpcServer($connection->reveal(), $queueOptions, fn () => $response);
 
-        $channel->expects(static::once())->method('basic_publish')
-            ->with(
-                static::callback(function ($a) use ($response) {
-                    return $a instanceof \PhpAmqpLib\Message\AMQPMessage
-                        && $a->body === $response
-                        && $a->get('correlation_id') === 'bar'
-                        && $a->get('content_type') === 'text/plain';
-                }),
-                static::equalTo(''),
-                static::equalTo('foo')
-            );
+        $channel->basic_publish(
+            Argument::that(fn (AMQPMessage $a) => $a->body === 'ciao'
+                && $a->get('correlation_id') === 'bar'
+                && $a->get('content_type') === 'text/plain'),
+            '',
+            'foo'
+        )->shouldBeCalledOnce();
+        $channel->basic_ack('foo')->shouldBeCalled();
 
         $rpcServer->processMessage($message);
     }
@@ -52,43 +46,30 @@ class RpcServerTest extends \PHPUnit\Framework\TestCase
     {
         $response = ['response' => 'ciao'];
 
-        $connection = $this->getMockBuilder('PhpAmqpLib\\Connection\\AbstractConnection')
-            ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
-        $channel = $this->getMockBuilder('PhpAmqpLib\\Channel\\AMQPChannel')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $channel = $this->prophesize(AMQPChannel::class);
+        $connection = $this->prophesize(AbstractConnection::class);
+        $connection->channel()->willReturn($channel->reveal());
 
-        $message = new \PhpAmqpLib\Message\AMQPMessage('request', [
+        $message = new AMQPMessage('request', [
             'reply_to' => 'foo',
             'correlation_id' => 'bar',
         ]);
+        $message->setChannel($channel->reveal());
+        $message->setDeliveryTag('foo');
 
-        $message->delivery_info = [
-            'channel' => $channel,
-            'delivery_tag' => 'foo',
-        ];
+        $queueOptions = QueueOptions::fromArray(['name' => 'foo']);
 
-        $serializer = Serializer::factory('json');
+        $rpcServer = new RpcServer($connection->reveal(), $queueOptions, fn () => $response);
+        $rpcServer->setSerializer(Serializer::factory('json'));
 
-        /* @var \PhpAmqpLib\Connection\AbstractConnection $connection */
-        $rpcServer = new RpcServer($connection, $channel);
-        $rpcServer->setSerializer($serializer);
-        $rpcServer->setCallback(function () use ($response) {
-            return $response;
-        });
-
-        $channel->expects(static::once())->method('basic_publish')
-            ->with(
-                static::callback(function ($a) {
-                    return $a instanceof \PhpAmqpLib\Message\AMQPMessage
-                    && $a->body === '{"response":"ciao"}'
-                    && $a->get('correlation_id') === 'bar'
-                    && $a->get('content_type') === 'text/plain';
-                }),
-                static::equalTo(''),
-                static::equalTo('foo')
-            );
+        $channel->basic_publish(
+            Argument::that(fn (AMQPMessage $a) => $a->body === '{"response":"ciao"}'
+                && $a->get('correlation_id') === 'bar'
+                && $a->get('content_type') === 'text/plain'),
+            '',
+            'foo'
+        )->shouldBeCalledOnce();
+        $channel->basic_ack('foo')->shouldBeCalled();
 
         $rpcServer->processMessage($message);
     }

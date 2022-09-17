@@ -8,6 +8,7 @@ use InvalidArgumentException;
 
 /**
  * @psalm-import-type ExchangeBindOptions from ExchangeBind
+ *
  * @psalm-type ExchangeOptions = array{
  *   name: string,
  *   type?: 'direct' | 'fanout' | 'topic' | string,
@@ -24,7 +25,7 @@ use InvalidArgumentException;
 class Exchange extends AbstractOptions
 {
     protected string $name = '';
-    
+
     protected string $type = 'direct';
 
     protected bool $passive = false;
@@ -39,7 +40,7 @@ class Exchange extends AbstractOptions
 
     /** @var array<string, mixed> */
     protected array $arguments = [];
-    
+
     protected int $ticket = 0;
 
     /** @var ExchangeBind[] */
@@ -58,6 +59,11 @@ class Exchange extends AbstractOptions
         return $this->name;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setName(string $name): void
     {
         $this->name = $name;
@@ -68,6 +74,11 @@ class Exchange extends AbstractOptions
         return $this->type;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setType(string $type): void
     {
         $this->type = $type;
@@ -78,6 +89,11 @@ class Exchange extends AbstractOptions
         return $this->passive;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setPassive(bool $passive): void
     {
         $this->passive = $passive;
@@ -88,6 +104,11 @@ class Exchange extends AbstractOptions
         return $this->durable;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setDurable(bool $durable): void
     {
         $this->durable = $durable;
@@ -98,6 +119,11 @@ class Exchange extends AbstractOptions
         return $this->autoDelete;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setAutoDelete(bool $autoDelete): void
     {
         $this->autoDelete = $autoDelete;
@@ -108,6 +134,11 @@ class Exchange extends AbstractOptions
         return $this->internal;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setInternal(bool $internal): void
     {
         $this->internal = $internal;
@@ -118,6 +149,11 @@ class Exchange extends AbstractOptions
         return $this->declare;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setDeclare(bool $declare): void
     {
         $this->declare = $declare;
@@ -132,6 +168,10 @@ class Exchange extends AbstractOptions
     }
 
     /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     *
      * @param array<string, mixed> $arguments
      */
     public function setArguments(array $arguments): void
@@ -144,6 +184,11 @@ class Exchange extends AbstractOptions
         return $this->ticket;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setTicket(int $ticket): void
     {
         $this->ticket = $ticket;
@@ -158,6 +203,10 @@ class Exchange extends AbstractOptions
     }
 
     /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     *
      * @param array<array<string, mixed>>|ExchangeBind[] $exchangeBinds
      */
     public function setExchangeBinds(array $exchangeBinds): void
@@ -169,6 +218,10 @@ class Exchange extends AbstractOptions
     }
 
     /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     *
      * @param array<string, mixed>|ExchangeBind $bind
      *
      * @throws InvalidArgumentException

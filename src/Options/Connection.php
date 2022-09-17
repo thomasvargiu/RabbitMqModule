@@ -65,6 +65,11 @@ final class Connection extends AbstractOptions
         return $this->type;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setType(string $type): void
     {
         $this->type = $type;
@@ -75,6 +80,11 @@ final class Connection extends AbstractOptions
         return $this->host;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setHost(string $host): void
     {
         $this->host = $host;
@@ -85,6 +95,11 @@ final class Connection extends AbstractOptions
         return $this->port;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setPort(int $port): void
     {
         $this->port = $port;
@@ -95,6 +110,11 @@ final class Connection extends AbstractOptions
         return $this->username;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setUsername(string $username): void
     {
         $this->username = $username;
@@ -105,6 +125,11 @@ final class Connection extends AbstractOptions
         return $this->password;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setPassword(string $password): void
     {
         $this->password = $password;
@@ -115,6 +140,11 @@ final class Connection extends AbstractOptions
         return $this->vhost;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setVhost(string $vhost): void
     {
         $this->vhost = $vhost;
@@ -125,6 +155,11 @@ final class Connection extends AbstractOptions
         return $this->insist;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setInsist(bool $insist): void
     {
         $this->insist = $insist;
@@ -135,6 +170,11 @@ final class Connection extends AbstractOptions
         return $this->loginMethod;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setLoginMethod(string $loginMethod): void
     {
         $this->loginMethod = $loginMethod;
@@ -145,6 +185,11 @@ final class Connection extends AbstractOptions
         return $this->locale;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setLocale(string $locale): void
     {
         $this->locale = $locale;
@@ -155,6 +200,11 @@ final class Connection extends AbstractOptions
         return $this->readWriteTimeout;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setReadWriteTimeout(int $readWriteTimeout): void
     {
         $this->readWriteTimeout = $readWriteTimeout;
@@ -165,6 +215,11 @@ final class Connection extends AbstractOptions
         return $this->keepAlive;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setKeepAlive(bool $keepAlive): void
     {
         $this->keepAlive = $keepAlive;
@@ -175,6 +230,11 @@ final class Connection extends AbstractOptions
         return $this->connectionTimeout;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setConnectionTimeout(int $connectionTimeout): void
     {
         $this->connectionTimeout = $connectionTimeout;
@@ -185,6 +245,11 @@ final class Connection extends AbstractOptions
         return $this->heartbeat;
     }
 
+    /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     */
     public function setHeartbeat(int $heartbeat): void
     {
         $this->heartbeat = $heartbeat;
@@ -199,6 +264,10 @@ final class Connection extends AbstractOptions
     }
 
     /**
+     * @internal
+     *
+     * @psalm-internal RabbitMqModule
+     *
      * @param array<string, mixed> $sslOptions
      */
     public function setSslOptions(array $sslOptions): void
