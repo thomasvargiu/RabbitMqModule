@@ -258,9 +258,14 @@ return [
 
 There are some console commands available:
 
-- ```rabbitmq setup-fabric```: Setup fabric for each service, declaring exchanges and queues
-- ```rabbitmq list consumers```: List available consumers
-- ```rabbitmq consumer <name> [--without-signals|-w]```: Start a consumer by name
-- ```rabbitmq rpc_server <name> [--without-signals|-w]```: Start a rpc server by name
-- ```rabbitmq stdin-producer <name> [--route=] <msg>```: Send a message with a producer
+- ```rabbitmq:fabric:setup```: Setup fabric for each service, declaring exchanges and queues
+- ```rabbitmq:consumers:list```: List available consumers
+- ```rabbitmq:consumers:start <name> [--without-signals|-w]```: Start a consumer by name
+- ```rabbitmq:rpc-server:start <name> [--without-signals|-w]```: Start a rpc server by name
+- ```rabbitmq:producer:publish <name> [--route=] <msg>```: Send a message with a producer
 
+Example :
+
+```bash
+vendor/bin/laminas rabbitmq:producer:publish my_producer "Hello world!"
+```
