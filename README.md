@@ -67,7 +67,6 @@ return [
                     'durable' => true,      // (default)
                     'auto_delete' => false, // (default)
                     'internal' => false,    // (default)
-                    'no_wait' => false,     // (default)
                     'declare' => true,      // (default)
                     'arguments' => [],      // (default)
                     'ticket' => 0,          // (default)
@@ -75,12 +74,10 @@ return [
                 ],
                 'queue' => [ // optional queue
                     'name' => 'queue-name', // can be an empty string,
-                    'type' => null,         // (default)
                     'passive' => false,     // (default)
                     'durable' => true,      // (default)
                     'auto_delete' => false, // (default)
                     'exclusive' => false,   // (default)
-                    'no_wait' => false,     // (default)
                     'arguments' => [],      // (default)
                     'ticket' => 0,          // (default)
                     'routing_keys' => []    // (default)
